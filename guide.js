@@ -49,3 +49,26 @@
   function revealHash(){const target=document.getElementById(location.hash.slice(1));if(!target)return;let p=target.parentElement;while(p){if(p.tagName==='DETAILS')p.open=true;p=p.parentElement;}requestAnimationFrame(()=>target.scrollIntoView());}
   addEventListener('hashchange',revealHash);if(location.hash)revealHash();
 })();
+
+// Language links stay on the corresponding guide and preserve its section.
+(() => {
+  document.querySelectorAll('.language-picker a[data-lang]').forEach(link => {
+    const path = link.getAttribute('href');
+    const updateHash = () => { link.href = path + location.hash; };
+    updateHash(); addEventListener('hashchange', updateHash);
+    link.addEventListener('click', () => {
+      try { localStorage.setItem('sintbot_site_lang', link.dataset.lang); } catch (_) {}
+    });
+  });
+  document.addEventListener('click', event => {
+    document.querySelectorAll('.language-picker[open]').forEach(picker => {
+      if (!picker.contains(event.target)) picker.open = false;
+    });
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key !== 'Escape') return;
+    document.querySelectorAll('.language-picker[open]').forEach(picker => {
+      picker.open = false; picker.querySelector('summary').focus();
+    });
+  });
+})();
