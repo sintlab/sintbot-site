@@ -49,12 +49,12 @@
   "flow.ui.checked": {"en": "Mobile layout checked", "zh": "手机布局已核对"},
   "flow.ui.saved": {"en": "Project notes updated", "zh": "项目记录已更新"},
   "meta.title": {
-    "en": "SintBot | Feishu, WeCom & Slack × Claude Code / Codex",
+    "en": "SintBot | Slack, Feishu & WeCom × Claude Code / Codex",
     "zh": "SintBot｜飞书、企业微信、Slack × Claude Code / Codex"
   },
   "meta.description": {
-    "en": "SintBot is a personal AI agent on your own Mac. Message it in Feishu or Slack and it works with Claude Code or Codex, alone or in a project group.",
-    "zh": "SintBot 是跑在你自己 Mac 上的个人 AI 助理：在飞书或 Slack 里交代一句，本机的 Claude Code / Codex 就开工。一个人用或进项目群都行，模型可选 GPT、Claude、GLM、DeepSeek、MiniMax、Kimi，项目文件与共享记忆留在本机。"
+    "en": "SintBot is a personal AI agent on your own Mac. Message it in Slack, Feishu or WeCom and it works with Claude Code or Codex, alone or in a team channel.",
+    "zh": "SintBot 是跑在你自己 Mac 上的个人 AI 助理：在飞书、企业微信或 Slack 里交代一句，本机的 Claude Code / Codex 就开工。一个人用或进项目群都行，模型可选 GPT、Claude、GLM、DeepSeek、MiniMax、Kimi，项目文件与共享记忆留在本机。"
   },
   "meta.ogAlt": {
     "en": "SintBot — project groups, Claude Code and Codex, local project files",
@@ -85,15 +85,15 @@
     "zh": "<span class=\"zh-title-line\">把编码助手</span><span class=\"zh-title-line\">接进项目群</span>"
   },
   "hero.lede": {
-    "en": "A personal AI agent on your own Mac. Message it in Feishu or Slack and it puts Claude Code or Codex to work: your assistant when you are on your own, the team's teammate in a project group. Choose GPT, Claude, GLM, DeepSeek, MiniMax or Kimi. Your files and project memory stay on your machine.",
-    "zh": "跑在你自己 Mac 上的个人 AI 助理。在飞书或 Slack 里交代一句，它就让 Claude Code 或 Codex 开工：一个人用是助理，进了项目群是团队的同事。GPT、Claude、GLM、DeepSeek、MiniMax、Kimi，按任务选择。项目文件与写下的记忆，留在自己的机器上。"
+    "en": "A personal AI agent on your own Mac. Message it in Slack, Feishu or WeCom and it puts Claude Code or Codex to work: your assistant when you are on your own, the team's teammate in a channel or project group. Choose GPT, Claude, GLM, DeepSeek, MiniMax or Kimi. Your files and project memory stay on your machine.",
+    "zh": "跑在你自己 Mac 上的个人 AI 助理。在飞书、企业微信或 Slack 里交代一句，它就让 Claude Code 或 Codex 开工：一个人用是助理，进了项目群是团队的同事。GPT、Claude、GLM、DeepSeek、MiniMax、Kimi，按任务选择。项目文件与写下的记忆，留在自己的机器上。"
   },
   "hero.cta.primary": {
     "en": "See how it works",
     "zh": "看看它怎么工作"
   },
   "plat.trio": {
-    "en": "macOS · Feishu · Claude Code / Codex",
+    "en": "macOS · Slack · Claude Code / Codex",
     "zh": "macOS · 飞书 · Claude Code / Codex"
   },
   "what.kicker": {
@@ -117,7 +117,7 @@
     "en": "Your next project<br><em>in the group chat</em>",
     "zh": "<span class=\"zh-title-line\">把下一个项目</span><span class=\"zh-title-line\"><em>接进群里</em></span>"
   },
-  "plugin.lede": {"en": "Download the macOS app and start on your Mac, or connect Feishu by scanning. Keep using your installed and signed-in Claude Code or Codex.", "zh": "下载 macOS 桌面版，先在本机对话，也可扫码连接飞书。沿用已经安装并登录的 Claude Code 或 Codex。"},
+  "plugin.lede": {"en": "Download the macOS app and start on your Mac, connect Slack in three short steps, or connect Feishu by scanning. Keep using your installed and signed-in Claude Code or Codex.", "zh": "下载 macOS 桌面版，先在本机对话，也可扫码连接飞书。沿用已经安装并登录的 Claude Code 或 Codex。"},
   "plugin.meta.kind": {
     "en": "npm · sintbot v1.4.23",
     "zh": "npm · sintbot v1.4.23"
@@ -155,7 +155,7 @@
     "zh": "扫码接入飞书"
   },
   "install.3.after": {
-    "en": "Open setup using the installation guide. Name the project, choose an executor and confirm the scan in Feishu. SintBot creates the app and group, saving the executor’s live recommended model and thinking depth for the new group.",
+    "en": "Open setup using the installation guide. Name the project, choose an executor and connect your chat. On Slack, create the app from a link that is already filled in, paste two tokens and send the bot one message. On Feishu, confirm the scan and SintBot creates the app and group. The executor’s live recommended model and thinking depth are saved for the new conversation.",
     "zh": "按安装指南打开本机接入页，填项目名、选执行器，再用手机飞书扫码确认。SintBot 自动建应用和群，并为新群保存执行器实时推荐的型号与思考深度。"
   },
   "install.4.title": {
@@ -187,8 +187,8 @@
     "zh": "可以接入哪些聊天平台？"
   },
   "faq.2.a": {
-    "en": "SintBot connects to Feishu groups, Slack channels and WeCom groups. Each group binds to a project, with progress and results returned in the conversation.",
-    "zh": "SintBot 可接入飞书群、Slack 频道和企业微信群。每个群绑定自己的项目，任务进度和结果回到原来的对话里。"
+    "en": "SintBot connects to Slack channels and direct messages, Feishu groups and WeCom chats. Each conversation binds to a project, with progress and results returned in the conversation.",
+    "zh": "SintBot 可接入飞书群、企业微信的群和单聊、Slack 的频道和私聊。每个群绑定自己的项目，任务进度和结果回到原来的对话里。"
   },
   "faq.3.q": {
     "en": "How do teams manage projects?",
@@ -210,7 +210,7 @@
     "en": "What do I need to install it?",
     "zh": "安装需要准备什么？"
   },
-  "faq.5.a": {"en": "An Apple silicon Mac running macOS 12 or later and an installed, signed-in Claude Code or Codex. The desktop app includes Node.js. Local conversations need no Feishu identity; connecting Feishu needs a China team identity and phone confirmation. Terminal installation requires Node.js 22+.", "zh": "桌面版需要 macOS 12 及以上的 Apple 芯片 Mac，以及已安装并登录的 Claude Code 或 Codex。App 自带 Node.js。本机对话无需飞书身份；连接飞书时才需要中国版的企业或团队身份和手机扫码确认。终端安装需要 Node.js 22 及以上。"},
+  "faq.5.a": {"en": "An Apple silicon Mac running macOS 12 or later and an installed, signed-in Claude Code or Codex. The desktop app includes Node.js. Local conversations need no chat account. Slack needs a workspace where you can install an app (a free one works); connecting Feishu needs a China team identity and phone confirmation. Terminal installation requires Node.js 22+.", "zh": "桌面版需要 macOS 12 及以上的 Apple 芯片 Mac，以及已安装并登录的 Claude Code 或 Codex。App 自带 Node.js。本机对话无需飞书身份；连接飞书时才需要中国版的企业或团队身份和手机扫码确认。终端安装需要 Node.js 22 及以上。"},
   "cta.h": {
     "en": "Bring your project<br><em>into the group chat</em>",
     "zh": "<span class=\"zh-title-line\">让项目回到</span><span class=\"zh-title-line\">团队的对话里</span>"
@@ -236,7 +236,7 @@
     "zh": "服务条款"
   },
   "foot.meta": {
-    "en": "Not affiliated with Feishu, Anthropic, OpenAI or any other provider named here. Product names and logos belong to their respective owners.",
+    "en": "Not affiliated with Slack, Feishu, Anthropic, OpenAI or any other provider named here. Product names and logos belong to their respective owners.",
     "zh": "与飞书、Anthropic、OpenAI 或其他提及的服务商无隶属关系，产品名称及标志归其各自所有者。"
   },
   "copy": {

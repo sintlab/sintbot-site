@@ -164,7 +164,9 @@ html:lang(en) :is(.plugin__steps-h,.step h3){text-wrap:balance}
 .card--channels{display:flex;flex-direction:column}.channel-platforms{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;margin-top:18px;padding-top:16px;border-top:1px solid #161b2212}.channel-platform{display:flex;align-items:center;justify-content:center;gap:6px;min-width:0;white-space:nowrap;color:var(--text-2);font-size:12px;font-weight:550}.channel-platform .brand{display:block;width:22px;height:22px;overflow:visible}@media(max-width:520px){.channel-platforms{padding-top:16px}.channel-platform{gap:5px;font-size:12px}.channel-platform .brand{width:21px;height:21px}}
 
 /* Brand labels: retain names beside their full-colour marks. */
-.channel-platform{flex-direction:column;gap:7px;align-items:center;text-align:center}.channel-platform .brand{width:28px;height:28px}
+.channel-platform{flex-direction:column;gap:7px;align-items:center;text-align:center}
+/* English readers mostly work in Slack: it leads the row there. The markup order (Feishu, Slack, WeCom) is the Chinese order. */
+html[lang="en"] .channel-platform:nth-child(2){order:-1}.channel-platform .brand{width:28px;height:28px}
 .flow-ui__route>b{display:inline-flex;align-items:center;gap:7px;white-space:nowrap}.flow-ui__route>b .brand{width:22px;height:22px}
 .showcase__agent{display:inline-flex;align-items:center;gap:4px}.showcase__agent .brand{width:14px;height:14px}
 

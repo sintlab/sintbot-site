@@ -1,6 +1,6 @@
 # SintBot
 
-> SintBot is a personal AI agent on your own Mac. Message it in Feishu or Slack and it works with Claude Code or Codex, alone or in a project group.
+> SintBot is a personal AI agent on your own Mac. Message it in Slack, Feishu or WeCom and it works with Claude Code or Codex, alone or in a team channel.
 
 Generated from https://sintbot.com/ by scripts/build-zh.mjs — the same facts as the page.
 
@@ -28,7 +28,7 @@ A coding assistant that connects a project group to Claude Code or Codex on your
 
 ### Which chat platforms can I use?
 
-SintBot connects to Feishu groups, Slack channels and WeCom groups. Each group binds to a project, with progress and results returned in the conversation.
+SintBot connects to Slack channels and direct messages, Feishu groups and WeCom chats. Each conversation binds to a project, with progress and results returned in the conversation.
 
 ### How do teams manage projects?
 
@@ -40,7 +40,7 @@ No. SintBot and the project run on your machine, but the chat platform and confi
 
 ### What do I need to install it?
 
-An Apple silicon Mac running macOS 12 or later and an installed, signed-in Claude Code or Codex. The desktop app includes Node.js. Local conversations need no Feishu identity; connecting Feishu needs a China team identity and phone confirmation. Terminal installation requires Node.js 22+.
+An Apple silicon Mac running macOS 12 or later and an installed, signed-in Claude Code or Codex. The desktop app includes Node.js. Local conversations need no chat account. Slack needs a workspace where you can install an app (a free one works); connecting Feishu needs a China team identity and phone confirmation. Terminal installation requires Node.js 22+.
 
 ### Which models can SintBot use?
 
@@ -52,7 +52,7 @@ Project files and saved shared notes remain. Switching starts a fresh conversati
 
 ## 中文
 
-> SintBot 是跑在你自己 Mac 上的个人 AI 助理：在飞书或 Slack 里交代一句，本机的 Claude Code / Codex 就开工。一个人用或进项目群都行，模型可选 GPT、Claude、GLM、DeepSeek、MiniMax、Kimi，项目文件与共享记忆留在本机。
+> SintBot 是跑在你自己 Mac 上的个人 AI 助理：在飞书、企业微信或 Slack 里交代一句，本机的 Claude Code / Codex 就开工。一个人用或进项目群都行，模型可选 GPT、Claude、GLM、DeepSeek、MiniMax、Kimi，项目文件与共享记忆留在本机。
 
 ## 常见问题
 
@@ -62,7 +62,7 @@ Project files and saved shared notes remain. Switching starts a fresh conversati
 
 ### 可以接入哪些聊天平台？
 
-SintBot 可接入飞书群、Slack 频道和企业微信群。每个群绑定自己的项目，任务进度和结果回到原来的对话里。
+SintBot 可接入飞书群、企业微信的群和单聊、Slack 的频道和私聊。每个群绑定自己的项目，任务进度和结果回到原来的对话里。
 
 ### 多个项目如何管理？
 
