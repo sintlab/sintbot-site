@@ -24,9 +24,17 @@ Present the complete product workflow using the original 733913b feature descrip
 
 SintBot's sole author is WaterTian; SintLab is the publisher. Use the name SintBot and the `sintbot` command on the website. The software license is PolyForm Shield 1.0.0; do not change license terms when updating page copy. Do not add prices or payment links.
 
+## Free and open source (user decision, 2026-11-16)
+
+Introductory copy calls SintBot free and open source: the hero lede, the meta description, the chip beside the license chip, the FAQ "Is SintBot free?", the closing line and the key facts for AI readers. The license is unchanged (PolyForm Shield 1.0.0): keep its name visible beside the claim, and legal pages follow the license text. Still no prices, offer markup or payment links; `isAccessibleForFree` carries the fact in structured data.
+
+## AI readers (2026-11-16)
+
+`llms.txt` opens with key facts in both languages (cost, requirements, platforms, models, both install routes, versions, updates, data). `llms-full.txt` adds the FAQ and the four guide pages as Markdown (`scripts/guide-md.mjs`). Both come from `build-zh.mjs`, so the hourly version sync regenerates them. The desktop version and disk-image URL are read from the homepage download link: when the app version changes, update that link and the guides, then rerun the script.
+
 ## Changes and validation
 
-- Keep English and Chinese copy in `app.js` translations. Generate `index.html`, `zh/index.html` and `llms.txt` with `node scripts/build-zh.mjs`.
+- Keep English and Chinese copy in `app.js` translations. Generate `index.html`, `zh/index.html`, `llms.txt` and `llms-full.txt` with `node scripts/build-zh.mjs`.
 - Run `node scripts/build-zh.mjs --check`, `node scripts/check-lastmod.mjs` and `node --check app.js`; review desktop and mobile pages.
 - Keep `install.sh` identical to the audited installer in the product repository. The 2026-11-08 16:04 user instruction replaces the initial release installer with the simplified fresh-user flow. Do not advertise setup, service or multi-group commands that the release does not support.
 - Keep fonts non-blocking, with system Chinese fallbacks. Follow the reference interaction behavior with reduced-motion and no-JavaScript fallbacks.

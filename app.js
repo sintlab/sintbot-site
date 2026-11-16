@@ -53,8 +53,8 @@
     "zh": "SintBot｜飞书、企业微信、Slack × Claude Code / Codex"
   },
   "meta.description": {
-    "en": "SintBot is a personal AI agent on your own Mac. Message it in Slack, Feishu or WeCom and it works with Claude Code or Codex, alone or in a team channel.",
-    "zh": "SintBot 是跑在你自己 Mac 上的个人 AI 助理：在飞书、企业微信或 Slack 里交代一句，本机的 Claude Code / Codex 就开工。一个人用或进项目群都行，模型可选 GPT、Claude、GLM、DeepSeek、MiniMax、Kimi，项目文件与共享记忆留在本机。"
+    "en": "SintBot is a free, open-source personal AI agent on your own Mac. Message it in Slack, Feishu or WeCom and it works with Claude Code or Codex, alone or in a team channel.",
+    "zh": "SintBot 是跑在你自己 Mac 上的免费开源个人 AI 助理：在飞书、企业微信或 Slack 里交代一句，本机的 Claude Code / Codex 就开工。一个人用或进项目群都行，模型可选 GPT、Claude、GLM、DeepSeek、MiniMax、Kimi，项目文件与共享记忆留在本机。"
   },
   "meta.ogAlt": {
     "en": "SintBot — project groups, Claude Code and Codex, local project files",
@@ -85,8 +85,8 @@
     "zh": "<span class=\"zh-title-line\">把编码助手</span><span class=\"zh-title-line\">接进项目群</span>"
   },
   "hero.lede": {
-    "en": "A personal AI agent on your own Mac. Message it in Slack, Feishu or WeCom and it puts Claude Code or Codex to work: your assistant when you are on your own, the team's teammate in a channel or project group. Choose GPT, Claude, GLM, DeepSeek, MiniMax or Kimi. Your files and project memory stay on your machine.",
-    "zh": "跑在你自己 Mac 上的个人 AI 助理。在飞书、企业微信或 Slack 里交代一句，它就让 Claude Code 或 Codex 开工：一个人用是助理，进了项目群是团队的同事。GPT、Claude、GLM、DeepSeek、MiniMax、Kimi，按任务选择。项目文件与写下的记忆，留在自己的机器上。"
+    "en": "A free, open-source personal AI agent on your own Mac. Message it in Slack, Feishu or WeCom and it puts Claude Code or Codex to work: your assistant when you are on your own, the team's teammate in a channel or project group. Choose GPT, Claude, GLM, DeepSeek, MiniMax or Kimi. Your files and project memory stay on your machine.",
+    "zh": "跑在你自己 Mac 上的免费开源个人 AI 助理。在飞书、企业微信或 Slack 里交代一句，它就让 Claude Code 或 Codex 开工：一个人用是助理，进了项目群是团队的同事。GPT、Claude、GLM、DeepSeek、MiniMax、Kimi，按任务选择。项目文件与写下的记忆，留在自己的机器上。"
   },
   "hero.cta.primary": {
     "en": "See how it works",
@@ -118,6 +118,10 @@
     "zh": "<span class=\"zh-title-line\">把下一个项目</span><span class=\"zh-title-line\"><em>接进群里</em></span>"
   },
   "plugin.lede": {"en": "Download the macOS app and start on your Mac, connect Slack in three short steps, or connect Feishu by scanning. Keep using your installed and signed-in Claude Code or Codex.", "zh": "下载 macOS 桌面版，先在本机对话，也可扫码连接飞书。沿用已经安装并登录的 Claude Code 或 Codex。"},
+  "plugin.meta.free": {
+    "en": "Free & open source",
+    "zh": "免费开源"
+  },
   "plugin.meta.kind": {
     "en": "npm · sintbot v1.4.24",
     "zh": "npm · sintbot v1.4.24"
@@ -182,6 +186,14 @@
     "en": "A coding assistant that connects a project group to Claude Code or Codex on your own machine. Give it tasks in the group, choose the agent and model, and keep project files and saved notes together.",
     "zh": "把项目群连接到自己机器上的 Claude Code 或 Codex 的编码助手。在群里派活，按任务选择执行器与模型，让代码、素材和已保存的项目记忆留在同一个项目里。"
   },
+  "faq.9.q": {
+    "en": "Is SintBot free?",
+    "zh": "SintBot 收费吗？"
+  },
+  "faq.9.a": {
+    "en": "Yes. SintBot is free and open source, with no paid tier and no SintBot account to create. It works through the Claude Code or Codex you already use, so the only costs are the model plans or API keys you choose. Projects, notes and settings stay as ordinary files on your Mac, and updates install from the console.",
+    "zh": "不收费。SintBot 免费开源，没有付费版，也不用注册 SintBot 账号。它通过你已经在用的 Claude Code 或 Codex 工作，费用只来自你自己选的模型套餐或 API Key。项目、笔记和设置都是你 Mac 上的普通文件，更新在控制台里完成。"
+  },
   "faq.2.q": {
     "en": "Which chat platforms can I use?",
     "zh": "可以接入哪些聊天平台？"
@@ -216,8 +228,8 @@
     "zh": "<span class=\"zh-title-line\">让项目回到</span><span class=\"zh-title-line\">团队的对话里</span>"
   },
   "cta.p": {
-    "en": "Choose your coding agent. Keep your project close.",
-    "zh": "选好编码助手，带着项目一起往前走。"
+    "en": "Free and open source. Choose your coding agent and keep your project close.",
+    "zh": "免费开源。选好编码助手，带着项目一起往前走。"
   },
   "foot.tag": {
     "en": "Project groups · Claude Code & Codex · Switchable models",

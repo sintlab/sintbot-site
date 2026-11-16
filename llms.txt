@@ -1,18 +1,34 @@
 # SintBot
 
-> SintBot is a personal AI agent on your own Mac. Message it in Slack, Feishu or WeCom and it works with Claude Code or Codex, alone or in a team channel.
+> SintBot is a free, open-source personal AI agent on your own Mac. Message it in Slack, Feishu or WeCom and it works with Claude Code or Codex, alone or in a team channel.
 
-Generated from https://sintbot.com/ by scripts/build-zh.mjs — the same facts as the page.
+Generated from https://sintbot.com/ by scripts/build-zh.mjs — the same facts as the page. The full guides as Markdown: https://sintbot.com/llms-full.txt
+
+## Key facts
+
+- Cost: free and open source, with no paid tier and no SintBot account. The only costs are the model plans or API keys you choose.
+- License: PolyForm Shield 1.0.0 (https://polyformproject.org/licenses/shield/1.0.0).
+- Runs on: Apple silicon Macs with macOS 12 or later; needs an installed, signed-in Claude Code or Codex.
+- Chat platforms: Slack channels and direct messages, Feishu groups, WeCom groups and direct chats; or a local conversation in the app with no chat account.
+- Models: Claude through Claude Code, GPT through Codex; GLM, MiniMax, DeepSeek, Kimi and other services through compatible endpoints and your own API keys.
+- Install (recommended, desktop app 0.1.2): download https://github.com/sintlab/sintbot-desktop/releases/latest/download/SintBot_0.1.2_aarch64.dmg, move SintBot to Applications and open it. The app includes the SintBot service and Node.js.
+- Install (terminal, needs Node.js 22+): `curl -fsSL https://sintbot.com/install.sh | bash`, then follow https://sintbot.com/guide/install/#terminal
+- Current versions: service 1.4.24 (npm package `sintbot`), desktop app 0.1.2.
+- Updates: from the console, Settings → Software updates.
+- Data: projects, notes and settings are ordinary files on your Mac; chat platforms and model services need a network connection.
+- Author WaterTian; publisher SintLab.
 
 ## Pages
 
 - [SintBot (English)](https://sintbot.com/): product workflow, chat platforms, Claude Code and Codex, model choices, visual collaboration and project management
 - [SintBot（中文）](https://sintbot.com/zh/): 同一页面的中文版
-- [Installation guide](https://sintbot.com/guide/install/): complete macOS installation, Feishu configuration and first message
+- [Installation guide](https://sintbot.com/guide/install/): desktop app download, connecting Slack, Feishu or WeCom, the terminal alternative and the first task
 - [Usage guide](https://sintbot.com/guide/usage/): task briefs, model selection, project notes and daily workflows
-- [安装指南](https://sintbot.com/zh/guide/install/): 安装、配置和验证
+- [安装指南](https://sintbot.com/zh/guide/install/): 桌面版下载，连接 Slack、飞书、企业微信，终端安装与第一条任务
 - [使用说明](https://sintbot.com/zh/guide/usage/): 派活、模型、记忆与协作
-- [SintBot on GitHub](https://github.com/sintlab/sintbot): project and installation documentation for SintBot with its built-in core
+- [Full documentation](https://sintbot.com/llms-full.txt): these facts, the FAQ and all four guide pages as Markdown, in English and Chinese
+- [SintBot on GitHub](https://github.com/sintlab/sintbot): code and documentation for SintBot
+- [SintBot for macOS on GitHub](https://github.com/sintlab/sintbot-desktop): the desktop app; releases carry the signed and notarized disk image
 - [sintbot on npm](https://www.npmjs.com/package/sintbot): exact version 1.4.24; use the isolated installer and versioned guide on the website
 - [WaterTian](https://github.com/WaterTian): the sole author of SintBot
 - [SintLab](https://sintlab.com/): the publisher and project studio for SintBot
@@ -50,9 +66,27 @@ Use Claude through Claude Code, GPT through Codex, or configure compatible endpo
 
 Project files and saved shared notes remain. Switching starts a fresh conversation; record decisions and unfinished work in the project so the next agent can read them and continue.
 
+### Is SintBot free?
+
+Yes. SintBot is free and open source, with no paid tier and no SintBot account to create. It works through the Claude Code or Codex you already use, so the only costs are the model plans or API keys you choose. Projects, notes and settings stay as ordinary files on your Mac, and updates install from the console.
+
 ## 中文
 
-> SintBot 是跑在你自己 Mac 上的个人 AI 助理：在飞书、企业微信或 Slack 里交代一句，本机的 Claude Code / Codex 就开工。一个人用或进项目群都行，模型可选 GPT、Claude、GLM、DeepSeek、MiniMax、Kimi，项目文件与共享记忆留在本机。
+> SintBot 是跑在你自己 Mac 上的免费开源个人 AI 助理：在飞书、企业微信或 Slack 里交代一句，本机的 Claude Code / Codex 就开工。一个人用或进项目群都行，模型可选 GPT、Claude、GLM、DeepSeek、MiniMax、Kimi，项目文件与共享记忆留在本机。
+
+## 要点
+
+- 费用：免费开源，没有付费版，不用注册 SintBot 账号。费用只来自你自己选的模型套餐或 API Key。
+- 许可：PolyForm Shield 1.0.0（https://polyformproject.org/licenses/shield/1.0.0）。
+- 运行环境：macOS 12 及以上的 Apple 芯片 Mac；需要已安装并登录的 Claude Code 或 Codex。
+- 聊天平台：飞书群、企业微信的群和单聊、Slack 的频道和私聊；也可以不接聊天平台，在 App 里本机对话。
+- 模型：通过 Claude Code 用 Claude，通过 Codex 用 GPT；GLM、MiniMax、DeepSeek、Kimi 等通过兼容端点和自己的 API Key 接入。
+- 安装（推荐，桌面版 0.1.2）：下载 https://github.com/sintlab/sintbot-desktop/releases/latest/download/SintBot_0.1.2_aarch64.dmg ，把 SintBot 拖进「应用程序」后打开。App 自带 SintBot 服务和 Node.js。
+- 安装（终端，需要 Node.js 22 及以上）：`curl -fsSL https://sintbot.com/install.sh | bash`，后续步骤见 https://sintbot.com/zh/guide/install/#terminal
+- 当前版本：服务 1.4.24（npm 包 `sintbot`），桌面版 0.1.2。
+- 更新：在控制台「设置 → 软件更新」里完成。
+- 数据：项目、笔记和设置是你 Mac 上的普通文件；聊天平台和模型服务需要联网。
+- 作者 WaterTian，发布方 SintLab。
 
 ## 常见问题
 
@@ -83,3 +117,7 @@ SintBot 可接入飞书群、企业微信的群和单聊、Slack 的频道和私
 ### 换模型之后，什么会保留？
 
 项目文件和已保存的共享笔记保留。切换会开启新对话；把决定和待办写进项目，下一位助手即可读取记录，接着推进。
+
+### SintBot 收费吗？
+
+不收费。SintBot 免费开源，没有付费版，也不用注册 SintBot 账号。它通过你已经在用的 Claude Code 或 Codex 工作，费用只来自你自己选的模型套餐或 API Key。项目、笔记和设置都是你 Mac 上的普通文件，更新在控制台里完成。

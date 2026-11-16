@@ -4,7 +4,8 @@
 //
 //   index.html     English body text, <head>, JSON-LD (SoftwareApplication + FAQPage)
 //   zh/index.html  the same page with Chinese body text, <head>, JSON-LD
-//   llms.txt       plain-text summary + FAQ in both languages, for AI assistants
+//   llms.txt       plain-text summary, key facts + FAQ in both languages, for AI assistants
+//   llms-full.txt  llms.txt's facts and FAQ plus the four guide pages as Markdown
 //
 // Why static: share-card unfurlers (Lark, WeChat, Slack) and AI crawlers read HTML without running JS.
 // app.js still switches languages in the browser exactly as before.
@@ -15,6 +16,7 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import vm from "node:vm";
+import { guideMarkdown } from "./guide-md.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const check = process.argv.includes("--check");
@@ -30,6 +32,12 @@ const { VERSION, translations: t } = vm.runInNewContext(`${version[0]}\n${appJs.
 for (const k of ["meta.title", "meta.description", "meta.ogAlt"]) {
   if (!t[k] || !t[k].en || !t[k].zh) fail(`translations["${k}"] needs both en and zh`);
 }
+// The desktop download link on the page is the one source for the app version and its URL.
+const pageSrc = readFileSync(join(root, "index.html"), "utf8");
+const dmgs = [...new Set(pageSrc.match(/https:\/\/github\.com\/sintlab\/sintbot-desktop\/releases\/latest\/download\/SintBot_\d+\.\d+\.\d+_aarch64\.dmg/g) || [])];
+if (dmgs.length !== 1) fail(`expected one desktop download URL in index.html, found ${dmgs.length}`);
+const DMG = dmgs[0];
+const DESKTOP = DMG.match(/SintBot_(\d+\.\d+\.\d+)_/)[1];
 const faqIds = Object.keys(t).map((k) => k.match(/^faq\.(\d+)\.q$/)).filter(Boolean).map((m) => m[1]).sort((a, b) => a - b);
 
 const attr = (s) => s.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
@@ -100,6 +108,11 @@ function jsonLd(lang) {
       softwareVersion: VERSION,
       license: "https://polyformproject.org/licenses/shield/1.0.0",
       isAccessibleForFree: true,
+      downloadUrl: DMG,
+      installUrl: lang === "zh" ? `${SITE}/zh/guide/install/` : `${SITE}/guide/install/`,
+      softwareRequirements: lang === "zh"
+        ? "macOS 12 及以上的 Apple 芯片 Mac；已安装并登录的 Claude Code 或 Codex"
+        : "Apple silicon Mac with macOS 12 or later; Claude Code or Codex installed and signed in",
       author: { "@id": authorId },
       creator: { "@id": authorId },
       // Same entity elsewhere: only public pages that are SintBot itself (cc-bot is a separate project).
@@ -157,24 +170,60 @@ function head(html, lang) {
   return html.replace(ld[0], jsonLd(lang));
 }
 
-// --- llms.txt ----------------------------------------------------------------------------
+// --- llms.txt / llms-full.txt ------------------------------------------------------------
+// Key facts answer what an assistant is asked most (cost, requirements, how to install, where
+// it runs) in one place, in both languages. Versions come from app.js and the page's download link.
+function facts(lang) {
+  if (lang === "zh") return `## 要点
+
+- 费用：免费开源，没有付费版，不用注册 SintBot 账号。费用只来自你自己选的模型套餐或 API Key。
+- 许可：PolyForm Shield 1.0.0（https://polyformproject.org/licenses/shield/1.0.0）。
+- 运行环境：macOS 12 及以上的 Apple 芯片 Mac；需要已安装并登录的 Claude Code 或 Codex。
+- 聊天平台：飞书群、企业微信的群和单聊、Slack 的频道和私聊；也可以不接聊天平台，在 App 里本机对话。
+- 模型：通过 Claude Code 用 Claude，通过 Codex 用 GPT；GLM、MiniMax、DeepSeek、Kimi 等通过兼容端点和自己的 API Key 接入。
+- 安装（推荐，桌面版 ${DESKTOP}）：下载 ${DMG} ，把 SintBot 拖进「应用程序」后打开。App 自带 SintBot 服务和 Node.js。
+- 安装（终端，需要 Node.js 22 及以上）：\`curl -fsSL ${SITE}/install.sh | bash\`，后续步骤见 ${SITE}/zh/guide/install/#terminal
+- 当前版本：服务 ${VERSION}（npm 包 \`sintbot\`），桌面版 ${DESKTOP}。
+- 更新：在控制台「设置 → 软件更新」里完成。
+- 数据：项目、笔记和设置是你 Mac 上的普通文件；聊天平台和模型服务需要联网。
+- 作者 WaterTian，发布方 SintLab。`;
+  return `## Key facts
+
+- Cost: free and open source, with no paid tier and no SintBot account. The only costs are the model plans or API keys you choose.
+- License: PolyForm Shield 1.0.0 (https://polyformproject.org/licenses/shield/1.0.0).
+- Runs on: Apple silicon Macs with macOS 12 or later; needs an installed, signed-in Claude Code or Codex.
+- Chat platforms: Slack channels and direct messages, Feishu groups, WeCom groups and direct chats; or a local conversation in the app with no chat account.
+- Models: Claude through Claude Code, GPT through Codex; GLM, MiniMax, DeepSeek, Kimi and other services through compatible endpoints and your own API keys.
+- Install (recommended, desktop app ${DESKTOP}): download ${DMG}, move SintBot to Applications and open it. The app includes the SintBot service and Node.js.
+- Install (terminal, needs Node.js 22+): \`curl -fsSL ${SITE}/install.sh | bash\`, then follow ${SITE}/guide/install/#terminal
+- Current versions: service ${VERSION} (npm package \`sintbot\`), desktop app ${DESKTOP}.
+- Updates: from the console, Settings → Software updates.
+- Data: projects, notes and settings are ordinary files on your Mac; chat platforms and model services need a network connection.
+- Author WaterTian; publisher SintLab.`;
+}
+
+const faqMd = (lang) => faqIds.map((i) => `### ${plain(t[`faq.${i}.q`][lang])}\n\n${plain(t[`faq.${i}.a`][lang])}`).join("\n\n");
+
 function llms() {
-  const faq = (lang) => faqIds.map((i) => `### ${plain(t[`faq.${i}.q`][lang])}\n\n${plain(t[`faq.${i}.a`][lang])}`).join("\n\n");
   return `# SintBot
 
 > ${t["meta.description"].en}
 
-Generated from ${SITE}/ by scripts/build-zh.mjs — the same facts as the page.
+Generated from ${SITE}/ by scripts/build-zh.mjs — the same facts as the page. The full guides as Markdown: ${SITE}/llms-full.txt
+
+${facts("en")}
 
 ## Pages
 
 - [SintBot (English)](${SITE}/): product workflow, chat platforms, Claude Code and Codex, model choices, visual collaboration and project management
 - [SintBot（中文）](${SITE}/zh/): 同一页面的中文版
-- [Installation guide](${SITE}/guide/install/): complete macOS installation, Feishu configuration and first message
+- [Installation guide](${SITE}/guide/install/): desktop app download, connecting Slack, Feishu or WeCom, the terminal alternative and the first task
 - [Usage guide](${SITE}/guide/usage/): task briefs, model selection, project notes and daily workflows
-- [安装指南](${SITE}/zh/guide/install/): 安装、配置和验证
+- [安装指南](${SITE}/zh/guide/install/): 桌面版下载，连接 Slack、飞书、企业微信，终端安装与第一条任务
 - [使用说明](${SITE}/zh/guide/usage/): 派活、模型、记忆与协作
-- [SintBot on GitHub](https://github.com/sintlab/sintbot): project and installation documentation for SintBot with its built-in core
+- [Full documentation](${SITE}/llms-full.txt): these facts, the FAQ and all four guide pages as Markdown, in English and Chinese
+- [SintBot on GitHub](https://github.com/sintlab/sintbot): code and documentation for SintBot
+- [SintBot for macOS on GitHub](https://github.com/sintlab/sintbot-desktop): the desktop app; releases carry the signed and notarized disk image
 - [sintbot on npm](https://www.npmjs.com/package/sintbot): exact version ${VERSION}; use the isolated installer and versioned guide on the website
 - [WaterTian](https://github.com/WaterTian): the sole author of SintBot
 - [SintLab](https://sintlab.com/): the publisher and project studio for SintBot
@@ -184,25 +233,67 @@ Generated from ${SITE}/ by scripts/build-zh.mjs — the same facts as the page.
 
 ## FAQ
 
-${faq("en")}
+${faqMd("en")}
 
 ## 中文
 
 > ${t["meta.description"].zh}
 
+${facts("zh")}
+
 ## 常见问题
 
-${faq("zh")}
+${faqMd("zh")}
 `;
+}
+
+const GUIDES = [
+  ["guide/install/index.html", `${SITE}/guide/install/`],
+  ["guide/usage/index.html", `${SITE}/guide/usage/`],
+  ["zh/guide/install/index.html", `${SITE}/zh/guide/install/`],
+  ["zh/guide/usage/index.html", `${SITE}/zh/guide/usage/`],
+];
+
+function llmsFull() {
+  const guide = ([file, url]) => {
+    const md = guideMarkdown(readFileSync(join(root, file), "utf8"), url);
+    // Guide pages start with their own H1; nest them under this file's sections.
+    return `Source: ${url}\n\n${md.replace(/^(#{1,5}) /gm, "#$1 ")}`;
+  };
+  return `# SintBot — full documentation
+
+> ${t["meta.description"].en}
+
+Generated from ${SITE}/ and its guide pages by scripts/build-zh.mjs, with the same text as the pages. Summary: ${SITE}/llms.txt
+
+${facts("en")}
+
+## FAQ
+
+${faqMd("en")}
+
+${GUIDES.slice(0, 2).map(guide).join("\n\n")}
+
+# 中文
+
+> ${t["meta.description"].zh}
+
+${facts("zh")}
+
+## 常见问题
+
+${faqMd("zh")}
+
+${GUIDES.slice(2).map(guide).join("\n\n")}`;
 }
 
 // --- write / check -----------------------------------------------------------------------
 const MARK = "<!-- GENERATED from /index.html by scripts/build-zh.mjs — edit index.html / app.js, then run the script -->";
-const src = readFileSync(join(root, "index.html"), "utf8");
+const src = pageSrc;
 const en = renderBody(head(src, "en"), "en");
 const zh = renderBody(head(src, "zh"), "zh").replace("<head>", `<head>\n    ${MARK}`).replace(/href="\/guide\/(install|usage)\/"/g, 'href="/zh/guide/$1/"');
 
-const targets = [["index.html", en], [join("zh", "index.html"), zh], ["llms.txt", llms()]];
+const targets = [["index.html", en], [join("zh", "index.html"), zh], ["llms.txt", llms()], ["llms-full.txt", llmsFull()]];
 if (check) {
   const stale = targets.filter(([f, want]) => !existsSync(join(root, f)) || readFileSync(join(root, f), "utf8") !== want).map(([f]) => f);
   if (stale.length) fail(`out of date: ${stale.join(", ")} — run: node scripts/build-zh.mjs`);
@@ -210,7 +301,7 @@ if (check) {
 } else {
   mkdirSync(join(root, "zh"), { recursive: true });
   for (const [f, content] of targets) writeFileSync(join(root, f), content);
-  console.log(`build-zh: wrote index.html, zh/index.html, llms.txt (${faqIds.length} FAQ entries)`);
+  console.log(`build-zh: wrote index.html, zh/index.html, llms.txt, llms-full.txt (${faqIds.length} FAQ entries)`);
 }
 
 function fail(msg) { console.error(`build-zh: ${msg}`); process.exit(1); }

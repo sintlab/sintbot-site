@@ -1,0 +1,1396 @@
+# SintBot — full documentation
+
+> SintBot is a free, open-source personal AI agent on your own Mac. Message it in Slack, Feishu or WeCom and it works with Claude Code or Codex, alone or in a team channel.
+
+Generated from https://sintbot.com/ and its guide pages by scripts/build-zh.mjs, with the same text as the pages. Summary: https://sintbot.com/llms.txt
+
+## Key facts
+
+- Cost: free and open source, with no paid tier and no SintBot account. The only costs are the model plans or API keys you choose.
+- License: PolyForm Shield 1.0.0 (https://polyformproject.org/licenses/shield/1.0.0).
+- Runs on: Apple silicon Macs with macOS 12 or later; needs an installed, signed-in Claude Code or Codex.
+- Chat platforms: Slack channels and direct messages, Feishu groups, WeCom groups and direct chats; or a local conversation in the app with no chat account.
+- Models: Claude through Claude Code, GPT through Codex; GLM, MiniMax, DeepSeek, Kimi and other services through compatible endpoints and your own API keys.
+- Install (recommended, desktop app 0.1.2): download https://github.com/sintlab/sintbot-desktop/releases/latest/download/SintBot_0.1.2_aarch64.dmg, move SintBot to Applications and open it. The app includes the SintBot service and Node.js.
+- Install (terminal, needs Node.js 22+): `curl -fsSL https://sintbot.com/install.sh | bash`, then follow https://sintbot.com/guide/install/#terminal
+- Current versions: service 1.4.24 (npm package `sintbot`), desktop app 0.1.2.
+- Updates: from the console, Settings → Software updates.
+- Data: projects, notes and settings are ordinary files on your Mac; chat platforms and model services need a network connection.
+- Author WaterTian; publisher SintLab.
+
+## FAQ
+
+### What is SintBot?
+
+A coding assistant that connects a project group to Claude Code or Codex on your own machine. Give it tasks in the group, choose the agent and model, and keep project files and saved notes together.
+
+### Which chat platforms can I use?
+
+SintBot connects to Slack channels and direct messages, Feishu groups and WeCom chats. Each conversation binds to a project, with progress and results returned in the conversation.
+
+### How do teams manage projects?
+
+Bind each group to its own project directory and configure its agent, model and permissions. Use the console to review group status, running tasks, queues and schedules.
+
+### Does everything work offline?
+
+No. SintBot and the project run on your machine, but the chat platform and configured model services require a network connection. Model requests follow the selected agent’s configuration and the service provider’s data policy.
+
+### What do I need to install it?
+
+An Apple silicon Mac running macOS 12 or later and an installed, signed-in Claude Code or Codex. The desktop app includes Node.js. Local conversations need no chat account. Slack needs a workspace where you can install an app (a free one works); connecting Feishu needs a China team identity and phone confirmation. Terminal installation requires Node.js 22+.
+
+### Which models can SintBot use?
+
+Use Claude through Claude Code, GPT through Codex, or configure compatible endpoints and your own API keys in Claude Code for GLM, MiniMax and DeepSeek. Kimi and other compatible services can use custom endpoints.
+
+### What stays when I switch models?
+
+Project files and saved shared notes remain. Switching starts a fresh conversation; record decisions and unfinished work in the project so the next agent can read them and continue.
+
+### Is SintBot free?
+
+Yes. SintBot is free and open source, with no paid tier and no SintBot account to create. It works through the Claude Code or Codex you already use, so the only costs are the model plans or API keys you choose. Projects, notes and settings stay as ordinary files on your Mac, and updates install from the console.
+
+Source: https://sintbot.com/guide/install/
+
+## Install SintBot on your Mac
+
+Download the desktop app, move it to Applications and open it. Connect Slack, Feishu or WeCom, or start with a local conversation.
+
+macOS · Node.js included · Codex / Claude Code · Slack · Feishu · WeCom
+
+[Install the desktop app](https://sintbot.com/guide/install/#desktop) [Connect Feishu](https://sintbot.com/guide/install/#feishu)
+
+### Three steps to your first task
+
+For Apple silicon Macs running macOS 12 or later. App 0.1.2 includes SintBot and Node.js; no separate Node.js or npm installation is needed. Install and sign in to Codex or Claude Code first.
+
+[Download for Mac](https://github.com/sintlab/sintbot-desktop/releases/latest/download/SintBot_0.1.2_aarch64.dmg)
+
+#### 01 Move SintBot to Applications
+
+Open the downloaded DMG. Drag SintBot on the left to Applications on the right, then open SintBot from Applications. You can eject the disk image afterwards.
+
+#### 02 Choose a project and connection
+
+On first launch, the App prepares its local service and opens setup. Name your project and choose Codex or Claude Code. Choose “Use on this Mac first” to start locally, or scan with a Feishu China team identity to connect a project group.
+
+#### 03 Send your first task
+
+Use Chat for local conversations, or the new project group for Feishu. Ask “Read the first line of README.md and reply with that line only”, then compare the reply with your file. The screen below shows where to enter a local task.
+
+**Desktop installation is complete**
+
+Open SintBot from Applications or the menu bar next time. No repeated scan or open terminal is needed. Continue to the [usage guide](https://sintbot.com/guide/usage/) for models, follow-ups and updates.
+
+##### Close the window, quit or stop?
+
+Closing the window leaves the App in the menu bar. Quitting the App leaves the bot running. Choose “Stop SintBot and Quit” to stop both. A service installed by the App stays stopped until Start or the next App launch. An adopted service keeps its original login settings.
+
+“Remove Background Service” preserves settings and history; it does not delete your project.
+
+##### How do the App and service update?
+
+Upgrade the service in Settings → Software updates. A managed service waits for tasks to settle before switching, and rolls back if reconnection fails. To update the App itself, download the new DMG, quit the App and replace it in Applications. An existing SintBot service is reused; avoid installing a second instance.
+
+##### Setup did not open on first launch?
+
+Check the App status page. An existing service opens its console directly. If an executor is missing, install and sign in to Codex or Claude Code, then retry. Open the log from the menu bar for the specific error.
+
+The official DMG is signed and Apple notarized. If the download is damaged or cannot be verified, download it again from the official release. Keep system security protections enabled.
+
+### Connect your project to Slack
+
+Choose a project on your Mac, create your own Slack app from a link that is already filled in, paste two tokens, then send the bot one message. SintBot connects over Socket Mode, so you need no public address, and a free workspace works.
+
+1. **01**Create app
+2. **02**Two tokens
+3. **03**One message
+4. **04**First task
+
+**Before you start**
+
+Have Codex or Claude Code working on your Mac. You need permission to install apps in the Slack workspace; if yours needs admin approval, create a free workspace of your own. One Slack app serves one Mac.
+
+#### 01 Create the app from the setup page
+
+First launch opens setup. Enter a project name, choose the executor and pick “Slack” under Chat platform. Select “Create app in Slack”: Slack opens with the app’s permissions and events already filled in. Pick your workspace, select Next, then Create.
+
+#### 02 Paste the two tokens
+
+1. On the app’s Basic Information page in Slack, scroll to App-Level Tokens, select Generate Token and Scopes, add the `connections:write` scope and generate. Paste the token that starts with `xapp-` into setup; it is checked at once. The app settings page in Slack can take ten seconds or more to load the first time; reload it if it stays blank.
+2. Select “Open install page” in setup, then in Slack select the install button named after your workspace (for example Install to Acme), and Allow.
+3. Copy the Bot User OAuth Token that starts with `xoxb-`, paste it and select “Connect Slack”.
+
+Both tokens are saved on this Mac only; never post them in a chat. If a token lands in the wrong field, setup says which kind you pasted.
+
+#### 03 Send the bot one message
+
+When setup shows “Waiting for your message…”, select “Open the bot in Slack” and send it any message within 10 minutes. To use a channel instead, invite the bot with `/invite @your-bot-name` and @mention it there.
+
+SintBot binds that conversation to the project, the bot replies “已连接项目 …” (project connected) and setup opens the console.
+
+#### 04 Send your first task
+
+In the same conversation, start with a read-only request:
+
+Send to the bot in Slack (@mention it in a channel)
+
+Read the first line of this project’s README.md and reply with only that line. Do not change any files.
+
+Check the reply against the first line of the file on your Mac. While the task runs your message shows ⏳, and in a channel the thread also shows a Stop button that stops the task; ⏳ becomes ✅ when the answer arrives. Then continue with [working in Slack](https://sintbot.com/guide/usage/#slack-workflow).
+
+##### Already using Feishu, WeCom or local chat? Add Slack
+
+Open Settings → Slack in the console, choose the project folder and executor, then follow the same three steps and send the bot one message. Your existing connections, local chat and projects are kept.
+
+Once connected, the card shows the workspace, the connection status and the number of bound projects. Expand Advanced to refresh the connection status or open the app’s settings in Slack.
+
+##### Bind another channel
+
+Invite the bot to the channel with `/invite @your-bot-name`, then pick that channel under Groups · Projects → Set up a group project in the console and choose its folder and executor. Only channels the bot has joined are listed. One app can serve several projects but connects to only one SintBot.
+
+##### The link does not open?
+
+Create the app by hand: at api.slack.com/apps choose Create New App → From a manifest, pick the workspace and paste the [manifest file](https://github.com/sintlab/sintbot/blob/main/docs/slack-app-manifest.yaml), then continue from step 02. Leave token rotation off: it cannot be turned off again.
+
+##### No reply to your message?
+
+In a channel, @mention the bot and check it was invited. Check the connection status under Settings → Slack: if it shows Disconnected, check the network or proxy; if it shows a failed connection, a token was revoked or the app was removed (shown within about 5 minutes), so connect again with new tokens. If this Mac reaches Slack only through a proxy, set `proxy` in the configuration file (for example `{"https": "http://127.0.0.1:7890"}`); both the token checks and the connection use it. Make sure no other SintBot uses the same app: Slack hands each message to only one of an app’s connections. If more than 10 minutes passed during setup without a message, select Retry on the setup page.
+
+### Connect your project to Feishu
+
+Choose a project on your Mac, confirm on your phone, then send a task in the new group. Desktop and terminal installations share this setup flow.
+
+1. **01**Project
+2. **02**Confirm
+3. **03**Create group
+4. **04**First task
+
+**Before you scan**
+
+Have Codex or Claude Code working on your Mac. Sign in to Feishu China on your phone with an enterprise or team identity; create or join a team first if needed. Your organization may require administrator approval.
+
+#### 01 Choose your project on the Mac
+
+First launch opens setup. Enter a project name and choose the executor. Use the new project folder or expand “Use an existing project folder”. Select “Connect Feishu”.
+
+If you are not an organization administrator, expand “Organization options” and select “I am not an organization administrator”. An administrator will need to finish app availability and publication.
+
+#### 02 Confirm with Feishu on your phone
+
+Keep setup open on your Mac. Use the scanner in the Feishu mobile app to scan the code on your own setup page.
+
+1. Check the enterprise or team selected on your phone.
+2. Review the app’s team and requested permissions.
+3. Confirm on your phone, then return to your Mac.
+
+These images show setup states. The pictured code is for this walkthrough; use the fresh code on your own Mac to connect.
+
+#### 03 Wait for the app and group
+
+SintBot creates the app, checks permissions, creates a project group and saves configuration. Keep the window open. Expand “Connection details” to follow progress; setup opens the console when complete.
+
+#### 04 Send a task in the new group
+
+Find the newly created project group in Feishu and check that SintBot is a member. Start with a read-only request:
+
+Send to your new Feishu project group
+
+Read the first line of this project’s README.md and reply with that line only. Do not change any files.
+
+Compare the reply with the file on your Mac. A correct reply verifies the group, executor and project path together. Continue with the [Feishu group workflow](https://sintbot.com/guide/usage/#feishu-workflow).
+
+##### Confirmed on your phone, but no new group?
+
+If setup asks for a group, create one in Feishu, add the newly created bot, then paste the group ID into setup and select “Continue”. An ID starts with `oc_…`; it is not a group name or invitation link. Ask an administrator to finish publication and availability if the app is not available to you.
+
+For other failures, use “Retry” or “Edit details” as prompted. A successfully connected project needs no repeated scan.
+
+##### Already using local conversations?
+
+An existing configuration opens the console directly. To add Feishu, let tasks finish, stop the service, run `sintbot connect --attach` and complete the scan, then start again. Configuration, records and local conversations are kept. The current console has no one-click attach action. See [terminal installation and maintenance](https://sintbot.com/guide/install/#terminal).
+
+##### Connected, but the group gets no reply?
+
+Check Settings → Feishu for connection status and Groups · Projects for the target group, folder and model. Confirm the bot is a member, the app is published, and message permissions and event subscriptions are enabled. Mention the bot if your group requires it.
+
+### Connect your project to WeCom
+
+Choose a project on your Mac, scan with WeCom on your phone to create a bot, then send it one message. SintBot receives tasks over a long connection, so you need no public callback URL and no group.
+
+1. **01**Project
+2. **02**Scan
+3. **03**One message
+4. **04**First task
+
+**Before you scan**
+
+Have Codex or Claude Code working on your Mac. Install WeCom on your phone and join or create an organization. Creating one is free and needs no verification; an organization with only you in it works too.
+
+#### 01 Choose your project on the Mac
+
+First launch opens setup. Enter a project name, choose the executor, pick “企业微信 · WeCom” under Chat platform and select “Scan to create bot”. Use the new project folder or expand “Use an existing project folder”.
+
+#### 02 Scan with WeCom on your phone
+
+Keep setup open on your Mac and scan the code on your own page with the WeCom scanner on your phone.
+
+1. Check which organization is selected on your phone.
+2. Confirm creating the bot. It is named after you by default.
+3. The Bot ID and Secret are saved on this Mac. There is nothing to copy; never send them in a chat.
+
+These images show interface states, and the code is for illustration only. Scan the new code on your own Mac; an expired code is replaced automatically.
+
+#### 03 Send the bot one message
+
+When setup shows “Waiting for your message…”, send the bot any message in WeCom within 10 minutes: message it directly, or add it to a group and @mention it. Find it by searching its name at the top of WeCom, or under Workbench → Smart Bots.
+
+SintBot binds that chat to the project, the bot replies “已连接项目 …” (project connected) and setup opens the console.
+
+#### 04 Send your first task
+
+In the same chat, start with a read-only request:
+
+Send to the WeCom bot (@mention it in a group)
+
+Read the first line of this project’s README.md and reply with only that line. Do not change any files.
+
+Check the reply against the first line of the file on your Mac. The bot replies when a task finishes; progress is not shown while it runs. Then continue with [working in WeCom](https://sintbot.com/guide/usage/#wecom-workflow).
+
+##### Already using Feishu or local chat? Add WeCom
+
+Open Settings → WeCom in the console, choose the project folder and executor, select “Scan to create bot”, then send the bot one message as above. Your Feishu connection, local chat and projects are kept.
+
+Once connected, the card shows the connection status and the number of bound projects. Expand Advanced for the Bot ID and to refresh the connection status.
+
+##### Already have a bot? Enter Bot ID and Secret manually
+
+Expand “Already have a bot? Enter Bot ID and Secret” on the setup page, or Advanced on the console’s WeCom card, enter the existing bot’s Bot ID and Secret, then send the bot one message. To create a bot manually, use either entry below, choose API mode and select “Use long connection”:
+
+- WeCom desktop: Workbench → Smart Bots → Create bot → Manual creation.
+- Admin console at work.weixin.qq.com: Security & Management → Management Tools → Smart Bots.
+
+##### Bind another project
+
+Create a WeCom group, add the bot and @mention it once, then pick that group under Groups · Projects → Set up a group project in the console and choose its folder and executor. One bot can serve several projects but connects to only one SintBot.
+
+##### No reply to your message?
+
+Check the connection status under Settings → WeCom. If it shows Disconnected, select Refresh connection status, check the network and make sure no other SintBot or tool is using this bot: each bot keeps only one connection at a time. In groups, @mention the bot; @All does not trigger it. If more than 10 minutes passed during setup without a message, select Retry on the setup page.
+
+##### Alternative: terminal installation and maintenance
+
+### Prepare your project Mac
+
+The terminal steps below are for **SintBot 1.4.24** on macOS with Node.js 22 or later and Codex or Claude Code. Start with local conversations, or connect 1–32 Feishu China project groups. The desktop App includes Node.js.
+
+- You can start with the automatically created project folder or choose an existing project on this Mac.
+- Node.js is version 22 or later.
+- Codex or Claude Code (at least one) is installed, signed in and working in your local terminal.
+- You can confirm the connection using Feishu on your phone with a team identity.
+
+##### How do I check my environment?
+
+Terminal
+
+```
+node --version
+codex --version
+claude --version
+```
+
+Node.js and the runner you use should report a version before you continue. Keep using your existing Codex or Claude Code installation and account.
+
+##### What if a version check fails?
+
+If a command cannot be found, finish installing that tool and open a new terminal. Get Node.js from its [official website](https://nodejs.org/en/download); follow the official instructions for your chosen coding agent to install it and sign in. The SintBot installer installs SintBot itself.
+
+### Install SintBot in one command
+
+Copy this into your local terminal. The installer checks the environment, installs the package and verifies the result.
+
+Terminal
+
+```
+curl -fsSL https://sintbot.com/install.sh | bash
+```
+
+**Installation complete**
+
+When you see `Installed and verified SintBot 1.4.24`, installation is complete. Continue with Feishu and project configuration.
+
+##### Optional: preview the installation plan
+
+To inspect the plan before installing, use this command instead. It downloads no package and changes no configuration. Then run the installation command above.
+
+Terminal
+
+```
+curl -fsSL https://sintbot.com/install.sh | bash -s -- --dry-run
+```
+
+##### Optional: check the version and help
+
+Terminal
+
+```
+SINTBOT="$HOME/.local/share/sintbot/bin/sintbot"
+"$SINTBOT" --version
+"$SINTBOT" help
+```
+
+SintBot is installed in `~/.local/share/sintbot`. Continue below to connect Feishu and your project.
+
+### Open local setup
+
+Run this command, then follow the [Feishu walkthrough](https://sintbot.com/guide/install/#feishu) for your project, phone confirmation and group. You can also choose “Use on this Mac first”.
+
+```
+"$HOME/.local/share/sintbot/bin/sintbot" start --ui
+```
+
+### Choose the project on the setup page
+
+By default setup creates `~/Projects/sintbot` with a README and binds it to the new group. To connect an existing project, enter its absolute path in the existing-project field; the directory must exist. Do not use your entire home directory as a project. Afterwards, manage project folders and models under Groups · Projects in the console.
+
+##### Prefer the terminal?
+
+The same flow runs as `sintbot connect`; `--name`, `--workdir`, `--provider` and `--basic` map to the options on the page. See the full install guide.
+
+### Everyday start
+
+When setup completes the service is already running; there is nothing else to run. Every later start uses the same command:
+
+Terminal
+
+```
+"$HOME/.local/share/sintbot/bin/sintbot" start --ui
+```
+
+Keep the terminal open. Settings → Feishu shows the connection status; Groups · Projects manages bindings. Public console access and administrator sign-in are optional.
+
+##### The console shows “Needs attention”?
+
+After a power loss or forced restart during a task, the service holds the groups whose result is unknown and lists them on the overview’s “Needs attention” card; the service still starts when every group is held, so the console stays available. When the background service supports automatic restart and the other groups are idle and settled, click “Seal and continue”: the record is archived unchanged, that message is not processed again, and the service restarts by itself with a new record; resend the message if needed. In a foreground run, seal from a terminal as described in the [full install guide](https://github.com/sintlab/sintbot/blob/main/docs/install.md).
+
+**Restart an existing installation directly**
+
+Do not scan or initialize again for a normal restart. If you used `--config` or `--data-dir`, pass the same flags on every start.
+
+### Verify with a real message
+
+Send this in the Feishu group you just connected:
+
+> Read the first line of this project’s README.md and reply with only that line.
+
+Compare the reply with the file. This checks the group connection, the runner and the project path together.
+
+#### Commands and console
+
+Any text message is a task; the reply card appears once the model starts, or after 25 seconds if it is still working without output. While it runs, the card shows how long it has run, what it is doing and the steps already delivered, which fold into a Process section at the end. These commands are answered at once and never take a task slot:
+
+- **`/status`**: Model, project, busy or idle (steps and current work while busy), and queue.
+
+- **`/skip`**: Cancel only the current task; queued messages run next and the conversation is kept.
+
+- **`/stop`**: Stop the current task and cancel queued ones; the conversation is kept.
+
+- **`/new`**: Start a new conversation, forgetting the previous one, while the group is idle.
+
+- **`/model`**: Opens a tap-to-pick card: choose the backend, model and thinking depth, then confirm. You can also send `/model high`, `/model <model>` or `/model <backend>`. A model or depth change continues the conversation; a backend change starts a new one. Only while the group is idle.
+
+- **`/hud`**: Quota of the current model and usage of this conversation.
+
+- **`/issue text`**: Log feedback for the console.
+
+- **`/help`**: List commands, with this group's project and model.
+
+Send a command as a message of its own; except for `/issue` and `/model`, add no other text. If the Feishu app subscribes to the message-recall event, recalling your own message cancels it.
+
+With `--ui`, open `http://127.0.0.1:4600` on this Mac to see every group, stop tasks, start a new conversation for an idle group, bind new groups, switch the model or project of an idle group, and add or configure models. Set a console password in its settings before enabling LAN access. To add a group without the console, add it to the configuration and restart; it is registered automatically.
+
+Model and thinking depth are chosen per group: on the group card, the Model row picks the backend and model and the next row picks the depth, from lists read live from the local Codex and Claude Code. Choose the model and thinking depth for Codex, Claude and DeepSeek on each group card. DeepSeek connection settings and API key stay in the model library; other third-party endpoints keep their connection model there. After the upgrade, each model card’s existing model and depth move into its groups with the same effective values and no session reset.
+
+Model settings are grouped into model and reasoning, context and compaction, and connection. For Codex, choose the executor default or a custom context window; known limits are checked on save. Compaction also offers default or custom, with numeric inputs shown only when needed. Codex uses a threshold and Claude Code a compaction window; either may compact earlier. Existing explicit global values become independent settings on existing models. Changes apply to the next turn and preserve the session. Capacity details distinguish requested settings from runtime reports.
+
+For Claude Code groups, SintBot can compact the current session between turns when the CLI reports compaction support and the context reaches half of a custom compaction window. It uses a spare concurrency slot and stays silent in the group. A new message interrupts compaction before starting its turn; a window of 0 disables only idle compaction; compaction during a turn follows the executor’s defaults. `/hud` shows the compaction line and last completion time. Claude subscription quota prefers rate-limit events reported by the executor.
+
+#### Stop and restart
+
+In the running terminal, press `Ctrl` + `C` and wait for the process to exit. Keep the configuration from setup and use the same start command:
+
+Terminal
+
+```
+SINTBOT="$HOME/.local/share/sintbot/bin/sintbot"
+"$SINTBOT" start --ui
+```
+
+Use `start` for normal restarts. Do not run `init` again.
+
+##### The bot does not reply
+
+Check the terminal error first. Verify that the application is published, the bot has joined the target group, message permissions and event subscriptions are configured, the credentials are valid and the project group is bound. A successful preflight does not prove Feishu authentication or message delivery.
+
+##### A group is paused or startup reports unresolved receipts
+
+When a group's last result cannot be confirmed, only that group is held and the console stays available. Check what the task actually did. If the console offers “Seal and continue”, use it to archive the record unchanged and restart the service. Otherwise stop the service, run `sintbot incident seal --group <group ID>` and start again. Do not clear logs, overwrite unknown outcomes or blindly resend the task.
+
+NEXT
+
+### Start your next task
+
+Learn how to frame a task, share project context and review the result.
+
+[Read the usage guide](https://sintbot.com/guide/usage/)
+
+
+Source: https://sintbot.com/guide/usage/
+
+USAGE GUIDE
+
+## Your first task on your Mac
+
+Open the desktop App and give a task locally, in Slack, or in a Feishu or WeCom chat. Choose a project and model, review the result and continue.
+
+[Start with your first message](https://sintbot.com/guide/usage/#first-task)
+
+Start with the [desktop installation guide](https://sintbot.com/guide/install/#desktop), then choose a local conversation or connect Feishu. Existing installations do not need another scan.
+
+APP
+
+### Your desktop workspace
+
+Open Chat to give a local task. Groups · Projects selects the folder, model and thinking depth. Models · Library manages accounts and API keys. Settings contains Feishu connections and software updates. Start with a read-only task, then adjust execution permissions as needed.
+
+Local conversations need no Feishu account. To work in a Feishu group, connect it by scanning first. Both routes use the same project and model settings.
+
+### Start working in Slack
+
+Finish the [Slack setup walkthrough](https://sintbot.com/guide/install/#slack) first. In a direct message, every message is a task and the answer arrives in the conversation. In a channel, @mention the bot; the answer arrives in a thread under your message, and to follow up you @mention it again in that thread. Start with a small task to confirm the project, then continue with longer ones.
+
+- Commands start with `!`, because Slack keeps `/` for its own commands: `!status`, `!stop`, `!skip`, `!new`, `!model` and `!help`. Outside threads, `/sint stop` and the other commands also work.
+- While a task runs, your message shows ⏳ and a channel thread also shows a Stop button. ⏳ becomes ✅ when the answer arrives. Progress text is not shown while it runs.
+- A message sent while a task runs (@mention the bot in a channel) joins that task once the model reads it; it gets ⏳ too, and the answer arrives in the first message’s thread. To queue it separately instead, turn off busy follow-ups for that project in the console: the thread then says it is queued and messages run in order. `!skip` drops the current task and continues with the queue.
+- Send images and files together with the task; they are saved on your Mac for the task to read. Files over 30 MB are not downloaded.
+- Deleting your message cancels it: a waiting message is dropped and a running task stops.
+- The task cannot send files into Slack yet; the answer names the file’s path in the project. Long answers arrive as several consecutive messages.
+
+### Start work in your Feishu group
+
+Complete the [Feishu walkthrough](https://sintbot.com/guide/install/#feishu) first. In the new project group, ordinary messages are tasks. Mention the bot if your group requires it. Attach files or screenshots to the message and explain what you want done.
+
+Your first task
+
+Read the first line of README.md and reply with that line only. Do not change any files.
+
+#### Check the group and project in the console
+
+Open Groups · Projects, find the group and check its project folder, executor, model and thinking depth. Each group has its own project. Verify these before asking for file changes.
+
+#### Follow progress
+
+Read the reply card in the same group. Send `/status` to check activity and the queue.
+
+#### Add instructions
+
+Send a follow-up while the task runs. It joins the current turn when available, or waits in the queue.
+
+#### Stop or start fresh
+
+`/stop` stops the task and clears queued messages. Use `/new` while idle for a new conversation.
+
+Closing the desktop window leaves the bot running. Keep the Mac on and connected, with the SintBot service running, to continue sending tasks from Feishu.
+
+### Start working in WeCom
+
+Finish the [WeCom setup walkthrough](https://sintbot.com/guide/install/#wecom) first. In a direct chat, send tasks without a mention. In a group, @mention the bot for every task or group command; @All does not trigger it. Start with a small task to confirm the project, then continue with longer tasks. The bot replies when a task finishes; progress is not shown while it runs.
+
+- Send files and images directly in a direct chat. In groups, the bot receives only text and messages that mix text and images: send images together with text, and put files in the project folder first or send them in a direct chat.
+- Ask the assistant to send project files and images back to the current chat. Size limits follow WeCom’s rules.
+- Use /status for status and /stop to stop a task. Recalling a message does not stop it.
+- Group history queries, editing, recall and reactions are unavailable. Do not automatically resend an unconfirmed delivery.
+
+01
+
+### Start with a small task
+
+Use local Chat or the group connected to your project. Start with a read-only request whose answer you can check against a local file.
+
+Your first message
+
+```
+Read the first line of this project’s README and reply with that line. Do not change any files.
+```
+
+1. **Send the request**Write it in the configured project group. If your setup requires mentions, mention the bot.
+2. **Follow the response**SintBot works in the bound project directory and returns progress and the final reply to the same conversation.
+3. **Check the result**Compare the reply with your README. This checks the full path from group message to agent and back.
+
+Before the first message, complete the [installation and connection steps](https://sintbot.com/guide/install/). A successful package installation alone does not verify a model turn.
+
+02
+
+### Define the task and success criteria
+
+Include the outcome, the relevant context, what should stay unchanged and what a completed result looks like. Attach a screenshot or file when it carries information that words cannot.
+
+A useful development brief
+
+```
+Improve the homepage navigation on phones.
+Keep the current fonts, colors and desktop layout.
+Use the attached screenshot to locate the issue.
+Check widths of 390 px and 768 px, then send a screenshot and explain what changed.
+```
+
+##### When you want an investigation first
+
+Ask for the cause, affected files and a proposed fix before editing. For example: “Find why the sign-in button fails. Read the relevant code and logs, then explain the cause and the smallest fix.”
+
+##### When you want it to make the change
+
+State that it can edit, name the intended behavior and give a checkable outcome. Mention any files or behavior it should preserve.
+
+##### When a task has several parts
+
+List the deliverables in order and identify dependencies. State which parts can be handled independently and how their results should be checked together.
+
+03
+
+### Review results in the group
+
+Progress and the final result return to the project conversation. Depending on the task, the result may be an explanation, changed files, an image, a report or a preview.
+
+1. **Read the outcome**Check what changed, how it was checked and whether any part still needs a decision.
+2. **Inspect the artifact**Open the delivered file or preview. For code, inspect the changes in the project and run the checks appropriate to the work.
+3. **Give precise feedback**Point to a section, file, screenshot or behavior. Say what should change and what is already right.
+
+A focused follow-up
+
+```
+The phone layout is right. Keep it.
+Make the active navigation item easier to see, using the existing accent color.
+Send an updated screenshot after checking the same two widths.
+```
+
+**While a task is running in 1.4.24**
+
+Send additional instructions directly in the project group. Busy follow-ups are on by default for Claude Code and Codex; they queue when disabled or unavailable. “Joined” means the model has read the message, and long-running tools can delay that step.
+
+The console’s Message action also works while a group is busy. It follows the group’s follow-up setting: the message waits for model reading or joins the queue. “Accepted” does not yet confirm that the model has read it. Start a new session or switch models only after the group is idle.
+
+04
+
+### Choose an agent, then its model
+
+The coding agent executes the work. Its configured model service handles the model requests. These are two separate choices.
+
+| Coding agent | Model or service | Configuration |
+| --- | --- | --- |
+| Claude Code | Claude | Your Claude Code account and configuration |
+| Claude Code | GLM, MiniMax, DeepSeek | A compatible endpoint and your provider credentials |
+| Claude Code | Kimi or another compatible service | A custom compatible endpoint |
+| Codex | GPT | Your Codex account and model configuration |
+
+Use the project’s model configuration to choose the route and model. Keep provider keys in local configuration; do not post them in the group. Available choices follow the agent and accounts configured on the machine.
+
+**Before switching**
+
+Ask SintBot to record decisions and unfinished work in the project. Switching the backend starts a fresh conversation; changing the model or thinking depth on the same backend continues it. Saved files and shared notes remain either way.
+
+Before scanning, SintBot reads the selected executor’s live model list and saves its recommended model and thinking depth for the new group. The setup page shows the selected values; you can change them later in Groups · Projects. If the live recommendation is unavailable, setup stops before creating a new app: check the executor’s login and network, then retry. Existing group choices are preserved.
+
+Model and thinking depth are chosen per group: change them on the console’s group card, or send `/model` in the group for a tap-to-pick card and confirm; text such as `/model high` also works. Either needs the group to be idle.
+
+**Codex speed (Fast).** Codex models have a Speed option: Standard or Fast, Standard by default. Three ways to turn it on: send `/model fast` in the group (`/model standard` to go back); the `/model` card gains a Speed row, pick then confirm as usual; the console group card gains a Speed dropdown. Changing only the speed never resets the session, works while a task is running and applies from the next message. It is remembered per group and per model card: Fast on GPT in one group does not affect that group’s other models. Only models with a Fast tier can turn it on; otherwise the request is refused and nothing changes, and switching to a model without it returns to Standard with a note. The receipt states the cost: the model is unchanged, requests are queued at a higher priority, about 1.5–2x faster depending on the model, and included subscription usage is charged at 2.5x (purchased credits at 2x). When Fast is off, every turn explicitly asks for standard speed. When App Server explicitly reports a fallback, the card footer omits Fast. Older executors and the exec route may not report the effective tier; a Fast label alone is not proof that acceleration took effect.
+
+**DeepSeek.** The model library includes a DeepSeek card, selectable even before a key is entered. Enter your own API key in Models · Library before running it. Select its model and thinking depth per group in Groups · Projects; the preset model is `deepseek-flash[1m]`. Without a key, the turn is refused before it starts with “this model card has no API key yet”; no other credentials are borrowed.
+
+Model settings are grouped into model and reasoning, context and compaction, and connection. For Codex, choose the executor default or a custom context window; known limits are checked on save. Compaction also offers default or custom, with numeric inputs shown only when needed. Codex uses a threshold and Claude Code a compaction window; either may compact earlier. Existing explicit global values become independent settings on existing models. Changes apply to the next turn and preserve the session. Capacity details distinguish requested settings from runtime reports.
+
+For Claude Code groups, SintBot can compact the current session between turns when the CLI reports compaction support and the context reaches half of a custom compaction window. It uses a spare concurrency slot and stays silent in the group. A new message interrupts compaction before starting its turn; a window of 0 disables only idle compaction; compaction during a turn follows the executor’s defaults. `/hud` shows the compaction line and last completion time. Claude subscription quota prefers rate-limit events reported by the executor.
+
+05
+
+### Save decisions in your project
+
+A conversation is useful while work is in progress. Project notes keep the decisions that the next task or model will need.
+
+- **Project rules:** naming, coding conventions, design choices and verification steps.
+- **Current handoff:** what is complete, what is pending and the next concrete action.
+- **Useful evidence:** relevant files, confirmed causes and links to decisions.
+
+Ask for a handoff
+
+```
+Record today’s decisions, completed work and remaining tasks in the project handoff.
+Include the files and checks needed to continue.
+Keep it concise and preserve the existing project conventions.
+```
+
+Saved notes are shared project context. Unsaved chat details do not automatically become shared memory. Check the handoff before changing models or starting a new session.
+
+06
+
+### Share screenshots, files and previews
+
+Attach a reference to the group and describe how it should guide the work: layout, typography, colors, interaction or a particular component.
+
+##### Build or refine an interface
+
+Name the page or component, specify what to preserve and ask for desktop and phone checks. Review the delivered screenshot before opening the interactive preview.
+
+##### Generate or revise an image
+
+State the image’s purpose and the changes you want. When the existing image matters, provide it as the reference and identify the parts to keep.
+
+##### Review an annotated design
+
+Attach an annotated screenshot to the group and keep revisions in the project. Refer to a specific image or comment when requesting the next version.
+
+##### Continue after browser sign-in
+
+If a browser task needs your sign-in or verification, open the takeover entry sent to the group, complete the step yourself and tell SintBot to continue. Do not send passwords or verification codes in the conversation.
+
+07
+
+### Manage everyday project work
+
+**Desktop start, stop and updates**
+
+Open SintBot from Applications or the menu bar. Closing the window or quitting the App keeps the service running. Choose “Stop SintBot and Quit” to stop it. Upgrade the service in Settings → Software updates; replace the App using a new DMG when an App update is available.
+
+Keep a clear boundary between the project, the people giving it work and the permissions available to the agent.
+
+#### Project groups
+
+Each group is bound to its project. The console overview shows concurrency, group state, configured reasoning effort and the latest context usage. Select a group to view tasks, then expand replies, tools and usage. Row icons provide message, stop and new-session controls.
+
+#### Permissions
+
+Begin with read-only requests. The project administrator chooses the permissions required for editing files and running commands.
+
+#### Routine work
+
+Keep recurring checks in a project checklist. When a check is due, send the task to the project group and review the returned report.
+
+#### Model services
+
+Project files stay on the machine; chat messages and model requests use the configured external services. Account terms and usage limits apply.
+
+##### Starting and stopping the 1.4.24 foreground installation
+
+Keep the terminal running while you use the connected group. Press Ctrl-C and wait for shutdown to finish. For a normal restart, use the same start command from the installation guide; do not rerun initialization.
+
+To upgrade, check Settings → Software updates in the console, then press Ctrl-C, rerun the one-line installer and start with the same command. If your own launchd agent runs SintBot, Upgrade now in the console installs the new version and switches over once every group is idle, and restores the previous version if the new one does not connect.
+
+If a group is paused or startup reports unresolved receipts, preserve the state and inspect what happened, then restart or seal that group as the installation guide describes. Do not delete the journal or repeat a task blindly.
+
+[Open the start and verification steps →](https://sintbot.com/guide/install/#start)
+
+### Ready to connect a project?
+
+The installation guide takes you from the local package to a verified group reply.
+
+[Open installation guide](https://sintbot.com/guide/install/)
+
+
+# 中文
+
+> SintBot 是跑在你自己 Mac 上的免费开源个人 AI 助理：在飞书、企业微信或 Slack 里交代一句，本机的 Claude Code / Codex 就开工。一个人用或进项目群都行，模型可选 GPT、Claude、GLM、DeepSeek、MiniMax、Kimi，项目文件与共享记忆留在本机。
+
+## 要点
+
+- 费用：免费开源，没有付费版，不用注册 SintBot 账号。费用只来自你自己选的模型套餐或 API Key。
+- 许可：PolyForm Shield 1.0.0（https://polyformproject.org/licenses/shield/1.0.0）。
+- 运行环境：macOS 12 及以上的 Apple 芯片 Mac；需要已安装并登录的 Claude Code 或 Codex。
+- 聊天平台：飞书群、企业微信的群和单聊、Slack 的频道和私聊；也可以不接聊天平台，在 App 里本机对话。
+- 模型：通过 Claude Code 用 Claude，通过 Codex 用 GPT；GLM、MiniMax、DeepSeek、Kimi 等通过兼容端点和自己的 API Key 接入。
+- 安装（推荐，桌面版 0.1.2）：下载 https://github.com/sintlab/sintbot-desktop/releases/latest/download/SintBot_0.1.2_aarch64.dmg ，把 SintBot 拖进「应用程序」后打开。App 自带 SintBot 服务和 Node.js。
+- 安装（终端，需要 Node.js 22 及以上）：`curl -fsSL https://sintbot.com/install.sh | bash`，后续步骤见 https://sintbot.com/zh/guide/install/#terminal
+- 当前版本：服务 1.4.24（npm 包 `sintbot`），桌面版 0.1.2。
+- 更新：在控制台「设置 → 软件更新」里完成。
+- 数据：项目、笔记和设置是你 Mac 上的普通文件；聊天平台和模型服务需要联网。
+- 作者 WaterTian，发布方 SintLab。
+
+## 常见问题
+
+### SintBot 是什么？
+
+把项目群连接到自己机器上的 Claude Code 或 Codex 的编码助手。在群里派活，按任务选择执行器与模型，让代码、素材和已保存的项目记忆留在同一个项目里。
+
+### 可以接入哪些聊天平台？
+
+SintBot 可接入飞书群、企业微信的群和单聊、Slack 的频道和私聊。每个群绑定自己的项目，任务进度和结果回到原来的对话里。
+
+### 多个项目如何管理？
+
+每个群绑定独立的项目目录，配置自己的执行器、模型和权限。在控制台查看各群状态、正在执行的任务、消息队列和定时安排。
+
+### 全部处理都在离线环境完成吗？
+
+不是。SintBot 和项目在本机运行，聊天平台及配置的模型服务仍需联网。模型请求遵循所选执行器的配置及服务商的数据政策。
+
+### 安装需要准备什么？
+
+桌面版需要 macOS 12 及以上的 Apple 芯片 Mac，以及已安装并登录的 Claude Code 或 Codex。App 自带 Node.js。本机对话无需飞书身份；连接飞书时才需要中国版的企业或团队身份和手机扫码确认。终端安装需要 Node.js 22 及以上。
+
+### SintBot 可以使用哪些模型？
+
+通过 Claude Code 使用 Claude，通过 Codex 使用 GPT；也可在 Claude Code 中配置兼容端点和自己的 API Key，接入 GLM、MiniMax、DeepSeek。Kimi 等兼容服务可使用自定义端点。
+
+### 换模型之后，什么会保留？
+
+项目文件和已保存的共享笔记保留。切换会开启新对话；把决定和待办写进项目，下一位助手即可读取记录，接着推进。
+
+### SintBot 收费吗？
+
+不收费。SintBot 免费开源，没有付费版，也不用注册 SintBot 账号。它通过你已经在用的 Claude Code 或 Codex 工作，费用只来自你自己选的模型套餐或 API Key。项目、笔记和设置都是你 Mac 上的普通文件，更新在控制台里完成。
+
+Source: https://sintbot.com/zh/guide/install/
+
+## 在 Mac 上安装 SintBot
+
+下载桌面 App，拖入应用程序，打开即可开始接入。先在本机对话，也可以用手机扫码连接飞书。
+
+macOS · 自带 Node.js · Codex / Claude Code · 飞书可选
+
+[安装桌面 App](https://sintbot.com/zh/guide/install/#desktop) [查看飞书接入图解](https://sintbot.com/zh/guide/install/#feishu)
+
+### 三个步骤，开始使用
+
+支持 macOS 12 及以上的 Apple 芯片 Mac。App 0.1.2 内置 SintBot 和 Node.js，无需另装 Node.js 或运行 npm。请先安装并登录 Codex 或 Claude Code，确认所选执行器可以使用。
+
+[下载 Mac 桌面版](https://github.com/sintlab/sintbot-desktop/releases/latest/download/SintBot_0.1.2_aarch64.dmg)
+
+#### 01 把 SintBot 拖入应用程序
+
+打开下载的 DMG，把左侧 SintBot 拖到右侧 Applications。然后从「应用程序」打开 SintBot；完成后可推出磁盘镜像。
+
+#### 02 选择项目和使用方式
+
+首次打开会准备本机服务并显示接入页。填项目名称、选择 Codex 或 Claude Code。点「先在本机使用」即可开始；想在飞书里发任务，则点「扫码连接飞书」，用手机飞书的企业或团队身份确认。
+
+#### 03 发出第一条任务
+
+本机使用打开「对话」，连接飞书则到新建的项目群。发送「读取 README.md 第一行，只回复这一行」，再与项目文件核对。下图是在本机对话中填写任务的位置。
+
+**桌面安装到这里就完成了**
+
+以后从「应用程序」或菜单栏打开 SintBot。无需重复扫码，无需保持终端开启。继续看[使用说明](https://sintbot.com/zh/guide/usage/)，了解模型选择、任务跟进和日常更新。
+
+##### 关窗口、退出和停止，有什么区别？
+
+关窗口后 App 留在菜单栏；退出 App，机器人仍在后台运行。需要一起停止时，选择「停止机器人并退出」。App 自己安装的服务保持停止，直到点击启动或重新打开 App。沿用已有后台服务的安装遵循原服务的登录设置。
+
+「移除后台服务」保留配置与历史，不等于删除项目。
+
+##### 桌面 App 和服务如何更新？
+
+服务在控制台「设置 → 软件更新」升级；托管服务会等任务结清再切换，连不上时自动回退。App 本身下载新 DMG，退出 App 后替换「应用程序」中的旧 App。已有 SintBot 服务会被沿用，不要重复安装第二个实例。
+
+##### 首次打开没有进入接入页？
+
+先看 App 状态页的提示；若这台 Mac 已有服务，会直接打开它的控制台。如果提示找不到执行器，完成 Codex 或 Claude Code 安装、登录后再重试。可从菜单栏打开日志查看具体原因。
+
+正式 DMG 已签名并通过 Apple 公证。遇到下载损坏或无法验证时，重新下载官方镜像；不要关闭系统安全保护。
+
+### 把项目接进飞书群
+
+在 Mac 上选项目，用手机确认授权，再到新群发第一条任务。桌面 App 和终端安装都走同一套接入流程。
+
+1. **01**选项目
+2. **02**手机确认
+3. **03**自动建群
+4. **04**发任务
+
+**扫码前，准备这两样**
+
+Mac 上已有可用的 Codex 或 Claude Code；手机登录中国版飞书，并具有企业或团队身份。没有团队时，先在飞书创建或加入团队。团队的应用管理规则可能要求管理员批准。
+
+#### 01 在 Mac 上选好项目
+
+首次打开 SintBot 会显示接入页。填写项目名称，选择执行器；默认新建项目文件夹，也可以展开「使用已有项目目录」选择已有项目。点击「扫码连接飞书」。
+
+如果你不是组织管理员，展开「组织接入选项」，勾选「我不是组织管理员」；可用范围调整和应用发布需要管理员后续完成。
+
+#### 02 用手机飞书确认授权
+
+保持 Mac 的接入页打开，用手机飞书的「扫一扫」扫描你自己页面上的二维码。
+
+1. 检查手机上当前选择的企业或团队。
+2. 阅读授权页面，确认应用所属团队和申请的权限。
+3. 在手机完成确认，再回到 Mac 等待接入继续。
+
+这里的图片展示界面状态，二维码仅用于图解。实际接入请扫描自己 Mac 上新生成的二维码。
+
+#### 03 等待应用和项目群创建
+
+SintBot 会继续创建应用、检查权限、建立项目群并保存配置。保持窗口打开，可展开「查看接入详情」查看当前步骤；完成后页面自动进入控制台。
+
+#### 04 到飞书新群发第一条任务
+
+打开飞书，找到刚创建的项目群，确认 SintBot 已在群内。先发一条只读请求：
+
+发送到新建的飞书项目群
+
+读取这个项目 README.md 的第一行，只回复这一行。不要修改任何文件。
+
+收到回复后，与 Mac 上项目文件的第一行核对。能收到正确答复，才说明群、执行器和项目目录都接通了。接着按[飞书群使用说明](https://sintbot.com/zh/guide/usage/#feishu-workflow)开始工作。
+
+##### 手机已确认，但没有自动建群？
+
+如果接入页明确提示手动建群，在飞书创建群并添加刚创建的机器人，取得群 ID 后粘贴回接入页，点击「继续」。群 ID 形如 `oc_…`，不是群名称或邀请链接。应用尚未发布或可用范围不含你时，先请团队管理员完成应用配置。
+
+其他错误按页面提示「重试」或「返回修改」。已接入成功的项目不需要重复扫码。
+
+##### 已经选择「先在本机使用」，怎么补接飞书？
+
+现有配置会直接打开控制台。补接前，等任务结束并停止服务，再运行 `sintbot connect --attach`，完成扫码后重新启动。已有配置、记录和本机对话保留；当前控制台没有一键补接入口。命令行维护见[终端安装与维护](https://sintbot.com/zh/guide/install/#terminal)。
+
+##### 接入完成，群里却没有回复？
+
+在控制台「设置 → 飞书」检查连接状态，在「群 · 项目」检查目标群、目录和模型。再核对机器人是否已加入群、应用是否发布、消息权限与事件订阅是否完整。需要提及机器人的群，发任务时先 @ 它。
+
+### 把项目接进企业微信
+
+在 Mac 上选项目，用手机企业微信扫码创建机器人，再给它发一句话。SintBot 通过长连接接收任务，不需要公网回调地址，也不需要建群。
+
+1. **01**选项目
+2. **02**扫码建机器人
+3. **03**发一句话
+4. **04**发任务
+
+**扫码前，准备这两样**
+
+Mac 上已有可用的 Codex 或 Claude Code；手机已安装企业微信，并加入或创建了一个企业。创建企业免费，无需认证；只有你一个人的企业也能用。
+
+#### 01 在 Mac 上选好项目
+
+首次打开 SintBot 会显示接入页。填写项目名称，选择执行器，在「聊天平台」里选「企业微信 · WeCom」，点击「扫码创建机器人」。默认新建项目文件夹，也可以展开「使用已有项目目录」选择已有项目。
+
+#### 02 用手机企业微信扫码
+
+保持 Mac 的接入页打开，用手机企业微信的「扫一扫」扫描你自己页面上的二维码。
+
+1. 检查手机上当前选择的企业。
+2. 按提示确认创建机器人，默认名为「<你的名字>的机器人」。
+3. Bot ID 和 Secret 自动保存在这台 Mac，不用复制，也不要发到聊天里。
+
+这里的图片展示界面状态，二维码仅用于图解。实际接入请扫描自己 Mac 上新生成的二维码；二维码过期后页面会自动换一张。
+
+#### 03 给机器人发一句话
+
+页面显示「等待你的消息…」后，10 分钟内在企业微信里给机器人发任意一句话：单聊直接发，或者把它拉进群并 @它。在企业微信顶部搜索机器人名字，或进「工作台 → 智能机器人」就能找到它。
+
+收到消息后，SintBot 把这个会话绑定到项目，机器人回复「已连接项目 …」，接入页随后进入控制台。
+
+#### 04 发第一条任务
+
+在同一个会话里先发一条只读请求：
+
+发给企业微信机器人（群里先 @它）
+
+读取这个项目 README.md 的第一行，只回复这一行。不要修改任何文件。
+
+收到回复后，与 Mac 上项目文件的第一行核对。任务完成时机器人回复结果，执行过程中不显示进度。接着按[企业微信使用说明](https://sintbot.com/zh/guide/usage/#wecom-workflow)开始工作。
+
+##### 已经在用飞书或本机对话，怎么加上企业微信？
+
+打开控制台「设置 → 企业微信」，选择项目目录和执行器，点击「扫码创建机器人」，之后同样给机器人发一句话。现有飞书、本机对话和项目都保留。
+
+接入后，这张卡片显示连接状态和已绑定项目数；展开「高级」可以查看 Bot ID、刷新连接状态。
+
+##### 已有机器人？手动填写 Bot ID 和 Secret
+
+在接入页展开「已有机器人？手动填写 Bot ID 和 Secret」，或在控制台企业微信卡片展开「高级」，填写已有机器人的 Bot ID 和 Secret，之后同样给机器人发一句话完成接入。手动创建有两个入口，都选择 API 模式并「使用长连接」：
+
+- 企业微信电脑端：「工作台 → 智能机器人 → 创建机器人 → 手动创建」。
+- 管理后台 work.weixin.qq.com：「安全与管理 → 管理工具 → 智能机器人」。
+
+##### 想再绑一个项目？
+
+在企业微信建群，把机器人加进群并 @它一次，再到控制台「群 · 项目 → 配置群项目」选择这个群，指定项目目录和执行器。同一个机器人可以服务多个项目，但只由一台 SintBot 连接。
+
+##### 发了消息没有回复？
+
+在控制台「设置 → 企业微信」查看连接状态。显示「连接中断」时点「刷新连接状态」，检查网络，并确认这个机器人没有被另一台 SintBot 或其他工具占用：每个机器人同时只能保持一条连接。群里要 @机器人，「@所有人」不会触发。接入时超过 10 分钟没发消息，在接入页点「重试」重新开始。
+
+### 把项目接入 Slack
+
+在 Mac 上选好项目，用已经填好的链接创建你自己的 Slack 应用，粘贴两枚令牌，再给机器人发一句话。SintBot 通过 Socket Mode 连接，不需要公网地址，免费工作区也能用。
+
+1. **01**创建应用
+2. **02**两枚令牌
+3. **03**发一句话
+4. **04**第一条任务
+
+**开始之前**
+
+先在 Mac 上装好并登录 Codex 或 Claude Code。你需要有在 Slack 工作区安装应用的权限；工作区要求管理员审批时，可以自己新建一个免费工作区。一个 Slack 应用只给一台 Mac 用。
+
+#### 01 在接入页创建应用
+
+首次打开会进入接入页。填项目名、选执行器，在「聊天平台」里选「Slack」，点「在 Slack 创建应用」：Slack 打开时，应用的权限和事件已经填好。选择工作区，点 Next，再点 Create。
+
+#### 02 粘贴两枚令牌
+
+1. 在 Slack 里应用的 Basic Information 页，往下找到 App-Level Tokens，点 Generate Token and Scopes，权限选 `connections:write` 并生成。把 `xapp-` 开头的令牌粘贴到接入页，页面会立即验证。Slack 的应用设置页第一次打开可能要等十几秒，一直空白就刷新一次。
+2. 在接入页点「打开安装页」，在 Slack 里点 Install to 加工作区名的按钮（例如 Install to Acme），再点 Allow（中文界面是「允许」）。
+3. 复制 `xoxb-` 开头的 Bot User OAuth Token，粘贴后点「连接 Slack」。
+
+两枚令牌只保存在这台 Mac，不要发到聊天里。贴错了框，页面会告诉你贴的是哪一种令牌。
+
+#### 03 给机器人发一句话
+
+接入页显示「等待你的消息…」时，点「在 Slack 里打开机器人」，在 10 分钟内给它发任意一句话。想用频道：先用 `/invite @机器人名` 把它请进频道，再在频道里 @它。
+
+SintBot 把这个会话绑定到项目，机器人回复「已连接项目 …」，接入页随后打开控制台。
+
+#### 04 发第一条任务
+
+在同一个会话里，先发一条只读请求：
+
+发给 Slack 里的机器人（频道里要 @它）
+
+读取这个项目 README.md 的第一行，只回复这一行。不要改任何文件。
+
+把回复和 Mac 上文件的第一行对照。任务进行中，你的消息上会有 ⏳；在频道里，线程还会出现「停止」按钮（Stop），点它就停止任务。答案送达后 ⏳ 变成 ✅。接着看[在 Slack 里工作](https://sintbot.com/zh/guide/usage/#slack-workflow)。
+
+##### 已经在用飞书、企业微信或本机对话？添加 Slack
+
+打开控制台「设置 → Slack」，选项目目录和执行器，按同样的三步操作，再给机器人发一句话。现有连接、本机对话和项目都保留。
+
+接入后，卡片显示工作区、连接状态和已绑定的项目数。展开「高级」可以刷新连接状态，或打开 Slack 里的应用设置。
+
+##### 再绑一个频道
+
+先用 `/invite @机器人名` 把机器人请进频道，再到控制台「群 · 项目 → 配置群项目」里选这个频道，并选目录和执行器。这里只列出机器人已加入的频道。一个应用可以服务多个项目，但只连接一台 SintBot。
+
+##### 链接打不开？
+
+手动创建应用：到 api.slack.com/apps 选择 Create New App → From a manifest，选工作区并粘贴[清单文件](https://github.com/sintlab/sintbot/blob/main/docs/slack-app-manifest.yaml)，然后从第 02 步继续。不要打开令牌轮换：它是单向开关，打开后关不掉。
+
+##### 发了消息没有回复？
+
+在频道里要 @机器人，并确认已经把它请进频道。到「设置 → Slack」看连接状态：显示连接中断时检查网络或代理；显示连接失败说明令牌已被撤销或应用已被移除（最多约 5 分钟后显示），需要用新令牌重新接入。这台 Mac 要经代理才能访问 Slack 时（例如中国大陆网络），在配置文件里设置 `proxy`（如 `{"https": "http://127.0.0.1:7890"}`），验证和连接都会走它。确认没有另一台 SintBot 在用同一个应用：Slack 把每条消息只交给应用的其中一条连接。接入时超过 10 分钟没发消息，在接入页点「重试」。
+
+##### 备选：通过终端安装与维护
+
+### 准备项目所在的 Mac
+
+以下终端步骤对应 **SintBot 1.4.24**，需要 macOS、Node.js 22 及以上，以及 Codex 或 Claude Code。可以先使用本机对话，也可连接 1–32 个中国区飞书项目群；桌面 App 已自带 Node.js。
+
+- 可以先用自动创建的项目目录，也可以选择这台 Mac 上已有的项目。
+- Node.js 版本为 22 或以上。
+- Codex 或 Claude Code 至少一个已安装、已登录，并能在本地终端实际使用。
+- 手机已登录飞书，可以使用企业或团队身份扫码确认。
+
+##### 如何检查环境？
+
+Terminal
+
+```
+node --version
+codex --version
+claude --version
+```
+
+先确认 Node.js 和你要用的执行器都能输出版本，再继续。已有的 Codex 或 Claude Code 安装和账号数据可以直接使用。
+
+##### 版本检查失败怎么办？
+
+如果提示找不到命令，先完成对应工具的安装，并重新打开终端。Node.js 可从 [官方站点](https://nodejs.org/en/download)获取；所选编码助手按其官方说明完成安装与登录。SintBot 安装器负责安装 SintBot 本身。
+
+### 一行安装 SintBot
+
+复制到本地终端执行。环境检查、程序安装和结果验证由安装器自动完成。
+
+Terminal
+
+```
+curl -fsSL https://sintbot.com/install.sh | bash
+```
+
+**安装完成**
+
+看到 `Installed and verified SintBot 1.4.24` 即表示安装完成。接下来配置飞书和项目。
+
+##### 可选：先预览安装计划
+
+如需在安装前查看将执行的操作，改用下面这条命令；不下载程序包、不改配置。确认后执行上方安装命令。
+
+Terminal
+
+```
+curl -fsSL https://sintbot.com/install.sh | bash -s -- --dry-run
+```
+
+##### 可选：手动检查版本与帮助
+
+Terminal
+
+```
+SINTBOT="$HOME/.local/share/sintbot/bin/sintbot"
+"$SINTBOT" --version
+"$SINTBOT" help
+```
+
+程序安装到 `~/.local/share/sintbot`。完成后按下方步骤连接飞书和项目。
+
+### 打开本机接入页
+
+运行下方命令后，按独立的[飞书接入图解](https://sintbot.com/zh/guide/install/#feishu)完成项目配置、手机确认和建群。也可以选择「先在本机使用」。
+
+```
+"$HOME/.local/share/sintbot/bin/sintbot" start --ui
+```
+
+### 项目目录在接入页上选
+
+默认会创建 `~/Projects/sintbot` 和一份 README，并绑定到刚建立的群。要接入已有项目，在页面「已有项目」一栏填目录的绝对路径，目录必须已存在；不要把整个家目录作为项目目录。之后在控制台「群 · 项目」管理项目目录和模型。
+
+##### 想在终端里做？
+
+同样的流程可以用 `sintbot connect` 在终端完成，`--name`、`--workdir`、`--provider`、`--basic` 对应页面上的几个选项，见完整安装指南。
+
+### 日常启动
+
+接入完成后服务已经在运行，不需要再执行任何命令。以后每次启动都用同一条：
+
+Terminal
+
+```
+"$HOME/.local/share/sintbot/bin/sintbot" start --ui
+```
+
+保持终端开启。控制台「设置 → 飞书」显示连接状态，「群 · 项目」管理绑定群；公网地址和管理员登录是按需设置，不影响群里的基本使用。
+
+##### 控制台出现「需要处理」？
+
+任务进行中断电或强制重启后，服务会把结果不明的群暂停，并在概览页「需要处理」卡里列出；所有群都暂停时服务照常启动，控制台仍可打开。由支持自动重启的后台服务托管、且其他群空闲结清时，可点「封存并继续」：原记录原样存档，那条消息不再处理，服务自动重启后用新的记录继续，需要的话把那句话重发一次。前台运行时按[完整安装指南](https://github.com/sintlab/sintbot/blob/main/docs/zh-CN/install.md)的终端步骤封存。
+
+**已有安装直接启动**
+
+日常重启不需要重新扫码或初始化。用了 `--config` 或 `--data-dir` 的，启动时带同样的参数。
+
+### 用真实消息验证连接
+
+在刚才的飞书群里发送：
+
+> 请读取当前项目 README.md 的第一行，只回复这一行。
+
+把回复与项目文件对照。这样可以同时核对群连接、执行器和项目路径。
+
+#### 群里的命令与控制台
+
+直接发文字就是派任务；模型开始输出时回复卡片就会出现，25 秒还没有输出也会先出现。运行中卡片显示已跑多久、正在做什么和已完成的步骤，结束后这些步骤收进「过程」折叠区。下面的命令立即应答，不占用任务：
+
+- **`/status`**: 模型、项目、是否在忙（在忙时含步数和正在做什么）和排队数。
+
+- **`/skip`**: 只放弃当前任务，排队的接着处理，之前的对话保留。
+
+- **`/stop`**: 停止当前任务，连同排队的一起取消；之前的对话保留。
+
+- **`/new`**: 在本群空闲时忘掉之前的对话，开始新的一段。
+
+- **`/model`**: 打开点选卡，选后端、型号和思考深度后点「确认更新」；也可直接发 `/model high`、`/model 型号`、`/model 后端`。换型号或调深度接着当前对话，换后端开始新的一段对话；只在本群空闲时生效。
+
+- **`/hud`**: 当前模型的额度与本段对话的用量。
+
+- **`/issue 一句话`**: 记下问题反馈，在控制台查看。
+
+- **`/help`**: 查看可用命令，以及本群的项目和模型。
+
+命令单独发一条；除 `/issue` 和 `/model` 外，后面不要跟别的字。飞书应用订阅了消息撤回事件时，撤回自己发的消息即取消那件事。已交给执行器的补话被撤回时取消整轮，包括已受理但尚未读取的补话。
+
+带 `--ui` 启动后，在本机打开 `http://127.0.0.1:4600`，可以查看各群、停止任务、给空闲的群开新会话、绑定新群、给空闲的群切换模型或项目目录，以及添加和设置模型。开启局域网访问前，先在控制台设置里设访问密码。不用控制台也能加群：在配置里加上新群后重启，会自动登记。
+
+型号与思考深度按群选：在「群 · 项目」卡的「模型」行选后端和型号，下一行选深度，清单取自本机 Codex / Claude Code 的实时数据；Codex、Claude 和 DeepSeek 的型号与深度都在群卡中设置；DeepSeek 的连接设置与 API Key 留在模型库，其他第三方端点的连接型号仍在模型卡上设置。升级后，模型卡上原有的型号和深度会自动写进各群，生效值不变、会话不重置。
+
+模型设置分为型号与推理、上下文与压缩、连接与登录。Codex 窗口可选执行器默认或自定义，保存时校验已知上限；压缩也只保留默认与自定义，按需显示数值。Codex 使用阈值，Claude Code 使用压缩窗口，实际都可能提前触发。旧显式全局值转为原有模型的独立设置，新模型使用执行器默认。设置从下轮生效并保留会话；容量详情区分设置值与实际回报。
+
+Claude Code 群在执行器自报支持压缩时，可在两轮之间整理当前会话：上下文达到自定义压缩窗口的一半、且有空余并发名额时运行，群里不发消息。新消息到来会先中断整理，再开始任务；窗口设为 0 时仅关闭空闲整理，轮内压缩交给执行器默认行为。`/hud` 可查看整理线与上次完成时间，Claude 订阅额度优先读取执行器回报的额度事件。
+
+#### 停止与重新启动
+
+回到运行终端，按 `Ctrl` + `C` 并等待进程退出。沿用接入时的配置，运行同一条启动命令：
+
+Terminal
+
+```
+SINTBOT="$HOME/.local/share/sintbot/bin/sintbot"
+"$SINTBOT" start --ui
+```
+
+日常重启使用 `start`，不用重新执行 `init`。
+
+##### 机器人没有回复
+
+先查看运行终端的报错，再核对应用是否已发布、机器人是否在目标群、消息权限与事件订阅是否齐全、配置凭据是否有效、项目群是否已绑定。预检成功并不等于飞书认证和消息送达成功。
+
+##### 群被暂停或提示未结收据
+
+某个群上一轮的结果无法确认时，只暂停这个群，控制台仍可打开。先核对任务实际执行到哪一步；若控制台提供「封存并继续」，点击后原记录原样归档并自动重启。没有该按钮时，停止服务，运行 `sintbot incident seal --group 群ID` 后重新启动。不要清空日志、覆盖未知结果或盲目重发相同任务。
+
+接下来
+
+### 开始你的下一项任务
+
+看任务示例、模型选择与结果核对方法。
+
+[阅读使用说明](https://sintbot.com/zh/guide/usage/)
+
+
+Source: https://sintbot.com/zh/guide/usage/
+
+使用说明
+
+## 在 Mac 上开始第一项工作
+
+打开桌面 App，在本机对话或飞书项目群里交代任务。选择项目与模型，核对结果，再继续下一步。
+
+[从第一条消息开始](https://sintbot.com/zh/guide/usage/#first-task)
+
+第一次使用先按[桌面安装图解](https://sintbot.com/zh/guide/install/#desktop)打开 App，选择本机对话或扫码连接飞书。已有配置无需重新接入。
+
+APP
+
+### 桌面 App 的日常入口
+
+打开 SintBot 后，在「对话」里直接发任务；「群 · 项目」选择工作目录、型号和思考深度；「模型 · 库」管理账号与 API Key；「设置」查看飞书连接和软件更新。先用只读任务核对项目，再按需要调整执行权限。
+
+本机对话无需飞书。使用飞书群时，先完成扫码接入；群消息和本机对话使用相同的模型与项目设置方式。
+
+### 在飞书群里开始工作
+
+先按[飞书接入图解](https://sintbot.com/zh/guide/install/#feishu)完成扫码。进入自动创建的项目群后，普通文字就是任务；需要 @ 的群先提及机器人。文件与截图直接附在消息里，并说明希望它做什么。
+
+第一条任务
+
+读取 README.md 第一行，只回复这一行。不要修改任何文件。
+
+#### 在控制台核对群和项目
+
+打开「群 · 项目」，找到对应群，确认项目目录、执行器、型号与思考深度。一个群对应自己的项目；检查完再开始修改文件的任务。
+
+#### 查看进度
+
+在原群查看回复卡片；发 `/status` 查看忙闲与队列。
+
+#### 补充要求
+
+任务进行中直接发送补充，跟进可用时会加入当前轮，否则排队。
+
+#### 停止或换话题
+
+`/stop` 停止当前任务并取消排队；空闲时用 `/new` 开新对话。
+
+关掉桌面窗口后机器人仍在运行。要继续从飞书派活，让 Mac 保持开机、联网，并确保 SintBot 服务正在运行。
+
+### 在企业微信里开始工作
+
+先按[企业微信接入图解](https://sintbot.com/zh/guide/install/#wecom)完成扫码和第一句话。单聊里直接发任务，不用 @；群里每次任务或群命令都需要 @机器人，「@所有人」不会触发机器人。先发送一个小任务确认项目，再发送多步任务。任务完成时机器人回复结果，执行过程中不显示进度。
+
+- 文件和图片在单聊里可以直接发。群里机器人只收到文字和图文混排消息：图片要和文字一起发；文件请先放进项目目录，或改在单聊发。
+- 可要求助手把项目内文件和图片发回当前会话，大小以企业微信限制为准。
+- 用 /status 看状态、/stop 停止任务；撤回消息不等于停止。
+- 目前不提供群历史查询、消息编辑、撤回或表情回应。发送结果不明时不要自动重复发送。
+
+### 在 Slack 里开始工作
+
+先完成 [Slack 接入图解](https://sintbot.com/zh/guide/install/#slack)。私聊里每条消息都是任务，答案直接回在会话里。频道里要 @机器人，答案回在你那条消息的线程里；要继续追问，在线程里再 @它。先用一个小任务确认项目，再交代更长的任务。
+
+- 命令以 `!` 开头，因为 `/` 被 Slack 留给它自己的命令：`!status`、`!stop`、`!skip`、`!new`、`!model`、`!help`。线程之外也可以用 `/sint stop` 等斜杠命令。
+- 任务进行中，你的消息上会有 ⏳；频道的线程里还会出现「停止」按钮（Stop）。答案送达后 ⏳ 变成 ✅。进行中不显示文字进度。
+- 任务进行中再发一条（频道里同样要 @它）：模型读到后会补进当前任务，这条消息也会挂上 ⏳，答案回在第一条消息的线程里。想让它单独排队，在控制台把这个项目的「忙时跟进」关掉，之后线程里会提示「已排队」，按顺序处理；`!skip` 跳过当前任务，接着处理排队的。
+- 图片和文件随任务一起发，会保存到你的 Mac 供任务读取。超过 30 MB 的文件不下载。
+- 删除你发的消息等于取消：排队中的消息会被丢弃，正在执行的任务会停止。
+- 任务暂时不能把文件发进 Slack，答案里会写明文件在项目里的路径。很长的答案会分成连续的几条消息。
+
+01
+
+### 从一个小任务开始
+
+在本机「对话」或已经绑定项目的群里，先发一条只读请求，选择一个能直接对照本地文件核验的问题。
+
+第一条消息
+
+```
+读取这个项目 README 的第一行，只回复这一行。不要修改任何文件。
+```
+
+1. **在对话或项目群发送**在本机「对话」输入任务，或把请求发到已配置的项目群。如果接入时设置了需要提及机器人，就先 @ 它。
+2. **查看返回内容**SintBot 在这个群绑定的项目目录里工作，把进度和最终回复发回原对话。
+3. **与文件核对**检查回复是否和 README 一致，确认群消息、编码助手和回复这条路径完整可用。
+
+第一次使用前，先完成[安装和接入步骤](https://sintbot.com/zh/guide/install/)。安装成功与模型能够处理群消息，需要分别确认。
+
+02
+
+### 把任务说到可以验收
+
+说明目标、上下文、需要保留的部分，以及做完后如何核对。截图或文件比文字更清楚时，直接附在群里。
+
+一条开发任务示例
+
+```
+优化首页在手机上的导航。
+沿用现有字体、颜色和桌面布局。
+参考附件截图定位问题。
+检查 390 px 和 768 px 两种宽度，完成后发截图并说明改动。
+```
+
+##### 希望先查清原因
+
+明确要求先给原因、涉及的文件和修复方案。例如：“登录按钮点了没反应，先检查相关代码和日志，说明原因与最小修复范围。”
+
+##### 希望直接修改
+
+说明可以改代码，写清期望行为和验收结果，并指出需要保留的文件或现有功能。
+
+##### 任务里有多个部分
+
+按顺序列出交付项，说明相互依赖。说明哪些部分可以独立处理，以及最后如何统一集成和核对。
+
+03
+
+### 在原对话里核对交付
+
+进度和最终结果都会回到项目群。根据任务不同，交付可以是说明、代码改动、图片、报告或可交互预览。
+
+1. **先看结果说明**核对改了什么、如何检查，以及哪些地方还需要你作决定。
+2. **再看实际产物**打开文件或预览。代码任务还可以检查项目里的改动，并运行适合这次修改的验证。
+3. **继续给具体反馈**指明页面区块、文件、截图位置或行为，同时说清要调整什么、哪些地方已经合适。
+
+一次明确的反馈
+
+```
+手机布局已经合适，保留。
+用现有强调色，让导航当前选中项更容易辨认。
+检查同样的两种宽度后，发更新截图。
+```
+
+**1.4.24 任务进行中如何补充要求**
+
+直接在项目群发送补充。Claude Code 与 Codex 默认开启忙时跟进，关闭或暂不支持时排队。“已加入”表示模型已读取，执行较长的工具步骤时可能需要等待。
+
+群忙时也可以使用控制台「插话」：按本群跟进设置，等待模型读取或进入队列。「已受理」不代表模型已经读取。新会话和模型切换仍需等群空闲后操作。
+
+04
+
+### 先选编码助手，再选模型
+
+编码助手负责执行工作，背后的模型服务负责处理模型请求。这是两个不同的配置层次。
+
+| 编码助手 | 模型或服务 | 配置位置 |
+| --- | --- | --- |
+| Claude Code | Claude | Claude Code 账号与配置 |
+| Claude Code | GLM、MiniMax、DeepSeek | 兼容服务地址与自己的服务凭据 |
+| Claude Code | Kimi 或其他兼容服务 | 自定义兼容服务地址 |
+| Codex | GPT | Codex 账号与模型配置 |
+
+在项目的模型配置中选择执行器和模型。服务密钥保存在本地配置，不要发进群里。实际可选项取决于这台机器已经配置的编码助手和账号。
+
+**切换前，先留下交接**
+
+让 SintBot 把决定和未完成事项写进项目。换后端会开启新的对话，同一后端换型号或调深度接着当前对话；保存的文件和共享笔记都会保留。
+
+扫码前，SintBot 读取所选执行器的实时模型清单，把推荐型号和思考深度明确保存为新群的初始设置。接入页会显示这些值，之后可在「群 · 项目」修改。若无法取得实时推荐，流程会在创建新应用前停下；请检查执行器登录和网络后重试。已有群的选择保持不变。
+
+型号与思考深度按群选：在控制台「群 · 项目」卡上改，或在群里发 `/model` 打开点选卡，选好后点「确认更新」；也可以直接发 `/model high` 这类文字。都要等本群空闲。
+
+**Codex 速度（Fast）。**Codex 模型多一个「速度」选项：标准或 Fast，默认标准。三种开法：群里发 `/model fast`（回到标准发 `/model 标准`）；`/model` 弹出的模型卡上多一行「速度」，照旧先选、再确认；控制台群卡上多一个「速度」下拉。只改速度不会重置会话，任务进行中也能改，下一条消息生效。按群、按模型卡分开记：这个群在 GPT 上开了 Fast，不影响它在别的模型上的设置。只有支持 Fast 的型号才能开，否则直接拒绝、什么都不改；换到不支持的型号时自动回到标准并说一句。开的回执会写明代价：模型能力不变，只是请求排进更高优先级，约快 1.5–2 倍（因型号而异），订阅包含的额度按标准的 2.5 倍扣，另购 credits 按 2 倍扣。没开 Fast 时，每一轮都明确要求标准速度。App Server 明确回报回退时，卡片页脚不再显示 Fast；旧执行器或 exec 路线可能不回报实际档位，不能仅凭 Fast 标记证明加速已生效。
+
+**DeepSeek。**模型库默认带一张 DeepSeek 卡，未填 Key 时也可在群卡中选择；执行前需在「模型 · 库」填入自己的 API Key。型号与思考深度在「群 · 项目」逐群配置，预设型号为 `deepseek-flash[1m]`。没填 Key 时启动前会拒绝并提示「这张模型卡还没填 API Key」，不会借用其他凭据。
+
+模型设置分为型号与推理、上下文与压缩、连接与登录。Codex 窗口可选执行器默认或自定义，保存时校验已知上限；压缩也只保留默认与自定义，按需显示数值。Codex 使用阈值，Claude Code 使用压缩窗口，实际都可能提前触发。旧显式全局值转为原有模型的独立设置，新模型使用执行器默认。设置从下轮生效并保留会话；容量详情区分设置值与实际回报。
+
+Claude Code 群在执行器自报支持压缩时，可在两轮之间整理当前会话：上下文达到自定义压缩窗口的一半、且有空余并发名额时运行，群里不发消息。新消息到来会先中断整理，再开始任务；窗口设为 0 时仅关闭空闲整理，轮内压缩交给执行器默认行为。`/hud` 可查看整理线与上次完成时间，Claude 订阅额度优先读取执行器回报的额度事件。
+
+05
+
+### 把重要决定写进项目
+
+对话承接正在进行的工作，项目笔记保留下一轮任务或另一个模型需要知道的决定。
+
+- **项目约定：**命名、代码规范、设计方向和验证方式。
+- **当前交接：**已经完成什么、还剩什么、下一步具体做什么。
+- **相关依据：**关键文件、已确认的原因和决定的出处。
+
+让它保存一份交接
+
+```
+把今天的决定、完成情况和剩余任务写进项目交接。
+注明继续工作需要看的文件和验证方式。
+保持精简，沿用已有项目约定。
+```
+
+已保存的笔记才是共享项目上下文。没有落到文件里的聊天细节，不会自动变成共享记忆。切换模型或开启新会话前，先核对交接内容。
+
+06
+
+### 用截图、文件与预览协作
+
+把参考素材发到群里，并说明参考的是排版、字体、配色、交互，还是其中某个组件。
+
+##### 制作或优化界面
+
+指明页面和组件，说明要保留的设计，并要求检查桌面与手机效果。先看交付截图，再打开可交互预览核对操作。
+
+##### 生成或修改图片
+
+说明用途与修改要求。原图内容很重要时，把它作为参考附件，并指出主体、构图或配色中需要保留的部分。
+
+##### 用标注图评审
+
+把标注好的截图发到群里，将迭代稿保存在项目中。需要新版时，指向具体图片或评论，让修改要求有明确落点。
+
+##### 浏览器任务需要本人登录
+
+打开群里的接管入口，自己完成登录或验证，再告诉 SintBot 继续。不要在群聊里发送密码或验证码。
+
+07
+
+### 安排日常项目工作
+
+**桌面版启动、停止与更新**
+
+日常从应用程序或菜单栏打开 SintBot。关窗口后仍可处理任务；退出 App 也不会停止后台服务。需要停止时选择「停止机器人并退出」。服务版本在「设置 → 软件更新」升级，App 本身通过下载新 DMG 替换更新。
+
+明确项目范围、谁在派活，以及编码助手可以使用的权限。
+
+#### 项目群
+
+每个群绑定对应项目。控制台概览集中显示并发、群状态、模型思考深度和最近上报的上下文量。选择群后查看任务，展开可读回复、工具与用量；群行图标提供插话、停止和新会话。
+
+#### 操作权限
+
+初次接入从只读请求开始。需要改文件或执行命令时，由项目管理员配置相应权限。
+
+#### 例行工作
+
+把需要定期检查的事项保存在项目清单里；到时间后，在项目群发送任务，再核对返回的报告。
+
+#### 模型服务
+
+项目文件保存在本机；群消息和模型请求会使用配置的外部服务，并遵循对应账号的条款和用量限制。
+
+##### 1.4.24 前台安装的启动与停止
+
+使用已接入的群时，保持启动终端运行。停止时按 Ctrl-C，等待进程退出。日常重启沿用安装指南里的启动命令，不要重复初始化。
+
+升级时，先在控制台「设置 → 软件更新」查看有没有新版本，再按 Ctrl-C 停止、重新运行一行安装命令、用原来的命令启动。如果用你自己的 launchd 后台任务运行，控制台的「现在升级」会等所有群空闲后安装新版本并切换，新版本连不上时自动换回旧版。
+
+如果某个群被暂停或启动提示未结收据，保留状态，先查清之前的任务是否执行，再按安装指南重启或封存这个群。不要删除日志，也不要盲目重复同一个任务。
+
+[查看启动与验证步骤 →](https://sintbot.com/zh/guide/install/#start)
+
+### 准备接入一个项目？
+
+从本地安装，到核验第一条群回复，按安装指南逐步完成。
+
+[查看安装指南](https://sintbot.com/zh/guide/install/)
