@@ -32,6 +32,10 @@ Introductory copy calls SintBot free and open source: the hero lede, the meta de
 
 `llms.txt` opens with key facts in both languages (cost, requirements, platforms, models, both install routes, versions, updates, data). `llms-full.txt` adds the FAQ and the four guide pages as Markdown (`scripts/guide-md.mjs`). Both come from `build-zh.mjs`, so the hourly version sync regenerates them. The desktop version and disk-image URL are read from the homepage download link: when the app version changes, update that link and the guides, then rerun the script.
 
+## Analytics (2026-11-16)
+
+Every page loads Umami (`data-domains="sintbot.com"`, so local previews send nothing), the `?notrack=1` snippet and `/track.js`. All intent events live in `track.js`, which lists them at the top; each event carries `page` and `lang` (read at send time, since the homepage switches language in place). Keep event names stable: `section-<id>`, `copy-oneline`, `github-click` and the `cta-*` names predate this file. Record nothing people type and no identifiers; when adding a kind of event, keep the analytics paragraph of `privacy.html` accurate. AI crawlers do not run JavaScript, so `llms.txt` reads are not visible here.
+
 ## Changes and validation
 
 - Keep English and Chinese copy in `app.js` translations. Generate `index.html`, `zh/index.html`, `llms.txt` and `llms-full.txt` with `node scripts/build-zh.mjs`.

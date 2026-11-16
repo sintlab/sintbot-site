@@ -85,6 +85,10 @@
       .doc__lang[lang="zh"] { line-height: 1.8; }
       .doc__lang[lang="zh"] h2 { font-family: var(--f-display); font-weight: 700; }
     </style>
+      <!-- Analytics: Umami (privacy-first, no cookies) + /track.js intent events; ?notrack=1 marks this browser as ours, ?notrack=0 undoes it -->
+    <script>try{var nt=new URLSearchParams(location.search).get("notrack");if(nt==="1")localStorage.setItem("umami.disabled","1");else if(nt==="0")localStorage.removeItem("umami.disabled")}catch(e){}</script>
+    <script defer src="https://cloud.umami.is/script.js" data-website-id="9ea8a003-6b41-41b9-9b1f-af5c0a22d845" data-domains="sintbot.com"></script>
+    <script defer src="/track.js"></script>
   </head>
   <body>
     <div class="grain" aria-hidden="true"></div>
@@ -94,7 +98,7 @@
       <!-- English -->
       <section lang="en">
         <h1>Privacy Policy</h1>
-        <p class="doc__updated">Last updated: October 19, 2026</p>
+        <p class="doc__updated">Last updated: November 16, 2026</p>
 
         <p>SintBot ("we", "us") operates the website <a href="https://sintbot.com">sintbot.com</a> and publishes two pieces of free software: <code>sintbot</code>, the self-hosted daemon, and <code>cc-bot</code>, the Claude Code plugin. This policy explains what little data the site touches, and what the software does and does not send. We keep it deliberately minimal.</p>
 
@@ -102,7 +106,7 @@
         <p>The website has no login, no account system, and no forms. We do not directly collect names, emails, or other personal information when you browse the site.</p>
 
         <h2>Anonymous analytics</h2>
-        <p>We use <a href="https://umami.is" target="_blank" rel="noopener">Umami</a> for privacy-first, aggregate analytics. It sets no cookies, does not track you across sites, and does not collect personally identifiable information. We only see anonymous, aggregated stats such as page views and referrers.</p>
+        <p>We use <a href="https://umami.is" target="_blank" rel="noopener">Umami</a> for privacy-first, aggregate analytics. It sets no cookies, does not track you across sites, and does not collect personally identifiable information. We only see anonymous, aggregated stats: page views and referrers, which buttons and links are used (such as downloads, copy buttons and opened questions), how far pages are scrolled and how long they stay open. Nothing you type is recorded. Add <code>?notrack=1</code> to any page address to stop counting your visits in this browser.</p>
 
         <h2>Local storage</h2>
         <p>Your browser's <code>localStorage</code> is used only to remember your language preference (English or Chinese). Nothing is sent to us.</p>
@@ -127,7 +131,7 @@
       <!-- 中文 -->
       <section class="doc__lang" lang="zh">
         <h1>隐私政策</h1>
-        <p class="doc__updated">最后更新：2026 年 10 月 19 日</p>
+        <p class="doc__updated">最后更新：2026 年 11 月 16 日</p>
 
         <p>SintBot（「我们」）运营网站 <a href="https://sintbot.com">sintbot.com</a>，并发布两个免费软件：自托管守护进程 <code>sintbot</code> 与 Claude Code 插件 <code>cc-bot</code>。本政策说明本站接触到的极少量数据，以及这些软件会与不会发送什么。我们刻意把它做到最简。</p>
 
@@ -135,7 +139,7 @@
         <p>本站没有登录、没有账号系统、没有表单。你浏览本站时，我们不会直接收集姓名、邮箱或其他个人信息。</p>
 
         <h2>匿名统计</h2>
-        <p>我们使用 <a href="https://umami.is" target="_blank" rel="noopener">Umami</a> 做隐私优先的聚合统计。它不设 cookie、不跨站追踪、不收集可识别个人身份的信息。我们只看到匿名的聚合数据，比如页面浏览量和来源。</p>
+        <p>我们使用 <a href="https://umami.is" target="_blank" rel="noopener">Umami</a> 做隐私优先的聚合统计。它不设 cookie、不跨站追踪、不收集可识别个人身份的信息。我们只看到匿名的聚合数据：页面浏览量和来源，哪些按钮和链接被使用（如下载、复制按钮、展开的问题），页面滚动到哪里、停留多久。不记录你输入的任何内容。在任一页面地址后加 <code>?notrack=1</code>，这个浏览器的访问就不再计入。</p>
 
         <h2>本地存储</h2>
         <p>浏览器的 <code>localStorage</code> 仅用于记住你的语言偏好（英文或中文），不会向我们发送任何内容。</p>
