@@ -603,12 +603,13 @@
     });
 
     document.querySelectorAll(".lang-toggle__btn").forEach((b) => {
-      const active = b.getAttribute("data-lang") === lang;
-      b.classList.toggle("is-active", active);
-      b.setAttribute("aria-pressed", String(active));
-      b.setAttribute("role", "button");
-      b.href = (b.getAttribute("data-lang") === "zh" ? "/zh/" : "/") + window.location.hash;
+      const target = b.getAttribute("data-lang");
+      if (target === lang) b.setAttribute("aria-current", "true");
+      else b.removeAttribute("aria-current");
+      b.href = (target === "zh" ? "/zh/" : "/") + window.location.hash;
     });
+    const currentLanguage = document.querySelector("[data-language-current]");
+    if (currentLanguage) currentLanguage.textContent = lang === "zh" ? "简体中文" : "English";
 
     if (persist) { try { localStorage.setItem(STORAGE_KEY, lang); } catch (_) { /* ignore */ } }
     document.dispatchEvent(new CustomEvent("sintbot:languagechange", { detail: { lang } }));
@@ -624,12 +625,26 @@
       if (target !== "en" && target !== "zh") return;
       forcedByQuery = false; // an explicit click is a real choice: persist it and move the URL
       applyLang(target, true);
+      const picker = btn.closest("details");
+      if (picker) { picker.open = false; picker.querySelector("summary").focus(); }
     });
   });
 
   document.querySelectorAll(".lang-toggle__btn").forEach((button) => {
     button.addEventListener("keydown", (event) => {
       if (event.key === " ") { event.preventDefault(); button.click(); }
+    });
+  });
+
+  document.addEventListener("click", (event) => {
+    document.querySelectorAll(".language-picker[open]").forEach((picker) => {
+      if (!picker.contains(event.target)) picker.open = false;
+    });
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") return;
+    document.querySelectorAll(".language-picker[open]").forEach((picker) => {
+      picker.open = false; picker.querySelector("summary").focus();
     });
   });
 

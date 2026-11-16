@@ -70,9 +70,10 @@ function renderBody(html, lang) {
     if (!t[key]) fail(`index.html uses data-i18n-alt key "${key}" that app.js does not define`);
     return a + attr(t[key][lang] != null ? t[key][lang] : t[key].en) + b;
   });
-  // which language button reads as active before JS runs
-  result = result.replace(/(<(?:button|a)\b[^>]* data-lang="(en|zh)" class="lang-toggle__btn)( is-active)?(")/g,
-    (_, a, l, _active, q) => a + (l === lang ? " is-active" : "") + q);
+  result = result.replace(/(<span data-language-current>)[^<]*(<\/span>)/,
+    (_, a, b) => a + (lang === "zh" ? "简体中文" : "English") + b);
+  result = result.replace(/(<a\b[^>]*data-lang="(en|zh)"[^>]*?)(?: aria-current="true")?>/g,
+    (_, tag, target) => tag.replace(/ aria-current="true"/, "") + (target === lang ? ' aria-current="true"' : '') + '>');
   return result;
 }
 
