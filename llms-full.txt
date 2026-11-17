@@ -115,7 +115,7 @@ Have Codex or Claude Code working on your Mac. You need permission to install ap
 
 #### 01 Create the app from the setup page
 
-First launch opens setup. Enter a project name, choose the executor and pick “Slack” under Chat platform. Select “Create app in Slack”: Slack opens with the app’s permissions and events already filled in. Pick your workspace, select Next, then Create.
+First launch opens setup. Enter a project name, choose the executor and pick “Slack” under Chat platform. Select “Create app in Slack”: Slack opens with the app’s permissions and events already filled in. Pick your workspace, select Next, then Create. Leave “Declare it as a Slack Agent”, below the button, unticked unless you want Slack’s own Stop button and “Working…” status in channel threads: a declared app cannot be used by workspace guests, every direct message with it becomes a thread, and neither can be undone.
 
 #### 02 Paste the two tokens
 
@@ -124,6 +124,8 @@ First launch opens setup. Enter a project name, choose the executor and pick “
 3. Copy the Bot User OAuth Token that starts with `xoxb-`, paste it and select “Connect Slack”.
 
 Both tokens are saved on this Mac only; never post them in a chat. If a token lands in the wrong field, setup says which kind you pasted.
+
+If this Mac reaches Slack only through a proxy (for example on mainland-China networks), enter an `http://` address under “Proxy” in the Slack step; it is filled in for you when the terminal that opened setup has a proxy set. The proxy is saved with the connection, so the background service and the desktop app use it later.
 
 #### 03 Send the bot one message
 
@@ -139,7 +141,7 @@ Send to the bot in Slack (@mention it in a channel)
 
 Read the first line of this project’s README.md and reply with only that line. Do not change any files.
 
-Check the reply against the first line of the file on your Mac. While the task runs your message shows ⏳, and in a channel the thread also shows a Stop button that stops the task; ⏳ becomes ✅ when the answer arrives. Then continue with [working in Slack](https://sintbot.com/guide/usage/#slack-workflow).
+Check the reply against the first line of the file on your Mac. While the task runs your message shows ⏳; it becomes ✅ when the answer arrives. To stop a task, send `!stop` (@mention the bot in a channel). Then continue with [working in Slack](https://sintbot.com/guide/usage/#slack-workflow).
 
 ##### Already using Feishu, WeCom or local chat? Add Slack
 
@@ -149,7 +151,7 @@ Once connected, the card shows the workspace, the connection status and the numb
 
 ##### Bind another channel
 
-Invite the bot to the channel with `/invite @your-bot-name`, then pick that channel under Groups · Projects → Set up a group project in the console and choose its folder and executor. Only channels the bot has joined are listed. One app can serve several projects but connects to only one SintBot.
+Invite the bot to the channel with `/invite @your-bot-name`, then pick that channel under Groups · Projects → Set up a group project in the console and choose its folder and executor. Only channels the bot has joined are listed; if you type in the ID of a channel it has not joined, the console tells you to invite it first. One app can serve several projects but connects to only one SintBot.
 
 ##### The link does not open?
 
@@ -157,7 +159,7 @@ Create the app by hand: at api.slack.com/apps choose Create New App → From a m
 
 ##### No reply to your message?
 
-In a channel, @mention the bot and check it was invited. Check the connection status under Settings → Slack: if it shows Disconnected, check the network or proxy; if it shows a failed connection, a token was revoked or the app was removed (shown within about 5 minutes), so connect again with new tokens. If this Mac reaches Slack only through a proxy, set `proxy` in the configuration file (for example `{"https": "http://127.0.0.1:7890"}`); both the token checks and the connection use it. Make sure no other SintBot uses the same app: Slack hands each message to only one of an app’s connections. If more than 10 minutes passed during setup without a message, select Retry on the setup page.
+In a channel, @mention the bot and check it was invited; when SintBot says the bot is not in the channel, send `/invite @your-bot-name` there, and invite it again after reinstalling the app. Check the connection status under Settings → Slack: if it shows Disconnected, check the network or proxy; if it shows a failed connection, a token was revoked or the app was removed (shown within about 5 minutes), so connect again with new tokens. If this Mac reaches Slack only through a proxy, enter it under “Proxy” in the Slack step of setup and try again; for an installation already in use, set `proxy` in the configuration file (for example `{"https": "http://127.0.0.1:7890"}`) and restart the service. Make sure no other SintBot uses the same app: Slack hands each message to only one of an app’s connections. If another machine seems to be using it, the Slack connection in the console turns yellow with a warning. If more than 10 minutes passed during setup without a message, select Retry on the setup page.
 
 ### Connect your project to Feishu
 
@@ -474,8 +476,10 @@ Local conversations need no Feishu account. To work in a Feishu group, connect i
 Finish the [Slack setup walkthrough](https://sintbot.com/guide/install/#slack) first. In a direct message, every message is a task and the answer arrives in the conversation. In a channel, @mention the bot; the answer arrives in a thread under your message, and to follow up you @mention it again in that thread. Start with a small task to confirm the project, then continue with longer ones.
 
 - Commands start with `!`, because Slack keeps `/` for its own commands: `!status`, `!stop`, `!skip`, `!new`, `!model` and `!help`. Outside threads, `/sint stop` and the other commands also work.
-- While a task runs, your message shows ⏳ and a channel thread also shows a Stop button. ⏳ becomes ✅ when the answer arrives. Progress text is not shown while it runs.
-- A message sent while a task runs (@mention the bot in a channel) joins that task once the model reads it; it gets ⏳ too, and the answer arrives in the first message’s thread. To queue it separately instead, turn off busy follow-ups for that project in the console: the thread then says it is queued and messages run in order. `!skip` drops the current task and continues with the queue.
+- While a task runs, your message shows ⏳; it becomes ✅ when the answer arrives. Progress text is not shown while it runs.
+- To stop a task, send `!stop` (in a channel, @mention the bot; sending it in the task’s thread works too), or use `/sint stop` outside a thread. Apps declared as a Slack Agent also show Slack’s own Stop button in channel threads.
+- A task that could not finish, for example because the service was stopped mid-way, gets ⚠️ instead of ⏳, and its thread says it did not finish. SintBot never runs it again by itself; send it again if you still need it.
+- In a channel, each thread is its own task. While a task runs, a message in its thread (@mention the bot there) joins that task once the model reads it; it gets ⏳ too, and the answer arrives in that thread. A new @mention outside that thread waits as a task of its own: its thread says it is queued, and the answer arrives in its own thread. At most two messages wait; beyond that the bot asks you to send again once the current task is done. In a direct message, a message sent while a task runs joins it. To make every message wait instead of joining, turn off busy follow-ups for that project in the console. `!skip` drops the current task and continues with the queue.
 - Send images and files together with the task; they are saved on your Mac for the task to read. Files over 30 MB are not downloaded.
 - Deleting your message cancels it: a waiting message is dropped and a running task stops.
 - The task cannot send files into Slack yet; the answer names the file’s path in the project. Long answers arrive as several consecutive messages.
@@ -938,7 +942,7 @@ Mac 上已有可用的 Codex 或 Claude Code；手机已安装企业微信，并
 
 #### 01 在接入页创建应用
 
-首次打开会进入接入页。填项目名、选执行器，在「聊天平台」里选「Slack」，点「在 Slack 创建应用」：Slack 打开时，应用的权限和事件已经填好。选择工作区，点 Next，再点 Create。
+首次打开会进入接入页。填项目名、选执行器，在「聊天平台」里选「Slack」，点「在 Slack 创建应用」：Slack 打开时，应用的权限和事件已经填好。选择工作区，点 Next，再点 Create。按钮下面的「声明为 Slack Agent」一般保持不勾：勾上后频道线程里会多出 Slack 原生的停止（Stop）按钮和「Working…」状态，但工作区访客不能再使用这个应用，和它的私信也都会变成线程，这两点以后都撤销不了。
 
 #### 02 粘贴两枚令牌
 
@@ -947,6 +951,8 @@ Mac 上已有可用的 Codex 或 Claude Code；手机已安装企业微信，并
 3. 复制 `xoxb-` 开头的 Bot User OAuth Token，粘贴后点「连接 Slack」。
 
 两枚令牌只保存在这台 Mac，不要发到聊天里。贴错了框，页面会告诉你贴的是哪一种令牌。
+
+这台 Mac 要经代理才能访问 Slack 时（例如中国大陆网络），在 Slack 步骤的「代理」里填 `http://` 开头的地址；打开接入页的终端里设置了代理时，这里会自动填上。代理会随连接一起保存，后台服务和桌面 App 以后启动时也走它。
 
 #### 03 给机器人发一句话
 
@@ -962,7 +968,7 @@ SintBot 把这个会话绑定到项目，机器人回复「已连接项目 …�
 
 读取这个项目 README.md 的第一行，只回复这一行。不要改任何文件。
 
-把回复和 Mac 上文件的第一行对照。任务进行中，你的消息上会有 ⏳；在频道里，线程还会出现「停止」按钮（Stop），点它就停止任务。答案送达后 ⏳ 变成 ✅。接着看[在 Slack 里工作](https://sintbot.com/zh/guide/usage/#slack-workflow)。
+把回复和 Mac 上文件的第一行对照。任务进行中，你的消息上会有 ⏳，答案送达后变成 ✅。要停止任务，发 `!stop`（频道里要 @机器人）。接着看[在 Slack 里工作](https://sintbot.com/zh/guide/usage/#slack-workflow)。
 
 ##### 已经在用飞书、企业微信或本机对话？添加 Slack
 
@@ -972,7 +978,7 @@ SintBot 把这个会话绑定到项目，机器人回复「已连接项目 …�
 
 ##### 再绑一个频道
 
-先用 `/invite @机器人名` 把机器人请进频道，再到控制台「群 · 项目 → 配置群项目」里选这个频道，并选目录和执行器。这里只列出机器人已加入的频道。一个应用可以服务多个项目，但只连接一台 SintBot。
+先用 `/invite @机器人名` 把机器人请进频道，再到控制台「群 · 项目 → 配置群项目」里选这个频道，并选目录和执行器。这里只列出机器人已加入的频道；手填的频道 ID 若机器人还不在里面，控制台会提示先邀请它。一个应用可以服务多个项目，但只连接一台 SintBot。
 
 ##### 链接打不开？
 
@@ -980,7 +986,7 @@ SintBot 把这个会话绑定到项目，机器人回复「已连接项目 …�
 
 ##### 发了消息没有回复？
 
-在频道里要 @机器人，并确认已经把它请进频道。到「设置 → Slack」看连接状态：显示连接中断时检查网络或代理；显示连接失败说明令牌已被撤销或应用已被移除（最多约 5 分钟后显示），需要用新令牌重新接入。这台 Mac 要经代理才能访问 Slack 时（例如中国大陆网络），在配置文件里设置 `proxy`（如 `{"https": "http://127.0.0.1:7890"}`），验证和连接都会走它。确认没有另一台 SintBot 在用同一个应用：Slack 把每条消息只交给应用的其中一条连接。接入时超过 10 分钟没发消息，在接入页点「重试」。
+在频道里要 @机器人，并确认已经把它请进频道；提示机器人还不在频道里时，在那个频道里发 `/invite @机器人名`，重装应用后也要重新邀请。到「设置 → Slack」看连接状态：显示连接中断时检查网络或代理；显示连接失败说明令牌已被撤销或应用已被移除（最多约 5 分钟后显示），需要用新令牌重新接入。这台 Mac 要经代理才能访问 Slack 时（例如中国大陆网络），在接入页 Slack 步骤的「代理」里填上地址再试；已经在用的安装，在配置文件里设置 `proxy`（如 `{"https": "http://127.0.0.1:7890"}`）后重启服务。确认没有另一台 SintBot 在用同一个应用：Slack 把每条消息只交给应用的其中一条连接。控制台发现可能有另一台机器在用这个应用时，Slack 连接会标黄提示。接入时超过 10 分钟没发消息，在接入页点「重试」。
 
 ##### 备选：通过终端安装与维护
 
@@ -1211,8 +1217,10 @@ APP
 先完成 [Slack 接入图解](https://sintbot.com/zh/guide/install/#slack)。私聊里每条消息都是任务，答案直接回在会话里。频道里要 @机器人，答案回在你那条消息的线程里；要继续追问，在线程里再 @它。先用一个小任务确认项目，再交代更长的任务。
 
 - 命令以 `!` 开头，因为 `/` 被 Slack 留给它自己的命令：`!status`、`!stop`、`!skip`、`!new`、`!model`、`!help`。线程之外也可以用 `/sint stop` 等斜杠命令。
-- 任务进行中，你的消息上会有 ⏳；频道的线程里还会出现「停止」按钮（Stop）。答案送达后 ⏳ 变成 ✅。进行中不显示文字进度。
-- 任务进行中再发一条（频道里同样要 @它）：模型读到后会补进当前任务，这条消息也会挂上 ⏳，答案回在第一条消息的线程里。想让它单独排队，在控制台把这个项目的「忙时跟进」关掉，之后线程里会提示「已排队」，按顺序处理；`!skip` 跳过当前任务，接着处理排队的。
+- 任务进行中，你的消息上会有 ⏳，答案送达后变成 ✅。进行中不显示文字进度。
+- 停止任务：发 `!stop`（频道里要 @机器人，在任务的线程里发也可以），或在线程之外用 `/sint stop`。声明为 Slack Agent 的应用，频道线程里还有 Slack 原生的停止（Stop）按钮。
+- 没能完成的任务（比如服务中途被停掉）会把 ⏳ 换成 ⚠️，线程里会说这条没有完成。SintBot 不会自己重跑；还需要的话请重发。
+- 频道里每个线程是一件独立的任务。任务进行中，在它的线程里再发一条（同样要 @它），模型读到后会补进当前任务，这条消息也会挂上 ⏳，答案回在这个线程里。在这个线程之外另起的 @ 会作为单独的任务排队：它的线程里会提示「已排队」，答案回在它自己的线程里。最多排两条，再多会请你等当前任务结束后重发。私聊里，任务进行中再发的消息补进当前任务。想让所有消息都排队而不补进，在控制台把这个项目的「忙时跟进」关掉。`!skip` 跳过当前任务，接着处理排队的。
 - 图片和文件随任务一起发，会保存到你的 Mac 供任务读取。超过 30 MB 的文件不下载。
 - 删除你发的消息等于取消：排队中的消息会被丢弃，正在执行的任务会停止。
 - 任务暂时不能把文件发进 Slack，答案里会写明文件在项目里的路径。很长的答案会分成连续的几条消息。
@@ -1433,7 +1441,7 @@ Have Codex or Claude Code working on your Mac. You need permission to install ap
 
 #### 01 Create the app from the setup page
 
-First launch opens setup. Enter a project name, choose the executor and pick “Slack” under Chat platform. Select “Create app in Slack”: Slack opens with the app’s permissions and events already filled in. Pick your workspace, select Next, then Create.
+First launch opens setup. Enter a project name, choose the executor and pick “Slack” under Chat platform. Select “Create app in Slack”: Slack opens with the app’s permissions and events already filled in. Pick your workspace, select Next, then Create. Leave “Declare it as a Slack Agent”, below the button, unticked unless you want Slack’s own Stop button and “Working…” status in channel threads: a declared app cannot be used by workspace guests, every direct message with it becomes a thread, and neither can be undone.
 
 #### 02 Paste the two tokens
 
@@ -1442,6 +1450,8 @@ First launch opens setup. Enter a project name, choose the executor and pick “
 3. Copy the Bot User OAuth Token that starts with `xoxb-`, paste it and select “Connect Slack”.
 
 Both tokens are saved on this Mac only; never post them in a chat. If a token lands in the wrong field, setup says which kind you pasted.
+
+If this Mac reaches Slack only through a proxy (for example on mainland-China networks), enter an `http://` address under “Proxy” in the Slack step; it is filled in for you when the terminal that opened setup has a proxy set. The proxy is saved with the connection, so the background service and the desktop app use it later.
 
 #### 03 Send the bot one message
 
@@ -1457,7 +1467,7 @@ Send to the bot in Slack (@mention it in a channel)
 
 Read the first line of this project’s README.md and reply with only that line. Do not change any files.
 
-Check the reply against the first line of the file on your Mac. While the task runs your message shows ⏳, and in a channel the thread also shows a Stop button that stops the task; ⏳ becomes ✅ when the answer arrives. Then continue with [working in Slack](https://sintbot.com/guide/usage/#slack-workflow).
+Check the reply against the first line of the file on your Mac. While the task runs your message shows ⏳; it becomes ✅ when the answer arrives. To stop a task, send `!stop` (@mention the bot in a channel). Then continue with [working in Slack](https://sintbot.com/guide/usage/#slack-workflow).
 
 ##### Already using Feishu, WeCom or local chat? Add Slack
 
@@ -1467,7 +1477,7 @@ Once connected, the card shows the workspace, the connection status and the numb
 
 ##### Bind another channel
 
-Invite the bot to the channel with `/invite @your-bot-name`, then pick that channel under Groups · Projects → Set up a group project in the console and choose its folder and executor. Only channels the bot has joined are listed. One app can serve several projects but connects to only one SintBot.
+Invite the bot to the channel with `/invite @your-bot-name`, then pick that channel under Groups · Projects → Set up a group project in the console and choose its folder and executor. Only channels the bot has joined are listed; if you type in the ID of a channel it has not joined, the console tells you to invite it first. One app can serve several projects but connects to only one SintBot.
 
 ##### The link does not open?
 
@@ -1475,7 +1485,7 @@ Create the app by hand: at api.slack.com/apps choose Create New App → From a m
 
 ##### No reply to your message?
 
-In a channel, @mention the bot and check it was invited. Check the connection status under Settings → Slack: if it shows Disconnected, check the network or proxy; if it shows a failed connection, a token was revoked or the app was removed (shown within about 5 minutes), so connect again with new tokens. If this Mac reaches Slack only through a proxy, set `proxy` in the configuration file (for example `{"https": "http://127.0.0.1:7890"}`); both the token checks and the connection use it. Make sure no other SintBot uses the same app: Slack hands each message to only one of an app’s connections. If more than 10 minutes passed during setup without a message, select Retry on the setup page.
+In a channel, @mention the bot and check it was invited; when SintBot says the bot is not in the channel, send `/invite @your-bot-name` there, and invite it again after reinstalling the app. Check the connection status under Settings → Slack: if it shows Disconnected, check the network or proxy; if it shows a failed connection, a token was revoked or the app was removed (shown within about 5 minutes), so connect again with new tokens. If this Mac reaches Slack only through a proxy, enter it under “Proxy” in the Slack step of setup and try again; for an installation already in use, set `proxy` in the configuration file (for example `{"https": "http://127.0.0.1:7890"}`) and restart the service. Make sure no other SintBot uses the same app: Slack hands each message to only one of an app’s connections. If another machine seems to be using it, the Slack connection in the console turns yellow with a warning. If more than 10 minutes passed during setup without a message, select Retry on the setup page.
 
 ### Verify your first real task
 
@@ -1529,7 +1539,7 @@ SLACK · 私聊与频道
 
 #### 01 在接入页创建应用
 
-首次打开会进入接入页。填项目名、选执行器，在「聊天平台」里选「Slack」，点「在 Slack 创建应用」：Slack 打开时，应用的权限和事件已经填好。选择工作区，点 Next，再点 Create。
+首次打开会进入接入页。填项目名、选执行器，在「聊天平台」里选「Slack」，点「在 Slack 创建应用」：Slack 打开时，应用的权限和事件已经填好。选择工作区，点 Next，再点 Create。按钮下面的「声明为 Slack Agent」一般保持不勾：勾上后频道线程里会多出 Slack 原生的停止（Stop）按钮和「Working…」状态，但工作区访客不能再使用这个应用，和它的私信也都会变成线程，这两点以后都撤销不了。
 
 #### 02 粘贴两枚令牌
 
@@ -1538,6 +1548,8 @@ SLACK · 私聊与频道
 3. 复制 `xoxb-` 开头的 Bot User OAuth Token，粘贴后点「连接 Slack」。
 
 两枚令牌只保存在这台 Mac，不要发到聊天里。贴错了框，页面会告诉你贴的是哪一种令牌。
+
+这台 Mac 要经代理才能访问 Slack 时（例如中国大陆网络），在 Slack 步骤的「代理」里填 `http://` 开头的地址；打开接入页的终端里设置了代理时，这里会自动填上。代理会随连接一起保存，后台服务和桌面 App 以后启动时也走它。
 
 #### 03 给机器人发一句话
 
@@ -1553,7 +1565,7 @@ SintBot 把这个会话绑定到项目，机器人回复「已连接项目 …�
 
 读取这个项目 README.md 的第一行，只回复这一行。不要改任何文件。
 
-把回复和 Mac 上文件的第一行对照。任务进行中，你的消息上会有 ⏳；在频道里，线程还会出现「停止」按钮（Stop），点它就停止任务。答案送达后 ⏳ 变成 ✅。接着看[在 Slack 里工作](https://sintbot.com/zh/guide/usage/#slack-workflow)。
+把回复和 Mac 上文件的第一行对照。任务进行中，你的消息上会有 ⏳，答案送达后变成 ✅。要停止任务，发 `!stop`（频道里要 @机器人）。接着看[在 Slack 里工作](https://sintbot.com/zh/guide/usage/#slack-workflow)。
 
 ##### 已经在用飞书、企业微信或本机对话？添加 Slack
 
@@ -1563,7 +1575,7 @@ SintBot 把这个会话绑定到项目，机器人回复「已连接项目 …�
 
 ##### 再绑一个频道
 
-先用 `/invite @机器人名` 把机器人请进频道，再到控制台「群 · 项目 → 配置群项目」里选这个频道，并选目录和执行器。这里只列出机器人已加入的频道。一个应用可以服务多个项目，但只连接一台 SintBot。
+先用 `/invite @机器人名` 把机器人请进频道，再到控制台「群 · 项目 → 配置群项目」里选这个频道，并选目录和执行器。这里只列出机器人已加入的频道；手填的频道 ID 若机器人还不在里面，控制台会提示先邀请它。一个应用可以服务多个项目，但只连接一台 SintBot。
 
 ##### 链接打不开？
 
@@ -1571,7 +1583,7 @@ SintBot 把这个会话绑定到项目，机器人回复「已连接项目 …�
 
 ##### 发了消息没有回复？
 
-在频道里要 @机器人，并确认已经把它请进频道。到「设置 → Slack」看连接状态：显示连接中断时检查网络或代理；显示连接失败说明令牌已被撤销或应用已被移除（最多约 5 分钟后显示），需要用新令牌重新接入。这台 Mac 要经代理才能访问 Slack 时（例如中国大陆网络），在配置文件里设置 `proxy`（如 `{"https": "http://127.0.0.1:7890"}`），验证和连接都会走它。确认没有另一台 SintBot 在用同一个应用：Slack 把每条消息只交给应用的其中一条连接。接入时超过 10 分钟没发消息，在接入页点「重试」。
+在频道里要 @机器人，并确认已经把它请进频道；提示机器人还不在频道里时，在那个频道里发 `/invite @机器人名`，重装应用后也要重新邀请。到「设置 → Slack」看连接状态：显示连接中断时检查网络或代理；显示连接失败说明令牌已被撤销或应用已被移除（最多约 5 分钟后显示），需要用新令牌重新接入。这台 Mac 要经代理才能访问 Slack 时（例如中国大陆网络），在接入页 Slack 步骤的「代理」里填上地址再试；已经在用的安装，在配置文件里设置 `proxy`（如 `{"https": "http://127.0.0.1:7890"}`）后重启服务。确认没有另一台 SintBot 在用同一个应用：Slack 把每条消息只交给应用的其中一条连接。控制台发现可能有另一台机器在用这个应用时，Slack 连接会标黄提示。接入时超过 10 分钟没发消息，在接入页点「重试」。
 
 ### 验证第一条真实任务
 
