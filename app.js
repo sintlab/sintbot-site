@@ -236,8 +236,8 @@
     "zh": "项目群驱动 · Claude Code 与 Codex · 模型可切换"
   },
   "foot.by": {
-    "en": "By WaterTian · A SintLab project",
-    "zh": "作者 WaterTian · SintLab 项目"
+    "en": "SintLab",
+    "zh": "SintLab"
   },
   "foot.privacy": {
     "en": "Privacy Policy",
