@@ -24,9 +24,11 @@ Generated from https://sintbot.com/ by scripts/build-zh.mjs — the same facts a
 - [SintBot（中文）](https://sintbot.com/zh/): 同一页面的中文版
 - [Installation guide](https://sintbot.com/guide/install/): desktop app download, connecting Slack, Feishu or WeCom, the terminal alternative and the first task
 - [Usage guide](https://sintbot.com/guide/usage/): task briefs, model selection, project notes and daily workflows
+- Platform walkthroughs: [Slack](https://sintbot.com/guide/slack/), [Feishu](https://sintbot.com/guide/feishu/), [WeCom](https://sintbot.com/guide/wecom/)
 - [安装指南](https://sintbot.com/zh/guide/install/): 桌面版下载，连接 Slack、飞书、企业微信，终端安装与第一条任务
 - [使用说明](https://sintbot.com/zh/guide/usage/): 派活、模型、记忆与协作
-- [Full documentation](https://sintbot.com/llms-full.txt): these facts, the FAQ and all four guide pages as Markdown, in English and Chinese
+- 平台专题：[Slack](https://sintbot.com/zh/guide/slack/)、[飞书](https://sintbot.com/zh/guide/feishu/)、[企业微信](https://sintbot.com/zh/guide/wecom/)
+- [Full documentation](https://sintbot.com/llms-full.txt): these facts, the FAQ and all guide pages as Markdown, in English and Chinese
 - [SintBot on GitHub](https://github.com/sintlab/sintbot): code and documentation for SintBot
 - [SintBot for macOS on GitHub](https://github.com/sintlab/sintbot-desktop): the desktop app; releases carry the signed and notarized disk image
 - [sintbot on npm](https://www.npmjs.com/package/sintbot): exact version 1.4.24; use the isolated installer and versioned guide on the website

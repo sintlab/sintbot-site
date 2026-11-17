@@ -446,6 +446,8 @@ Learn how to frame a task, share project context and review the result.
 
 [Read the usage guide](https://sintbot.com/guide/usage/)
 
+Platform walkthroughs: [Slack](https://sintbot.com/guide/slack/) · [Feishu](https://sintbot.com/guide/feishu/) · [WeCom](https://sintbot.com/guide/wecom/)
+
 
 Source: https://sintbot.com/guide/usage/
 
@@ -696,6 +698,8 @@ If a group is paused or startup reports unresolved receipts, preserve the state 
 The installation guide takes you from the local package to a verified group reply.
 
 [Open installation guide](https://sintbot.com/guide/install/)
+
+Platform walkthroughs: [Slack](https://sintbot.com/guide/slack/) · [Feishu](https://sintbot.com/guide/feishu/) · [WeCom](https://sintbot.com/guide/wecom/)
 
 
 # 中文
@@ -1144,6 +1148,8 @@ SINTBOT="$HOME/.local/share/sintbot/bin/sintbot"
 
 [阅读使用说明](https://sintbot.com/zh/guide/usage/)
 
+平台接入专题：[Slack](https://sintbot.com/zh/guide/slack/) · [飞书](https://sintbot.com/zh/guide/feishu/) · [企业微信](https://sintbot.com/zh/guide/wecom/)
+
 
 Source: https://sintbot.com/zh/guide/usage/
 
@@ -1394,3 +1400,587 @@ Claude Code 群在执行器自报支持压缩时，可在两轮之间整理当�
 从本地安装，到核验第一条群回复，按安装指南逐步完成。
 
 [查看安装指南](https://sintbot.com/zh/guide/install/)
+
+平台接入专题：[Slack](https://sintbot.com/zh/guide/slack/) · [飞书](https://sintbot.com/zh/guide/feishu/) · [企业微信](https://sintbot.com/zh/guide/wecom/)
+
+
+Source: https://sintbot.com/guide/slack/
+
+## Slack messages. Local project work.
+
+Send a task in a Slack DM or @mention the bot in a channel. SintBot runs Claude Code or Codex in the project folder on your Mac and sends the answer back. A channel reply stays in the task’s thread.
+
+macOS · Claude Code / Codex · Updated November 17, 2026
+
+### Before you start
+
+Use a Mac that stays awake, with Claude Code or Codex installed and its account configured. The desktop app includes Node.js. Follow the [download and first-launch steps](https://sintbot.com/guide/install/#desktop) before connecting a chat platform.
+
+SLACK · DIRECT MESSAGES AND CHANNELS
+
+### Connect your project to Slack
+
+Choose a project on your Mac, create your own Slack app from a link that is already filled in, paste two tokens, then send the bot one message. SintBot connects over Socket Mode, so you need no public address, and a free workspace works.
+
+1. **01**Create app
+2. **02**Two tokens
+3. **03**One message
+4. **04**First task
+
+**Before you start**
+
+Have Codex or Claude Code working on your Mac. You need permission to install apps in the Slack workspace; if yours needs admin approval, create a free workspace of your own. One Slack app serves one Mac.
+
+#### 01 Create the app from the setup page
+
+First launch opens setup. Enter a project name, choose the executor and pick “Slack” under Chat platform. Select “Create app in Slack”: Slack opens with the app’s permissions and events already filled in. Pick your workspace, select Next, then Create.
+
+#### 02 Paste the two tokens
+
+1. On the app’s Basic Information page in Slack, scroll to App-Level Tokens, select Generate Token and Scopes, add the `connections:write` scope and generate. Paste the token that starts with `xapp-` into setup; it is checked at once. The app settings page in Slack can take ten seconds or more to load the first time; reload it if it stays blank.
+2. Select “Open install page” in setup, then in Slack select the install button named after your workspace (for example Install to Acme), and Allow.
+3. Copy the Bot User OAuth Token that starts with `xoxb-`, paste it and select “Connect Slack”.
+
+Both tokens are saved on this Mac only; never post them in a chat. If a token lands in the wrong field, setup says which kind you pasted.
+
+#### 03 Send the bot one message
+
+When setup shows “Waiting for your message…”, select “Open the bot in Slack” and send it any message within 10 minutes. To use a channel instead, invite the bot with `/invite @your-bot-name` and @mention it there.
+
+SintBot binds that conversation to the project, the bot replies “已连接项目 …” (project connected) and setup opens the console.
+
+#### 04 Send your first task
+
+In the same conversation, start with a read-only request:
+
+Send to the bot in Slack (@mention it in a channel)
+
+Read the first line of this project’s README.md and reply with only that line. Do not change any files.
+
+Check the reply against the first line of the file on your Mac. While the task runs your message shows ⏳, and in a channel the thread also shows a Stop button that stops the task; ⏳ becomes ✅ when the answer arrives. Then continue with [working in Slack](https://sintbot.com/guide/usage/#slack-workflow).
+
+##### Already using Feishu, WeCom or local chat? Add Slack
+
+Open Settings → Slack in the console, choose the project folder and executor, then follow the same three steps and send the bot one message. Your existing connections, local chat and projects are kept.
+
+Once connected, the card shows the workspace, the connection status and the number of bound projects. Expand Advanced to refresh the connection status or open the app’s settings in Slack.
+
+##### Bind another channel
+
+Invite the bot to the channel with `/invite @your-bot-name`, then pick that channel under Groups · Projects → Set up a group project in the console and choose its folder and executor. Only channels the bot has joined are listed. One app can serve several projects but connects to only one SintBot.
+
+##### The link does not open?
+
+Create the app by hand: at api.slack.com/apps choose Create New App → From a manifest, pick the workspace and paste the [manifest file](https://github.com/sintlab/sintbot/blob/main/docs/slack-app-manifest.yaml), then continue from step 02. Leave token rotation off: it cannot be turned off again.
+
+##### No reply to your message?
+
+In a channel, @mention the bot and check it was invited. Check the connection status under Settings → Slack: if it shows Disconnected, check the network or proxy; if it shows a failed connection, a token was revoked or the app was removed (shown within about 5 minutes), so connect again with new tokens. If this Mac reaches Slack only through a proxy, set `proxy` in the configuration file (for example `{"https": "http://127.0.0.1:7890"}`); both the token checks and the connection use it. Make sure no other SintBot uses the same app: Slack hands each message to only one of an app’s connections. If more than 10 minutes passed during setup without a message, select Retry on the setup page.
+
+### Verify your first real task
+
+After the connection is bound, send a separate task:
+
+> Read the first line of the project README and reply with only that line.
+
+Compare the answer with the file on your Mac. Then try “Summarize the Git status without changing any files” before requesting a small, reversible edit. This verifies the platform, project folder and coding agent together.
+
+### Everyday use and current limits
+
+Send ordinary messages in a DM. In a channel, @mention the bot; for a follow-up, @mention it again in the original thread. Use `!help`, `!status` or `!stop`; `/sint` also works outside threads. Keep the Mac awake. Closing the app window leaves its background service running.
+
+The current Slack integration shows status and final replies, not running progress text. It cannot send generated files back into Slack; answers name their paths in the local project. Connect each Slack app to only one SintBot instance.
+
+[Read the full usage guide →](https://sintbot.com/guide/usage/)
+
+### Other ways to connect
+
+[Feishu](https://sintbot.com/guide/feishu/) · [WeCom](https://sintbot.com/guide/wecom/)
+
+[Complete installation guide →](https://sintbot.com/guide/install/)
+
+
+Source: https://sintbot.com/zh/guide/slack/
+
+## 在 Slack 派活，在 Mac 上完成
+
+在 Slack 私聊里发任务，或在频道中 @ 机器人。SintBot 调用你 Mac 上的 Claude Code 或 Codex，在绑定的项目目录工作，再将结果回复到会话；频道任务在对应线程回复。
+
+macOS · Claude Code / Codex · 更新于 2026-11-17
+
+### 开始之前
+
+准备一台保持唤醒的 Mac，以及已安装并完成账号配置的 Claude Code 或 Codex。桌面 App 自带 Node.js；完整下载和首次启动步骤见[安装指南](https://sintbot.com/zh/guide/install/#desktop)。
+
+SLACK · 私聊与频道
+
+### 把项目接入 Slack
+
+在 Mac 上选好项目，用已经填好的链接创建你自己的 Slack 应用，粘贴两枚令牌，再给机器人发一句话。SintBot 通过 Socket Mode 连接，不需要公网地址，免费工作区也能用。
+
+1. **01**创建应用
+2. **02**两枚令牌
+3. **03**发一句话
+4. **04**第一条任务
+
+**开始之前**
+
+先在 Mac 上装好并登录 Codex 或 Claude Code。你需要有在 Slack 工作区安装应用的权限；工作区要求管理员审批时，可以自己新建一个免费工作区。一个 Slack 应用只给一台 Mac 用。
+
+#### 01 在接入页创建应用
+
+首次打开会进入接入页。填项目名、选执行器，在「聊天平台」里选「Slack」，点「在 Slack 创建应用」：Slack 打开时，应用的权限和事件已经填好。选择工作区，点 Next，再点 Create。
+
+#### 02 粘贴两枚令牌
+
+1. 在 Slack 里应用的 Basic Information 页，往下找到 App-Level Tokens，点 Generate Token and Scopes，权限选 `connections:write` 并生成。把 `xapp-` 开头的令牌粘贴到接入页，页面会立即验证。Slack 的应用设置页第一次打开可能要等十几秒，一直空白就刷新一次。
+2. 在接入页点「打开安装页」，在 Slack 里点 Install to 加工作区名的按钮（例如 Install to Acme），再点 Allow（中文界面是「允许」）。
+3. 复制 `xoxb-` 开头的 Bot User OAuth Token，粘贴后点「连接 Slack」。
+
+两枚令牌只保存在这台 Mac，不要发到聊天里。贴错了框，页面会告诉你贴的是哪一种令牌。
+
+#### 03 给机器人发一句话
+
+接入页显示「等待你的消息…」时，点「在 Slack 里打开机器人」，在 10 分钟内给它发任意一句话。想用频道：先用 `/invite @机器人名` 把它请进频道，再在频道里 @它。
+
+SintBot 把这个会话绑定到项目，机器人回复「已连接项目 …」，接入页随后打开控制台。
+
+#### 04 发第一条任务
+
+在同一个会话里，先发一条只读请求：
+
+发给 Slack 里的机器人（频道里要 @它）
+
+读取这个项目 README.md 的第一行，只回复这一行。不要改任何文件。
+
+把回复和 Mac 上文件的第一行对照。任务进行中，你的消息上会有 ⏳；在频道里，线程还会出现「停止」按钮（Stop），点它就停止任务。答案送达后 ⏳ 变成 ✅。接着看[在 Slack 里工作](https://sintbot.com/zh/guide/usage/#slack-workflow)。
+
+##### 已经在用飞书、企业微信或本机对话？添加 Slack
+
+打开控制台「设置 → Slack」，选项目目录和执行器，按同样的三步操作，再给机器人发一句话。现有连接、本机对话和项目都保留。
+
+接入后，卡片显示工作区、连接状态和已绑定的项目数。展开「高级」可以刷新连接状态，或打开 Slack 里的应用设置。
+
+##### 再绑一个频道
+
+先用 `/invite @机器人名` 把机器人请进频道，再到控制台「群 · 项目 → 配置群项目」里选这个频道，并选目录和执行器。这里只列出机器人已加入的频道。一个应用可以服务多个项目，但只连接一台 SintBot。
+
+##### 链接打不开？
+
+手动创建应用：到 api.slack.com/apps 选择 Create New App → From a manifest，选工作区并粘贴[清单文件](https://github.com/sintlab/sintbot/blob/main/docs/slack-app-manifest.yaml)，然后从第 02 步继续。不要打开令牌轮换：它是单向开关，打开后关不掉。
+
+##### 发了消息没有回复？
+
+在频道里要 @机器人，并确认已经把它请进频道。到「设置 → Slack」看连接状态：显示连接中断时检查网络或代理；显示连接失败说明令牌已被撤销或应用已被移除（最多约 5 分钟后显示），需要用新令牌重新接入。这台 Mac 要经代理才能访问 Slack 时（例如中国大陆网络），在配置文件里设置 `proxy`（如 `{"https": "http://127.0.0.1:7890"}`），验证和连接都会走它。确认没有另一台 SintBot 在用同一个应用：Slack 把每条消息只交给应用的其中一条连接。接入时超过 10 分钟没发消息，在接入页点「重试」。
+
+### 验证第一条真实任务
+
+完成绑定后，再发一条独立任务：
+
+> 读取项目 README 的第一行，只回复这一行。
+
+把回复与本机文件核对，确认平台、项目目录和执行器都连通。接着可要求“查看 Git 状态并总结，不修改文件”，再尝试一次明确、可回退的小修改。
+
+### 日常使用与当前范围
+
+私聊直接发消息；频道里需 @ 机器人，跟进时在原线程再次 @。命令使用 `!help`、`!status`、`!stop`；`/sint` 也可在频道中使用。保持 Mac 唤醒，关闭 App 窗口不会停止后台服务。
+
+当前 Slack 显示状态与最终回复，不提供任务进度文字，也不能把生成的文件直接回传到 Slack。答案会给出本机项目中的文件路径。每个 Slack 应用只连接一台 SintBot。
+
+[查看完整使用说明 →](https://sintbot.com/zh/guide/usage/)
+
+### 其他接入方式
+
+[飞书](https://sintbot.com/zh/guide/feishu/) · [企业微信](https://sintbot.com/zh/guide/wecom/)
+
+[完整安装指南 →](https://sintbot.com/zh/guide/install/)
+
+
+Source: https://sintbot.com/guide/feishu/
+
+## A Feishu group for your project
+
+Scan with the Feishu mobile app to connect SintBot on your Mac. The setup creates the app and a project group, so tasks and results stay in the group your team uses.
+
+macOS · Claude Code / Codex · Updated November 17, 2026
+
+### Before you start
+
+Use a Mac that stays awake, with Claude Code or Codex installed and its account configured. The desktop app includes Node.js. Follow the [download and first-launch steps](https://sintbot.com/guide/install/#desktop) before connecting a chat platform.
+
+FEISHU · PROJECT GROUPS
+
+### Connect your project to Feishu
+
+Choose a project on your Mac, confirm on your phone, then send a task in the new group. Desktop and terminal installations share this setup flow.
+
+1. **01**Project
+2. **02**Confirm
+3. **03**Create group
+4. **04**First task
+
+**Before you scan**
+
+Have Codex or Claude Code working on your Mac. Sign in to Feishu China on your phone with an enterprise or team identity; create or join a team first if needed. Your organization may require administrator approval.
+
+#### 01 Choose your project on the Mac
+
+First launch opens setup. Enter a project name and choose the executor. Use the new project folder or expand “Use an existing project folder”. Select “Connect Feishu”.
+
+If you are not an organization administrator, expand “Organization options” and select “I am not an organization administrator”. An administrator will need to finish app availability and publication.
+
+#### 02 Confirm with Feishu on your phone
+
+Keep setup open on your Mac. Use the scanner in the Feishu mobile app to scan the code on your own setup page.
+
+1. Check the enterprise or team selected on your phone.
+2. Review the app’s team and requested permissions.
+3. Confirm on your phone, then return to your Mac.
+
+These images show setup states. The pictured code is for this walkthrough; use the fresh code on your own Mac to connect.
+
+#### 03 Wait for the app and group
+
+SintBot creates the app, checks permissions, creates a project group and saves configuration. Keep the window open. Expand “Connection details” to follow progress; setup opens the console when complete.
+
+#### 04 Send a task in the new group
+
+Find the newly created project group in Feishu and check that SintBot is a member. Start with a read-only request:
+
+Send to your new Feishu project group
+
+Read the first line of this project’s README.md and reply with that line only. Do not change any files.
+
+Compare the reply with the file on your Mac. A correct reply verifies the group, executor and project path together. Continue with the [Feishu group workflow](https://sintbot.com/guide/usage/#feishu-workflow).
+
+##### Confirmed on your phone, but no new group?
+
+If setup asks for a group, create one in Feishu, add the newly created bot, then paste the group ID into setup and select “Continue”. An ID starts with `oc_…`; it is not a group name or invitation link. Ask an administrator to finish publication and availability if the app is not available to you.
+
+For other failures, use “Retry” or “Edit details” as prompted. A successfully connected project needs no repeated scan.
+
+##### Already using local conversations?
+
+An existing configuration opens the console directly. To add Feishu, let tasks finish, stop the service, run `sintbot connect --attach` and complete the scan, then start again. Configuration, records and local conversations are kept. The current console has no one-click attach action. See [terminal installation and maintenance](https://sintbot.com/guide/install/#terminal).
+
+##### Connected, but the group gets no reply?
+
+Check Settings → Feishu for connection status and Groups · Projects for the target group, folder and model. Confirm the bot is a member, the app is published, and message permissions and event subscriptions are enabled. Mention the bot if your group requires it.
+
+### Verify your first real task
+
+After the connection is bound, send a separate task:
+
+> Read the first line of the project README and reply with only that line.
+
+Compare the answer with the file on your Mac. Then try “Summarize the Git status without changing any files” before requesting a small, reversible edit. This verifies the platform, project folder and coding agent together.
+
+### Everyday use and current limits
+
+This guide covers Feishu project groups. Add context in the group, use `/status` to check activity, `/stop` to cancel, and `/model` while idle to choose a model. Each group is bound to a local folder; add another group project in the console for another project.
+
+Model availability depends on your installed coding agent and configured services. Verify third-party API access separately, and keep keys out of chat. The Mac must stay awake with SintBot running.
+
+[Read the full usage guide →](https://sintbot.com/guide/usage/)
+
+### Other ways to connect
+
+[Slack](https://sintbot.com/guide/slack/) · [WeCom](https://sintbot.com/guide/wecom/)
+
+[Complete installation guide →](https://sintbot.com/guide/install/)
+
+
+Source: https://sintbot.com/zh/guide/feishu/
+
+## 扫码建群，把本机助手接进飞书
+
+在 Mac 上安装 SintBot，用飞书手机端扫码创建应用和项目群。群绑定一个项目目录，任务交给本机 Claude Code 或 Codex，进展和结果回到群里。
+
+macOS · Claude Code / Codex · 更新于 2026-11-17
+
+### 开始之前
+
+准备一台保持唤醒的 Mac，以及已安装并完成账号配置的 Claude Code 或 Codex。桌面 App 自带 Node.js；完整下载和首次启动步骤见[安装指南](https://sintbot.com/zh/guide/install/#desktop)。
+
+FEISHU · 飞书接入
+
+### 把项目接进飞书群
+
+在 Mac 上选项目，用手机确认授权，再到新群发第一条任务。桌面 App 和终端安装都走同一套接入流程。
+
+1. **01**选项目
+2. **02**手机确认
+3. **03**自动建群
+4. **04**发任务
+
+**扫码前，准备这两样**
+
+Mac 上已有可用的 Codex 或 Claude Code；手机登录中国版飞书，并具有企业或团队身份。没有团队时，先在飞书创建或加入团队。团队的应用管理规则可能要求管理员批准。
+
+#### 01 在 Mac 上选好项目
+
+首次打开 SintBot 会显示接入页。填写项目名称，选择执行器；默认新建项目文件夹，也可以展开「使用已有项目目录」选择已有项目。点击「扫码连接飞书」。
+
+如果你不是组织管理员，展开「组织接入选项」，勾选「我不是组织管理员」；可用范围调整和应用发布需要管理员后续完成。
+
+#### 02 用手机飞书确认授权
+
+保持 Mac 的接入页打开，用手机飞书的「扫一扫」扫描你自己页面上的二维码。
+
+1. 检查手机上当前选择的企业或团队。
+2. 阅读授权页面，确认应用所属团队和申请的权限。
+3. 在手机完成确认，再回到 Mac 等待接入继续。
+
+这里的图片展示界面状态，二维码仅用于图解。实际接入请扫描自己 Mac 上新生成的二维码。
+
+#### 03 等待应用和项目群创建
+
+SintBot 会继续创建应用、检查权限、建立项目群并保存配置。保持窗口打开，可展开「查看接入详情」查看当前步骤；完成后页面自动进入控制台。
+
+#### 04 到飞书新群发第一条任务
+
+打开飞书，找到刚创建的项目群，确认 SintBot 已在群内。先发一条只读请求：
+
+发送到新建的飞书项目群
+
+读取这个项目 README.md 的第一行，只回复这一行。不要修改任何文件。
+
+收到回复后，与 Mac 上项目文件的第一行核对。能收到正确答复，才说明群、执行器和项目目录都接通了。接着按[飞书群使用说明](https://sintbot.com/zh/guide/usage/#feishu-workflow)开始工作。
+
+##### 手机已确认，但没有自动建群？
+
+如果接入页明确提示手动建群，在飞书创建群并添加刚创建的机器人，取得群 ID 后粘贴回接入页，点击「继续」。群 ID 形如 `oc_…`，不是群名称或邀请链接。应用尚未发布或可用范围不含你时，先请团队管理员完成应用配置。
+
+其他错误按页面提示「重试」或「返回修改」。已接入成功的项目不需要重复扫码。
+
+##### 已经选择「先在本机使用」，怎么补接飞书？
+
+现有配置会直接打开控制台。补接前，等任务结束并停止服务，再运行 `sintbot connect --attach`，完成扫码后重新启动。已有配置、记录和本机对话保留；当前控制台没有一键补接入口。命令行维护见[终端安装与维护](https://sintbot.com/zh/guide/install/#terminal)。
+
+##### 接入完成，群里却没有回复？
+
+在控制台「设置 → 飞书」检查连接状态，在「群 · 项目」检查目标群、目录和模型。再核对机器人是否已加入群、应用是否发布、消息权限与事件订阅是否完整。需要提及机器人的群，发任务时先 @ 它。
+
+### 验证第一条真实任务
+
+完成绑定后，再发一条独立任务：
+
+> 读取项目 README 的第一行，只回复这一行。
+
+把回复与本机文件核对，确认平台、项目目录和执行器都连通。接着可要求“查看 Git 状态并总结，不修改文件”，再尝试一次明确、可回退的小修改。
+
+### 日常使用与当前范围
+
+本页介绍飞书项目群接入。群内可以继续补充任务，使用 `/status` 查看状态、`/stop` 停止、`/model` 在空闲时选择型号。一个项目群绑定一个本机目录；增加项目时在控制台新建项目群。
+
+模型来自本机执行器与已配置服务。第三方 API Key 的可用性需要单独验证；不要把 Key 发到群里。Mac 应保持唤醒且服务运行。
+
+[查看完整使用说明 →](https://sintbot.com/zh/guide/usage/)
+
+### 其他接入方式
+
+[Slack](https://sintbot.com/zh/guide/slack/) · [企业微信](https://sintbot.com/zh/guide/wecom/)
+
+[完整安装指南 →](https://sintbot.com/zh/guide/install/)
+
+
+Source: https://sintbot.com/guide/wecom/
+
+## Your WeCom conversation, your Mac
+
+Connect a WeCom bot by QR code, then bind its first direct message or group @mention to a project. SintBot uses Claude Code or Codex to work with the files on your Mac.
+
+macOS · Claude Code / Codex · Updated November 17, 2026
+
+### Before you start
+
+Use a Mac that stays awake, with Claude Code or Codex installed and its account configured. The desktop app includes Node.js. Follow the [download and first-launch steps](https://sintbot.com/guide/install/#desktop) before connecting a chat platform.
+
+WECOM · CHATS AND GROUPS
+
+### Connect your project to WeCom
+
+Choose a project on your Mac, scan with WeCom on your phone to create a bot, then send it one message. SintBot receives tasks over a long connection, so you need no public callback URL and no group.
+
+1. **01**Project
+2. **02**Scan
+3. **03**One message
+4. **04**First task
+
+**Before you scan**
+
+Have Codex or Claude Code working on your Mac. Install WeCom on your phone and join or create an organization. Creating one is free and needs no verification; an organization with only you in it works too.
+
+#### 01 Choose your project on the Mac
+
+First launch opens setup. Enter a project name, choose the executor, pick “企业微信 · WeCom” under Chat platform and select “Scan to create bot”. Use the new project folder or expand “Use an existing project folder”.
+
+#### 02 Scan with WeCom on your phone
+
+Keep setup open on your Mac and scan the code on your own page with the WeCom scanner on your phone.
+
+1. Check which organization is selected on your phone.
+2. Confirm creating the bot. It is named after you by default.
+3. The Bot ID and Secret are saved on this Mac. There is nothing to copy; never send them in a chat.
+
+These images show interface states, and the code is for illustration only. Scan the new code on your own Mac; an expired code is replaced automatically.
+
+#### 03 Send the bot one message
+
+When setup shows “Waiting for your message…”, send the bot any message in WeCom within 10 minutes: message it directly, or add it to a group and @mention it. Find it by searching its name at the top of WeCom, or under Workbench → Smart Bots.
+
+SintBot binds that chat to the project, the bot replies “已连接项目 …” (project connected) and setup opens the console.
+
+#### 04 Send your first task
+
+In the same chat, start with a read-only request:
+
+Send to the WeCom bot (@mention it in a group)
+
+Read the first line of this project’s README.md and reply with only that line. Do not change any files.
+
+Check the reply against the first line of the file on your Mac. The bot replies when a task finishes; progress is not shown while it runs. Then continue with [working in WeCom](https://sintbot.com/guide/usage/#wecom-workflow).
+
+##### Already using Feishu or local chat? Add WeCom
+
+Open Settings → WeCom in the console, choose the project folder and executor, select “Scan to create bot”, then send the bot one message as above. Your Feishu connection, local chat and projects are kept.
+
+Once connected, the card shows the connection status and the number of bound projects. Expand Advanced for the Bot ID and to refresh the connection status.
+
+##### Already have a bot? Enter Bot ID and Secret manually
+
+Expand “Already have a bot? Enter Bot ID and Secret” on the setup page, or Advanced on the console’s WeCom card, enter the existing bot’s Bot ID and Secret, then send the bot one message. To create a bot manually, use either entry below, choose API mode and select “Use long connection”:
+
+- WeCom desktop: Workbench → Smart Bots → Create bot → Manual creation.
+- Admin console at work.weixin.qq.com: Security & Management → Management Tools → Smart Bots.
+
+##### Bind another project
+
+Create a WeCom group, add the bot and @mention it once, then pick that group under Groups · Projects → Set up a group project in the console and choose its folder and executor. One bot can serve several projects but connects to only one SintBot.
+
+##### No reply to your message?
+
+Check the connection status under Settings → WeCom. If it shows Disconnected, select Refresh connection status, check the network and make sure no other SintBot or tool is using this bot: each bot keeps only one connection at a time. In groups, @mention the bot; @All does not trigger it. If more than 10 minutes passed during setup without a message, select Retry on the setup page.
+
+### Verify your first real task
+
+After the connection is bound, send a separate task:
+
+> Read the first line of the project README and reply with only that line.
+
+Compare the answer with the file on your Mac. Then try “Summarize the Git status without changing any files” before requesting a small, reversible edit. This verifies the platform, project folder and coding agent together.
+
+### Everyday use and current limits
+
+Verify the first task in a direct conversation before adding a project group. @mention the bot for group tasks. A WeCom bot supports only one long connection, so do not share it between two Macs. Keep SintBot running and the Mac awake.
+
+The QR flow does not preset the bot name; rename it using WeCom’s controls if needed. Message display and media capabilities differ from Feishu. Refer to the installation guide for the current supported scope.
+
+[Read the full usage guide →](https://sintbot.com/guide/usage/)
+
+### Other ways to connect
+
+[Slack](https://sintbot.com/guide/slack/) · [Feishu](https://sintbot.com/guide/feishu/)
+
+[Complete installation guide →](https://sintbot.com/guide/install/)
+
+
+Source: https://sintbot.com/zh/guide/wecom/
+
+## 在企业微信里使用本机 AI 助理
+
+扫码创建企业微信机器人，用单聊或群内首条 @ 消息绑定项目。SintBot 在自己的 Mac 上调用 Claude Code 或 Codex，任务结果返回当前会话。
+
+macOS · Claude Code / Codex · 更新于 2026-11-17
+
+### 开始之前
+
+准备一台保持唤醒的 Mac，以及已安装并完成账号配置的 Claude Code 或 Codex。桌面 App 自带 Node.js；完整下载和首次启动步骤见[安装指南](https://sintbot.com/zh/guide/install/#desktop)。
+
+WECOM · 企业微信接入
+
+### 把项目接进企业微信
+
+在 Mac 上选项目，用手机企业微信扫码创建机器人，再给它发一句话。SintBot 通过长连接接收任务，不需要公网回调地址，也不需要建群。
+
+1. **01**选项目
+2. **02**扫码建机器人
+3. **03**发一句话
+4. **04**发任务
+
+**扫码前，准备这两样**
+
+Mac 上已有可用的 Codex 或 Claude Code；手机已安装企业微信，并加入或创建了一个企业。创建企业免费，无需认证；只有你一个人的企业也能用。
+
+#### 01 在 Mac 上选好项目
+
+首次打开 SintBot 会显示接入页。填写项目名称，选择执行器，在「聊天平台」里选「企业微信 · WeCom」，点击「扫码创建机器人」。默认新建项目文件夹，也可以展开「使用已有项目目录」选择已有项目。
+
+#### 02 用手机企业微信扫码
+
+保持 Mac 的接入页打开，用手机企业微信的「扫一扫」扫描你自己页面上的二维码。
+
+1. 检查手机上当前选择的企业。
+2. 按提示确认创建机器人，默认名为「<你的名字>的机器人」。
+3. Bot ID 和 Secret 自动保存在这台 Mac，不用复制，也不要发到聊天里。
+
+这里的图片展示界面状态，二维码仅用于图解。实际接入请扫描自己 Mac 上新生成的二维码；二维码过期后页面会自动换一张。
+
+#### 03 给机器人发一句话
+
+页面显示「等待你的消息…」后，10 分钟内在企业微信里给机器人发任意一句话：单聊直接发，或者把它拉进群并 @它。在企业微信顶部搜索机器人名字，或进「工作台 → 智能机器人」就能找到它。
+
+收到消息后，SintBot 把这个会话绑定到项目，机器人回复「已连接项目 …」，接入页随后进入控制台。
+
+#### 04 发第一条任务
+
+在同一个会话里先发一条只读请求：
+
+发给企业微信机器人（群里先 @它）
+
+读取这个项目 README.md 的第一行，只回复这一行。不要修改任何文件。
+
+收到回复后，与 Mac 上项目文件的第一行核对。任务完成时机器人回复结果，执行过程中不显示进度。接着按[企业微信使用说明](https://sintbot.com/zh/guide/usage/#wecom-workflow)开始工作。
+
+##### 已经在用飞书或本机对话，怎么加上企业微信？
+
+打开控制台「设置 → 企业微信」，选择项目目录和执行器，点击「扫码创建机器人」，之后同样给机器人发一句话。现有飞书、本机对话和项目都保留。
+
+接入后，这张卡片显示连接状态和已绑定项目数；展开「高级」可以查看 Bot ID、刷新连接状态。
+
+##### 已有机器人？手动填写 Bot ID 和 Secret
+
+在接入页展开「已有机器人？手动填写 Bot ID 和 Secret」，或在控制台企业微信卡片展开「高级」，填写已有机器人的 Bot ID 和 Secret，之后同样给机器人发一句话完成接入。手动创建有两个入口，都选择 API 模式并「使用长连接」：
+
+- 企业微信电脑端：「工作台 → 智能机器人 → 创建机器人 → 手动创建」。
+- 管理后台 work.weixin.qq.com：「安全与管理 → 管理工具 → 智能机器人」。
+
+##### 想再绑一个项目？
+
+在企业微信建群，把机器人加进群并 @它一次，再到控制台「群 · 项目 → 配置群项目」选择这个群，指定项目目录和执行器。同一个机器人可以服务多个项目，但只由一台 SintBot 连接。
+
+##### 发了消息没有回复？
+
+在控制台「设置 → 企业微信」查看连接状态。显示「连接中断」时点「刷新连接状态」，检查网络，并确认这个机器人没有被另一台 SintBot 或其他工具占用：每个机器人同时只能保持一条连接。群里要 @机器人，「@所有人」不会触发。接入时超过 10 分钟没发消息，在接入页点「重试」重新开始。
+
+### 验证第一条真实任务
+
+完成绑定后，再发一条独立任务：
+
+> 读取项目 README 的第一行，只回复这一行。
+
+把回复与本机文件核对，确认平台、项目目录和执行器都连通。接着可要求“查看 Git 状态并总结，不修改文件”，再尝试一次明确、可回退的小修改。
+
+### 日常使用与当前范围
+
+先在单聊完成第一条任务，再按需绑定项目群。群任务通过 @ 机器人发起；同一机器人只能保留一条长连接，不要让两台 Mac 共用它。保持 Mac 唤醒并运行 SintBot。
+
+扫码不会预设机器人名称；按企业微信允许的方式自行修改。与飞书相比，消息显示和媒体能力有平台差异，完整范围以安装指南和当前版本为准。
+
+[查看完整使用说明 →](https://sintbot.com/zh/guide/usage/)
+
+### 其他接入方式
+
+[Slack](https://sintbot.com/zh/guide/slack/) · [飞书](https://sintbot.com/zh/guide/feishu/)
+
+[完整安装指南 →](https://sintbot.com/zh/guide/install/)

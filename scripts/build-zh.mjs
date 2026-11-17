@@ -5,7 +5,7 @@
 //   index.html     English body text, <head>, JSON-LD (SoftwareApplication + FAQPage)
 //   zh/index.html  the same page with Chinese body text, <head>, JSON-LD
 //   llms.txt       plain-text summary, key facts + FAQ in both languages, for AI assistants
-//   llms-full.txt  llms.txt's facts and FAQ plus the four guide pages as Markdown
+//   llms-full.txt  llms.txt's facts and FAQ plus the guide pages as Markdown
 //
 // Why static: share-card unfurlers (Lark, WeChat, Slack) and AI crawlers read HTML without running JS.
 // app.js still switches languages in the browser exactly as before.
@@ -220,9 +220,11 @@ ${facts("en")}
 - [SintBot（中文）](${SITE}/zh/): 同一页面的中文版
 - [Installation guide](${SITE}/guide/install/): desktop app download, connecting Slack, Feishu or WeCom, the terminal alternative and the first task
 - [Usage guide](${SITE}/guide/usage/): task briefs, model selection, project notes and daily workflows
+- Platform walkthroughs: [Slack](${SITE}/guide/slack/), [Feishu](${SITE}/guide/feishu/), [WeCom](${SITE}/guide/wecom/)
 - [安装指南](${SITE}/zh/guide/install/): 桌面版下载，连接 Slack、飞书、企业微信，终端安装与第一条任务
 - [使用说明](${SITE}/zh/guide/usage/): 派活、模型、记忆与协作
-- [Full documentation](${SITE}/llms-full.txt): these facts, the FAQ and all four guide pages as Markdown, in English and Chinese
+- 平台专题：[Slack](${SITE}/zh/guide/slack/)、[飞书](${SITE}/zh/guide/feishu/)、[企业微信](${SITE}/zh/guide/wecom/)
+- [Full documentation](${SITE}/llms-full.txt): these facts, the FAQ and all guide pages as Markdown, in English and Chinese
 - [SintBot on GitHub](https://github.com/sintlab/sintbot): code and documentation for SintBot
 - [SintBot for macOS on GitHub](https://github.com/sintlab/sintbot-desktop): the desktop app; releases carry the signed and notarized disk image
 - [sintbot on npm](https://www.npmjs.com/package/sintbot): exact version ${VERSION}; use the isolated installer and versioned guide on the website
@@ -253,6 +255,7 @@ const GUIDES = [
   ["guide/usage/index.html", `${SITE}/guide/usage/`],
   ["zh/guide/install/index.html", `${SITE}/zh/guide/install/`],
   ["zh/guide/usage/index.html", `${SITE}/zh/guide/usage/`],
+  ...["slack", "feishu", "wecom"].flatMap(p => [[`guide/${p}/index.html`, `${SITE}/guide/${p}/`], [`zh/guide/${p}/index.html`, `${SITE}/zh/guide/${p}/`]]),
 ];
 
 function llmsFull() {

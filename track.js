@@ -1,8 +1,10 @@
 /* SintBot site analytics. Umami's script.js records page views; this file adds intent events on
    every page. Anonymous and aggregate only, as privacy.html describes: no text people type, no
-   identifiers, nothing stored in the browser. Every event carries the page and the language.
+   identifiers. A recognized ChatGPT source is kept in this tab for up to 30 minutes; no
+   visitor ID, full referrer or query string is stored. Every event carries page and language.
 
    Events (name · data beyond page and lang):
+     gpt-referral     source, source_via             recognized ChatGPT landing (not unique people)
      download-dmg      version                       desktop disk image link
      copy-oneline      block                         copy button on the one-line installer
      copy-other        block                         any other copy button
@@ -24,6 +26,40 @@
      engaged           seconds                       30 / 120 / 300 seconds visible, once each
      not-found         path, ref                     404 page */
 (() => {
+  const query = new URLSearchParams(location.search);
+  let disabled = query.get("notrack") === "1";
+  try { disabled ||= localStorage.getItem("umami.disabled") === "1"; } catch (_) {}
+  const sourceKey = "sintbot_source";
+  if (disabled) { try { sessionStorage.removeItem(sourceKey); } catch (_) {} return; }
+
+  // Only known source labels are retained, never arbitrary query/referrer data.
+  const gptHost = host => host === "chatgpt.com" || host.endsWith(".chatgpt.com") || host === "chat.openai.com";
+  const utm = (query.get("utm_source") || "").trim().toLowerCase();
+  const gptUtm = ["chatgpt", "chatgpt.com", "chat.openai.com"].includes(utm);
+  let refHost = "";
+  try { refHost = new URL(document.referrer).hostname.toLowerCase(); } catch (_) {}
+  const external = refHost && refHost !== location.hostname;
+  const via = utm ? (gptUtm ? "utm" : "") : (gptHost(refHost) ? "referrer" : "");
+  let attribution = null;
+  try {
+    if (via) {
+      attribution = { source: "chatgpt", source_via: via, at: Date.now() };
+      sessionStorage.setItem(sourceKey, JSON.stringify(attribution));
+    } else if (utm || external) sessionStorage.removeItem(sourceKey);
+    else {
+      const saved = JSON.parse(sessionStorage.getItem(sourceKey) || "null");
+      if (saved && saved.source === "chatgpt" && ["utm", "referrer"].includes(saved.source_via)
+          && Number.isFinite(saved.at) && Date.now() >= saved.at && Date.now() - saved.at < 30 * 60 * 1000) attribution = saved;
+      else sessionStorage.removeItem(sourceKey);
+    }
+  } catch (_) { if (via) attribution = { source: "chatgpt", source_via: via, at: Date.now() }; }
+  function clearSource() { attribution = null; try { sessionStorage.removeItem(sourceKey); } catch (_) {} }
+  if (attribution) setTimeout(clearSource, Math.max(0, 30 * 60 * 1000 - (Date.now() - attribution.at)));
+  const sourceData = () => {
+    if (attribution && Date.now() - attribution.at >= 30 * 60 * 1000) clearSource();
+    return attribution ? { source: attribution.source, source_via: attribution.source_via } : {};
+  };
+
   // Read at send time: the homepage switches language in place.
   const lang = () => ((document.documentElement.lang || "en").toLowerCase().startsWith("zh") ? "zh" : "en");
   const path = location.pathname;
@@ -31,6 +67,9 @@
     : /^\/(zh\/)?$/.test(path) || /^\/(zh\/)?index\.html$/.test(path) ? "home"
     : /\/guide\/install\//.test(path) ? "guide-install"
     : /\/guide\/usage\//.test(path) ? "guide-usage"
+    : /\/guide\/slack\//.test(path) ? "guide-slack"
+    : /\/guide\/feishu\//.test(path) ? "guide-feishu"
+    : /\/guide\/wecom\//.test(path) ? "guide-wecom"
     : /\/terms(\.html)?$/.test(path) ? "terms"
     : /\/privacy(\.html)?$/.test(path) ? "privacy"
     : "other";
@@ -39,7 +78,7 @@
   const queue = [];
   let timer = 0, tries = 0;
   const ready = () => window.umami && typeof window.umami.track === "function";
-  const send = (name, data) => { try { window.umami.track(name, Object.assign({ page, lang: lang() }, data)); } catch (e) {} };
+  const send = (name, data) => { try { window.umami.track(name, Object.assign({ page, lang: lang() }, sourceData(), data)); } catch (e) {} };
   function track(name, data) {
     if (ready()) return send(name, data);
     queue.push([name, data]);
@@ -49,6 +88,8 @@
       else if (++tries > 60) { clearInterval(timer); timer = 0; queue.length = 0; }
     }, 250);
   }
+  if (via) track("gpt-referral");
+
   const short = (s, n = 80) => String(s || "").replace(/\s+/g, " ").trim().slice(0, n);
 
   function githubTarget(url) {

@@ -3,7 +3,7 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 const root = new URL('../', import.meta.url);
 const check = process.argv.includes('--check');
-const files = ['guide/install/index.html', 'guide/usage/index.html', 'zh/guide/install/index.html', 'zh/guide/usage/index.html'];
+const files = ['guide/install/index.html', 'guide/usage/index.html', 'zh/guide/install/index.html', 'zh/guide/usage/index.html', ...['slack', 'feishu', 'wecom'].flatMap(p => [`guide/${p}/index.html`, `zh/guide/${p}/index.html`])];
 const escape = s => s.replaceAll('&', '&amp;').replaceAll('"', '&quot;').replaceAll('<', '&lt;');
 const decode = s => s.replaceAll('&amp;', '&').replaceAll('&quot;', '"').replaceAll('&lt;', '<');
 let stale = false;
@@ -39,4 +39,4 @@ for (const file of files) {
   }
 }
 if (check && stale) { console.error('Guide SEO is stale: run node scripts/build-guide-seo.mjs'); process.exitCode = 1; }
-else console.log(check ? 'Guide SEO: up to date' : 'Guide SEO: generated 4 pages');
+else console.log(check ? 'Guide SEO: up to date' : `Guide SEO: generated ${files.length} pages`);

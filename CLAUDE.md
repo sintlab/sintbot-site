@@ -30,11 +30,11 @@ Introductory copy calls SintBot free and open source: the hero lede, the meta de
 
 ## AI readers (2026-11-16)
 
-`llms.txt` opens with key facts in both languages (cost, requirements, platforms, models, both install routes, versions, updates, data). `llms-full.txt` adds the FAQ and the four guide pages as Markdown (`scripts/guide-md.mjs`). Both come from `build-zh.mjs`, so the hourly version sync regenerates them. The desktop version and disk-image URL are read from the homepage download link: when the app version changes, update that link and the guides, then rerun the script.
+`llms.txt` opens with key facts in both languages (cost, requirements, platforms, models, both install routes, versions, updates, data). `llms-full.txt` adds the FAQ and the guide pages as Markdown (`scripts/guide-md.mjs`). Both come from `build-zh.mjs`, so the hourly version sync regenerates them. The desktop version and disk-image URL are read from the homepage download link: when the app version changes, update that link and the guides, then rerun the script.
 
 ## Analytics (2026-11-16)
 
-Every page loads Umami (`data-domains="sintbot.com"`, so local previews send nothing), the `?notrack=1` snippet and `/track.js`. All intent events live in `track.js`, which lists them at the top; each event carries `page` and `lang` (read at send time, since the homepage switches language in place). Keep event names stable: `section-<id>`, `copy-oneline`, `github-click` and the `cta-*` names predate this file. Record nothing people type and no identifiers; when adding a kind of event, keep the analytics paragraph of `privacy.html` accurate. AI crawlers do not run JavaScript, so `llms.txt` reads are not visible here.
+Every page loads Umami (`data-domains="sintbot.com"`, so local previews send nothing), the `?notrack=1` snippet and `/track.js`. All intent events live in `track.js`, which lists them at the top; each event carries `page` and `lang` (read at send time, since the homepage switches language in place). ChatGPT landings emit `gpt-referral` from a known referrer or `utm_source`; recognized attribution is carried in tab-scoped session storage for 30 minutes and attached as `source` / `source_via` to intent events. No visitor identifier or raw query/referrer is stored; opt-out clears attribution. Test with `node --test scripts/track-source.test.mjs`. Keep event names stable: `section-<id>`, `copy-oneline`, `github-click` and the `cta-*` names predate this file. Record nothing people type and no identifiers; when adding a kind of event, keep the analytics paragraph of `privacy.html` accurate. AI crawlers do not run JavaScript, so `llms.txt` reads are not visible here.
 
 ## Changes and validation
 
@@ -67,3 +67,7 @@ Use concise, concrete English headings without decorative terminal periods. Keep
 ## One-line installation (2026-11-08 15:59–16:04)
 
 The user explicitly dropped old-version compatibility from the public installation flow. The primary command is `curl -fsSL https://sintbot.com/install.sh | bash`. The installer checks macOS/Node/npm, installs pinned 1.3.0 under `~/.local/share/sintbot` without sudo, and verifies the executable and core. Its whole function is parsed before execution, and it never changes runtime configuration/state or starts a service. Preview and manual version checks are optional; the first initialization/preflight/start sequence is one copy block with failure short-circuiting. Keep both languages, public README/install docs, executable paths and copy payloads consistent. This updates the downloadable installer and docs, not the immutable npm package/tag.
+
+## Platform walkthroughs (2026-11-17)
+
+`guide/{slack,feishu,wecom}/` and their `zh/` counterparts are directly maintained pages using the existing guide styles. Keep each language pair, platform limits, screenshots, sitemap and internal links aligned. `build-guide-seo.mjs` and `build-zh.mjs` include all ten guide pages; the latter derives the full text for AI readers. Preserve the homepage design; its existing platform marks link to these walkthroughs.

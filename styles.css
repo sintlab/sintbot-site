@@ -188,3 +188,5 @@ html[lang="en"] .channel-platform:nth-child(2){order:-1}.channel-platform .brand
 .language-picker__options [aria-current="true"]::after{content:"✓";margin-left:auto;font-size:12px}
 .language-picker summary:focus-visible,.language-picker a:focus-visible{outline:2px solid #dd7d3d;outline-offset:3px}
 @media(max-width:700px){.foot__bottom{align-items:flex-start;flex-direction:column;gap:8px}.language-picker summary{padding-left:0}.language-picker__options{right:auto;left:0}}
+
+.channel-platform[href]{min-height:44px;transition:color .2s,transform .2s}.channel-platform[href]:hover{color:var(--label);transform:translateY(-2px)}.channel-platform[href]:focus-visible{outline:2px solid var(--label);outline-offset:4px}
