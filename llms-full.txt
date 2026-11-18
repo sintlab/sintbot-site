@@ -477,7 +477,7 @@ Finish the [Slack setup walkthrough](https://sintbot.com/guide/install/#slack) f
 
 - Commands start with `!`, because Slack keeps `/` for its own commands: `!status`, `!stop`, `!skip`, `!new`, `!model` and `!help`. Outside threads, `/sint stop` and the other commands also work.
 - While a task runs, your message shows ⏳; it becomes ✅ when the answer arrives. Progress text is not shown while it runs.
-- To stop a task, send `!stop` (in a channel, @mention the bot; sending it in the task’s thread works too), or use `/sint stop` outside a thread. Apps declared as a Slack Agent also show Slack’s own Stop button in channel threads.
+- To stop a task, say stop where the task is. In the task’s thread, @mention the bot with `!stop`: only that thread’s task stops, and queued tasks still run. To stop the whole channel, the current task and everything queued, @mention the bot with `!stop` as a new message in the channel, or use `/sint stop` there. In a direct message, just send `!stop`. Apps declared as a Slack Agent also show Slack’s own Stop button in channel threads; it does the same as `!stop` typed in that thread.
 - A task that could not finish, for example because the service was stopped mid-way, gets ⚠️ instead of ⏳, and its thread says it did not finish. SintBot never runs it again by itself; send it again if you still need it.
 - In a channel, each thread is its own task. While a task runs, a message in its thread (@mention the bot there) joins that task once the model reads it; it gets ⏳ too, and the answer arrives in that thread. A new @mention outside that thread waits as a task of its own: its thread says it is queued, and the answer arrives in its own thread. At most two messages wait; beyond that the bot asks you to send again once the current task is done. In a direct message, a message sent while a task runs joins it. To make every message wait instead of joining, turn off busy follow-ups for that project in the console. `!skip` drops the current task and continues with the queue.
 - Send images and files together with the task; they are saved on your Mac for the task to read. Files over 30 MB are not downloaded.
@@ -1218,7 +1218,7 @@ APP
 
 - 命令以 `!` 开头，因为 `/` 被 Slack 留给它自己的命令：`!status`、`!stop`、`!skip`、`!new`、`!model`、`!help`。线程之外也可以用 `/sint stop` 等斜杠命令。
 - 任务进行中，你的消息上会有 ⏳，答案送达后变成 ✅。进行中不显示文字进度。
-- 停止任务：发 `!stop`（频道里要 @机器人，在任务的线程里发也可以），或在线程之外用 `/sint stop`。声明为 Slack Agent 的应用，频道线程里还有 Slack 原生的停止（Stop）按钮。
+- 停止任务：在哪说停，就停哪。在任务的线程里 @机器人发 `!stop`，只停这个线程的任务，排队的照常处理。要停整个频道（当前任务和所有排队的），在频道里另发一条消息 @机器人 `!stop`，或者用 `/sint stop`。私聊里直接发 `!stop`。声明为 Slack Agent 的应用，频道线程里还有 Slack 原生的停止（Stop）按钮，效果和在这个线程里发 `!stop` 一样。
 - 没能完成的任务（比如服务中途被停掉）会把 ⏳ 换成 ⚠️，线程里会说这条没有完成。SintBot 不会自己重跑；还需要的话请重发。
 - 频道里每个线程是一件独立的任务。任务进行中，在它的线程里再发一条（同样要 @它），模型读到后会补进当前任务，这条消息也会挂上 ⏳，答案回在这个线程里。在这个线程之外另起的 @ 会作为单独的任务排队：它的线程里会提示「已排队」，答案回在它自己的线程里。最多排两条，再多会请你等当前任务结束后重发。私聊里，任务进行中再发的消息补进当前任务。想让所有消息都排队而不补进，在控制台把这个项目的「忙时跟进」关掉。`!skip` 跳过当前任务，接着处理排队的。
 - 图片和文件随任务一起发，会保存到你的 Mac 供任务读取。超过 30 MB 的文件不下载。
