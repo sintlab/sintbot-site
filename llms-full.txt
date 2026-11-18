@@ -13,7 +13,7 @@ Generated from https://sintbot.com/ and its guide pages by scripts/build-zh.mjs,
 - Models: Claude through Claude Code, GPT through Codex; GLM, MiniMax, DeepSeek, Kimi and other services through compatible endpoints and your own API keys.
 - Install (recommended, desktop app 0.1.2): download https://github.com/sintlab/sintbot-desktop/releases/latest/download/SintBot_0.1.2_aarch64.dmg, move SintBot to Applications and open it. The app includes the SintBot service and Node.js.
 - Install (terminal, needs Node.js 22+): `curl -fsSL https://sintbot.com/install.sh | bash`, then follow https://sintbot.com/guide/install/#terminal
-- Current versions: service 1.4.25 (npm package `sintbot`), desktop app 0.1.2.
+- Current versions: service 1.4.26 (npm package `sintbot`), desktop app 0.1.2.
 - Updates: from the console, Settings → Software updates.
 - Data: projects, notes and settings are ordinary files on your Mac; chat platforms and model services need a network connection.
 - Author WaterTian; publisher SintLab.
@@ -284,7 +284,7 @@ Check the connection status under Settings → WeCom. If it shows Disconnected, 
 
 ### Prepare your project Mac
 
-The terminal steps below are for **SintBot 1.4.25** on macOS with Node.js 22 or later and Codex or Claude Code. Start with local conversations, or connect 1–32 Feishu China project groups. The desktop App includes Node.js.
+The terminal steps below are for **SintBot 1.4.26** on macOS with Node.js 22 or later and Codex or Claude Code. Start with local conversations, or connect 1–32 Feishu China project groups. The desktop App includes Node.js.
 
 - You can start with the automatically created project folder or choose an existing project on this Mac.
 - Node.js is version 22 or later.
@@ -319,7 +319,7 @@ curl -fsSL https://sintbot.com/install.sh | bash
 
 **Installation complete**
 
-When you see `Installed and verified SintBot 1.4.25`, installation is complete. Continue with Feishu and project configuration.
+When you see `Installed and verified SintBot 1.4.26`, installation is complete. Continue with Feishu and project configuration.
 
 ##### Optional: preview the installation plan
 
@@ -578,7 +578,7 @@ Make the active navigation item easier to see, using the existing accent color.
 Send an updated screenshot after checking the same two widths.
 ```
 
-**While a task is running in 1.4.25**
+**While a task is running in 1.4.26**
 
 Send additional instructions directly in the project group. Busy follow-ups are on by default for Claude Code and Codex; they queue when disabled or unavailable. “Joined” means the model has read the message, and long-running tools can delay that step.
 
@@ -683,7 +683,7 @@ Keep recurring checks in a project checklist. When a check is due, send the task
 
 Project files stay on the machine; chat messages and model requests use the configured external services. Account terms and usage limits apply.
 
-##### Starting and stopping the 1.4.25 foreground installation
+##### Starting and stopping the 1.4.26 foreground installation
 
 Keep the terminal running while you use the connected group. Press Ctrl-C and wait for shutdown to finish. For a normal restart, use the same start command from the installation guide; do not rerun initialization.
 
@@ -715,7 +715,7 @@ Platform walkthroughs: [Slack](https://sintbot.com/guide/slack/) · [Feishu](htt
 - 模型：通过 Claude Code 用 Claude，通过 Codex 用 GPT；GLM、MiniMax、DeepSeek、Kimi 等通过兼容端点和自己的 API Key 接入。
 - 安装（推荐，桌面版 0.1.2）：下载 https://github.com/sintlab/sintbot-desktop/releases/latest/download/SintBot_0.1.2_aarch64.dmg ，把 SintBot 拖进「应用程序」后打开。App 自带 SintBot 服务和 Node.js。
 - 安装（终端，需要 Node.js 22 及以上）：`curl -fsSL https://sintbot.com/install.sh | bash`，后续步骤见 https://sintbot.com/zh/guide/install/#terminal
-- 当前版本：服务 1.4.25（npm 包 `sintbot`），桌面版 0.1.2。
+- 当前版本：服务 1.4.26（npm 包 `sintbot`），桌面版 0.1.2。
 - 更新：在控制台「设置 → 软件更新」里完成。
 - 数据：项目、笔记和设置是你 Mac 上的普通文件；聊天平台和模型服务需要联网。
 - 作者 WaterTian，发布方 SintLab。
@@ -986,7 +986,7 @@ SintBot 把这个会话绑定到项目，机器人回复「已连接项目 …�
 
 ### 准备项目所在的 Mac
 
-以下终端步骤对应 **SintBot 1.4.25**，需要 macOS、Node.js 22 及以上，以及 Codex 或 Claude Code。可以先使用本机对话，也可连接 1–32 个中国区飞书项目群；桌面 App 已自带 Node.js。
+以下终端步骤对应 **SintBot 1.4.26**，需要 macOS、Node.js 22 及以上，以及 Codex 或 Claude Code。可以先使用本机对话，也可连接 1–32 个中国区飞书项目群；桌面 App 已自带 Node.js。
 
 - 可以先用自动创建的项目目录，也可以选择这台 Mac 上已有的项目。
 - Node.js 版本为 22 或以上。
@@ -1021,7 +1021,7 @@ curl -fsSL https://sintbot.com/install.sh | bash
 
 **安装完成**
 
-看到 `Installed and verified SintBot 1.4.25` 即表示安装完成。接下来配置飞书和项目。
+看到 `Installed and verified SintBot 1.4.26` 即表示安装完成。接下来配置飞书和项目。
 
 ##### 可选：先预览安装计划
 
@@ -1280,7 +1280,7 @@ APP
 检查同样的两种宽度后，发更新截图。
 ```
 
-**1.4.25 任务进行中如何补充要求**
+**1.4.26 任务进行中如何补充要求**
 
 直接在项目群发送补充。Claude Code 与 Codex 默认开启忙时跟进，关闭或暂不支持时排队。“已加入”表示模型已读取，执行较长的工具步骤时可能需要等待。
 
@@ -1385,7 +1385,7 @@ Claude Code 群在执行器自报支持压缩时，可在两轮之间整理当�
 
 项目文件保存在本机；群消息和模型请求会使用配置的外部服务，并遵循对应账号的条款和用量限制。
 
-##### 1.4.25 前台安装的启动与停止
+##### 1.4.26 前台安装的启动与停止
 
 使用已接入的群时，保持启动终端运行。停止时按 Ctrl-C，等待进程退出。日常重启沿用安装指南里的启动命令，不要重复初始化。
 
