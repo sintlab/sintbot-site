@@ -13,7 +13,7 @@ Generated from https://sintbot.com/ by scripts/build-zh.mjs — the same facts a
 - Models: Claude through Claude Code, GPT through Codex; GLM, MiniMax, DeepSeek, Kimi and other services through compatible endpoints and your own API keys.
 - Install (recommended, desktop app 0.1.3): download https://github.com/sintlab/sintbot-desktop/releases/latest/download/SintBot_0.1.3_aarch64.dmg, move SintBot to Applications and open it. The app includes the SintBot service and Node.js.
 - Install (terminal, needs Node.js 22+): `curl -fsSL https://sintbot.com/install.sh | bash`, then follow https://sintbot.com/guide/install/#terminal
-- Current versions: service 1.4.27 (npm package `sintbot`), desktop app 0.1.3.
+- Current versions: service 1.4.28 (npm package `sintbot`), desktop app 0.1.3.
 - Updates: from the console, Settings → Software updates.
 - Data: projects, notes and settings are ordinary files on your Mac; chat platforms and model services need a network connection.
 - Author WaterTian; publisher SintLab.
@@ -31,7 +31,7 @@ Generated from https://sintbot.com/ by scripts/build-zh.mjs — the same facts a
 - [Full documentation](https://sintbot.com/llms-full.txt): these facts, the FAQ and all guide pages as Markdown, in English and Chinese
 - [SintBot on GitHub](https://github.com/sintlab/sintbot): code and documentation for SintBot
 - [SintBot for macOS on GitHub](https://github.com/sintlab/sintbot-desktop): the desktop app; releases carry the signed and notarized disk image
-- [sintbot on npm](https://www.npmjs.com/package/sintbot): exact version 1.4.27; use the isolated installer and versioned guide on the website
+- [sintbot on npm](https://www.npmjs.com/package/sintbot): exact version 1.4.28; use the isolated installer and versioned guide on the website
 - [WaterTian](https://github.com/WaterTian): the sole author of SintBot
 - [SintLab](https://sintlab.com/): the publisher and project studio for SintBot
 - [Terms of Service](https://sintbot.com/terms.html): licensing and acceptable use
@@ -85,7 +85,7 @@ Yes. SintBot is free and open source, with no paid tier and no SintBot account t
 - 模型：通过 Claude Code 用 Claude，通过 Codex 用 GPT；GLM、MiniMax、DeepSeek、Kimi 等通过兼容端点和自己的 API Key 接入。
 - 安装（推荐，桌面版 0.1.3）：下载 https://github.com/sintlab/sintbot-desktop/releases/latest/download/SintBot_0.1.3_aarch64.dmg ，把 SintBot 拖进「应用程序」后打开。App 自带 SintBot 服务和 Node.js。
 - 安装（终端，需要 Node.js 22 及以上）：`curl -fsSL https://sintbot.com/install.sh | bash`，后续步骤见 https://sintbot.com/zh/guide/install/#terminal
-- 当前版本：服务 1.4.27（npm 包 `sintbot`），桌面版 0.1.3。
+- 当前版本：服务 1.4.28（npm 包 `sintbot`），桌面版 0.1.3。
 - 更新：在控制台「设置 → 软件更新」里完成。
 - 数据：项目、笔记和设置是你 Mac 上的普通文件；聊天平台和模型服务需要联网。
 - 作者 WaterTian，发布方 SintLab。
