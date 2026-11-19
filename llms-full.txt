@@ -60,7 +60,9 @@ Download the desktop app, move it to Applications and open it. Connect Slack, Fe
 
 macOS · Node.js included · Codex / Claude Code · Slack · Feishu · WeCom
 
-[Install the desktop app](https://sintbot.com/guide/install/#desktop) [Connect Feishu](https://sintbot.com/guide/install/#feishu)
+[Install the desktop app](https://sintbot.com/guide/install/#desktop) [Connect Slack](https://sintbot.com/guide/install/#slack)
+
+Also supported: [Feishu](https://sintbot.com/guide/install/#feishu) · [WeCom](https://sintbot.com/guide/install/#wecom)
 
 ### Three steps to your first task
 
@@ -74,11 +76,13 @@ Open the downloaded DMG. Drag SintBot on the left to Applications on the right, 
 
 #### 02 Choose a project and connection
 
-On first launch, the App prepares its local service and opens setup. Name your project and choose Codex or Claude Code. Choose “Use on this Mac first” to start locally, or scan with a Feishu China team identity to connect a project group.
+On first launch, the App prepares its local service and opens setup. Name your project and choose Codex or Claude Code. Under Chat platform the English page lists Slack first: create your own Slack app from a link that is already filled in, paste two tokens, then send the bot one message. [Connect Slack](https://sintbot.com/guide/install/#slack) below has each step.
+
+Feishu and WeCom are also supported. Pick “飞书 · Feishu” there to scan with a Feishu China team identity and connect a project group, or “企业微信 · WeCom” to scan with WeCom and create a bot; see [Feishu](https://sintbot.com/guide/install/#feishu) or [WeCom](https://sintbot.com/guide/install/#wecom) below. To start locally instead, choose “Use on this Mac first” and connect Slack later.
 
 #### 03 Send your first task
 
-Use Chat for local conversations, or the new project group for Feishu. Ask “Read the first line of README.md and reply with that line only”, then compare the reply with your file. The screen below shows where to enter a local task.
+Use Chat for local conversations, or the Slack conversation you connected (@mention the bot in a channel). With Feishu, use the new project group; with WeCom, the chat you connected. Ask “Read the first line of README.md and reply with that line only”, then compare the reply with your file. The screen below shows where to enter a local task.
 
 **Desktop installation is complete**
 
@@ -176,7 +180,7 @@ Have Codex or Claude Code working on your Mac. Sign in to Feishu China on your p
 
 #### 01 Choose your project on the Mac
 
-First launch opens setup. Enter a project name and choose the executor. Use the new project folder or expand “Use an existing project folder”. Select “Connect Feishu”.
+First launch opens setup. Enter a project name, choose the executor and pick “飞书 · Feishu” under Chat platform. Use the new project folder or expand “Use an existing project folder”. Select “Connect Feishu”.
 
 If you are not an organization administrator, expand “Organization options” and select “I am not an organization administrator”. An administrator will need to finish app availability and publication.
 
@@ -461,15 +465,15 @@ Open the desktop App and give a task locally, in Slack, or in a Feishu or WeCom 
 
 [Start with your first message](https://sintbot.com/guide/usage/#first-task)
 
-Start with the [desktop installation guide](https://sintbot.com/guide/install/#desktop), then choose a local conversation or connect Feishu. Existing installations do not need another scan.
+Start with the [desktop installation guide](https://sintbot.com/guide/install/#desktop), then [connect Slack](https://sintbot.com/guide/install/#slack) or choose a local conversation. [Feishu](https://sintbot.com/guide/install/#feishu) and [WeCom](https://sintbot.com/guide/install/#wecom) are also supported. Existing installations do not need to connect again.
 
 APP
 
 ### Your desktop workspace
 
-Open Chat to give a local task. Groups · Projects selects the folder, model and thinking depth. Models · Library manages accounts and API keys. Settings contains Feishu connections and software updates. Start with a read-only task, then adjust execution permissions as needed.
+Open Chat to give a local task. Groups · Projects selects the folder, model and thinking depth. Models · Library manages accounts and API keys. Settings contains the Slack, Feishu and WeCom connections and software updates. Start with a read-only task, then adjust execution permissions as needed.
 
-Local conversations need no Feishu account. To work in a Feishu group, connect it by scanning first. Both routes use the same project and model settings.
+Local conversations need no Slack, Feishu or WeCom account. To work in Slack, connect it first; Feishu and WeCom connect by scanning with your phone. Every route uses the same project and model settings.
 
 ### Start working in Slack
 
