@@ -93,8 +93,8 @@
     "zh": "看看它怎么工作"
   },
   "plat.trio": {
-    "en": "macOS · Slack · Claude Code / Codex",
-    "zh": "macOS · 飞书 · Claude Code / Codex"
+    "en": "Apple silicon · macOS 12+",
+    "zh": "Apple 芯片 · macOS 12 或更高版本"
   },
   "what.kicker": {
     "en": "FROM THE GROUP TO THE PROJECT",
@@ -117,7 +117,7 @@
     "en": "Your next project<br><em>in the group chat</em>",
     "zh": "<span class=\"zh-title-line\">把下一个项目</span><span class=\"zh-title-line\"><em>接进群里</em></span>"
   },
-  "plugin.lede": {"en": "Download the macOS app and start on your Mac, connect Slack in three short steps, or connect Feishu by scanning. Keep using your installed and signed-in Claude Code or Codex.", "zh": "下载 macOS 桌面版，先在本机对话，也可扫码连接飞书。沿用已经安装并登录的 Claude Code 或 Codex。"},
+  "plugin.lede": {"en": "Sign in to Claude Code or Codex on your Mac, then open SintBot and choose a project folder. Send your first task locally or from Slack, Feishu or WeCom.", "zh": "先在 Mac 上登录 Claude Code 或 Codex，再打开 SintBot，选择项目文件夹。你可以在本机发出第一条任务，也可以接入飞书、Slack 或企业微信。"},
   "plugin.meta.free": {
     "en": "Free & open source",
     "zh": "免费开源"
