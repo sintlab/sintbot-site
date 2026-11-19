@@ -125,7 +125,7 @@ First launch opens setup. Enter a project name, choose the executor and pick “
 
 Both tokens are saved on this Mac only; never post them in a chat. If a token lands in the wrong field, setup says which kind you pasted.
 
-If this Mac reaches Slack only through a proxy (for example on mainland-China networks), enter an `http://` address under “Proxy” in the Slack step; it is filled in for you when the terminal that opened setup has a proxy set. The proxy is saved with the connection, so the background service and the desktop app use it later.
+If this Mac reaches Slack only through a proxy (for example on mainland-China networks), enter an `http://` address under “Proxy” in the Slack step; it is filled in for you when the terminal that opened setup has a proxy set. The proxy is saved with the connection, so the background service and the desktop app use it later. It is the network proxy of the whole service, so other chat platforms and the local model tools use it too.
 
 #### 03 Send the bot one message
 
@@ -953,7 +953,7 @@ Mac 上已有可用的 Codex 或 Claude Code；手机已安装企业微信，并
 
 两枚令牌只保存在这台 Mac，不要发到聊天里。贴错了框，页面会告诉你贴的是哪一种令牌。
 
-这台 Mac 要经代理才能访问 Slack 时（例如中国大陆网络），在 Slack 步骤的「代理」里填 `http://` 开头的地址；打开接入页的终端里设置了代理时，这里会自动填上。代理会随连接一起保存，后台服务和桌面 App 以后启动时也走它。
+这台 Mac 要经代理才能访问 Slack 时（例如中国大陆网络），在 Slack 步骤的「代理」里填 `http://` 开头的地址；打开接入页的终端里设置了代理时，这里会自动填上。代理会随连接一起保存，后台服务和桌面 App 以后启动时也走它。它是整个服务的网络代理，其他聊天平台和本机的模型工具也会走它。
 
 #### 03 给机器人发一句话
 
@@ -1453,7 +1453,7 @@ First launch opens setup. Enter a project name, choose the executor and pick “
 
 Both tokens are saved on this Mac only; never post them in a chat. If a token lands in the wrong field, setup says which kind you pasted.
 
-If this Mac reaches Slack only through a proxy (for example on mainland-China networks), enter an `http://` address under “Proxy” in the Slack step; it is filled in for you when the terminal that opened setup has a proxy set. The proxy is saved with the connection, so the background service and the desktop app use it later.
+If this Mac reaches Slack only through a proxy (for example on mainland-China networks), enter an `http://` address under “Proxy” in the Slack step; it is filled in for you when the terminal that opened setup has a proxy set. The proxy is saved with the connection, so the background service and the desktop app use it later. It is the network proxy of the whole service, so other chat platforms and the local model tools use it too.
 
 #### 03 Send the bot one message
 
@@ -1551,7 +1551,7 @@ SLACK · 私聊与频道
 
 两枚令牌只保存在这台 Mac，不要发到聊天里。贴错了框，页面会告诉你贴的是哪一种令牌。
 
-这台 Mac 要经代理才能访问 Slack 时（例如中国大陆网络），在 Slack 步骤的「代理」里填 `http://` 开头的地址；打开接入页的终端里设置了代理时，这里会自动填上。代理会随连接一起保存，后台服务和桌面 App 以后启动时也走它。
+这台 Mac 要经代理才能访问 Slack 时（例如中国大陆网络），在 Slack 步骤的「代理」里填 `http://` 开头的地址；打开接入页的终端里设置了代理时，这里会自动填上。代理会随连接一起保存，后台服务和桌面 App 以后启动时也走它。它是整个服务的网络代理，其他聊天平台和本机的模型工具也会走它。
 
 #### 03 给机器人发一句话
 
