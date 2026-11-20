@@ -295,7 +295,7 @@ ${GUIDES.slice(2).map(guide).join("\n\n")}`;
 const MARK = "<!-- GENERATED from /index.html by scripts/build-zh.mjs — edit index.html / app.js, then run the script -->";
 const src = pageSrc;
 const en = renderBody(head(src, "en"), "en");
-const zh = renderBody(head(src, "zh"), "zh").replace("<head>", `<head>\n    ${MARK}`).replace(/href="\/guide\/(install|usage)\/"/g, 'href="/zh/guide/$1/"');
+const zh = renderBody(head(src, "zh"), "zh").replace("<head>", `<head>\n    ${MARK}`).replace(/href="\/guide\//g, 'href="/zh/guide/');
 
 const targets = [["index.html", en], [join("zh", "index.html"), zh], ["llms.txt", llms()], ["llms-full.txt", llmsFull()]];
 if (check) {
