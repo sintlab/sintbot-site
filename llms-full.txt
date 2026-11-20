@@ -11,9 +11,9 @@ Generated from https://sintbot.com/ and its guide pages by scripts/build-zh.mjs,
 - Runs on: Apple silicon Macs with macOS 12 or later; needs an installed, signed-in Claude Code or Codex.
 - Chat platforms: Slack channels and direct messages, Feishu groups, WeCom groups and direct chats; or a local conversation in the app with no chat account.
 - Models: Claude through Claude Code, GPT through Codex; GLM, MiniMax, DeepSeek, Kimi and other services through compatible endpoints and your own API keys.
-- Install (recommended, desktop app 0.1.4): download https://github.com/sintlab/sintbot-desktop/releases/latest/download/SintBot_0.1.4_aarch64.dmg, move SintBot to Applications and open it. The app includes the SintBot service and Node.js.
+- Install (recommended, desktop app 0.1.5): download https://github.com/sintlab/sintbot-desktop/releases/latest/download/SintBot_0.1.5_aarch64.dmg, move SintBot to Applications and open it. The app includes the SintBot service and Node.js.
 - Install (terminal, needs Node.js 22+): `curl -fsSL https://sintbot.com/install.sh | bash`, then follow https://sintbot.com/guide/install/#terminal
-- Current versions: service 1.4.29 (npm package `sintbot`), desktop app 0.1.4.
+- Current versions: service 1.4.29 (npm package `sintbot`), desktop app 0.1.5.
 - Updates: from the console, Settings → Software updates.
 - Data: projects, notes and settings are ordinary files on your Mac; chat platforms and model services need a network connection.
 - Author WaterTian; publisher SintLab.
@@ -66,9 +66,9 @@ Also supported: [Feishu](https://sintbot.com/guide/install/#feishu) · [WeCom](h
 
 ### Three steps to your first task
 
-For Apple silicon Macs running macOS 12 or later. App 0.1.4 includes SintBot and Node.js; no separate Node.js or npm installation is needed. Install and sign in to Codex or Claude Code first.
+For Apple silicon Macs running macOS 12 or later. App 0.1.5 includes SintBot and Node.js; no separate Node.js or npm installation is needed. Install and sign in to Codex or Claude Code first.
 
-[Download for Mac](https://github.com/sintlab/sintbot-desktop/releases/latest/download/SintBot_0.1.4_aarch64.dmg)
+[Download for Mac](https://github.com/sintlab/sintbot-desktop/releases/latest/download/SintBot_0.1.5_aarch64.dmg)
 
 #### 01 Move SintBot to Applications
 
@@ -722,9 +722,9 @@ Platform walkthroughs: [Slack](https://sintbot.com/guide/slack/) · [Feishu](htt
 - 运行环境：macOS 12 及以上的 Apple 芯片 Mac；需要已安装并登录的 Claude Code 或 Codex。
 - 聊天平台：飞书群、企业微信的群和单聊、Slack 的频道和私聊；也可以不接聊天平台，在 App 里本机对话。
 - 模型：通过 Claude Code 用 Claude，通过 Codex 用 GPT；GLM、MiniMax、DeepSeek、Kimi 等通过兼容端点和自己的 API Key 接入。
-- 安装（推荐，桌面版 0.1.4）：下载 https://github.com/sintlab/sintbot-desktop/releases/latest/download/SintBot_0.1.4_aarch64.dmg ，把 SintBot 拖进「应用程序」后打开。App 自带 SintBot 服务和 Node.js。
+- 安装（推荐，桌面版 0.1.5）：下载 https://github.com/sintlab/sintbot-desktop/releases/latest/download/SintBot_0.1.5_aarch64.dmg ，把 SintBot 拖进「应用程序」后打开。App 自带 SintBot 服务和 Node.js。
 - 安装（终端，需要 Node.js 22 及以上）：`curl -fsSL https://sintbot.com/install.sh | bash`，后续步骤见 https://sintbot.com/zh/guide/install/#terminal
-- 当前版本：服务 1.4.29（npm 包 `sintbot`），桌面版 0.1.4。
+- 当前版本：服务 1.4.29（npm 包 `sintbot`），桌面版 0.1.5。
 - 更新：在控制台「设置 → 软件更新」里完成。
 - 数据：项目、笔记和设置是你 Mac 上的普通文件；聊天平台和模型服务需要联网。
 - 作者 WaterTian，发布方 SintLab。
@@ -775,9 +775,9 @@ macOS · 自带 Node.js · Codex / Claude Code · 飞书可选
 
 ### 三个步骤，开始使用
 
-支持 macOS 12 及以上的 Apple 芯片 Mac。App 0.1.4 内置 SintBot 和 Node.js，无需另装 Node.js 或运行 npm。请先安装并登录 Codex 或 Claude Code，确认所选执行器可以使用。
+支持 macOS 12 及以上的 Apple 芯片 Mac。App 0.1.5 内置 SintBot 和 Node.js，无需另装 Node.js 或运行 npm。请先安装并登录 Codex 或 Claude Code，确认所选执行器可以使用。
 
-[下载 Mac 桌面版](https://github.com/sintlab/sintbot-desktop/releases/latest/download/SintBot_0.1.4_aarch64.dmg)
+[下载 Mac 桌面版](https://github.com/sintlab/sintbot-desktop/releases/latest/download/SintBot_0.1.5_aarch64.dmg)
 
 #### 01 把 SintBot 拖入应用程序
 
