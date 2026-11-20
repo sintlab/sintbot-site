@@ -44,7 +44,30 @@
         "@context": "https://schema.org",
         "@graph": [
           {
+            "@type": "Organization",
+            "@id": "https://sintbot.com/#publisher",
+            "name": "SintLab",
+            "url": "https://sintlab.com/",
+            "sameAs": [
+              "https://github.com/sintlab"
+            ]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://sintbot.com/#website",
+            "name": "SintBot",
+            "url": "https://sintbot.com/",
+            "inLanguage": [
+              "en",
+              "zh-CN"
+            ],
+            "publisher": {
+              "@id": "https://sintbot.com/#publisher"
+            }
+          },
+          {
             "@type": "SoftwareApplication",
+            "@id": "https://sintbot.com/#software",
             "name": "SintBot",
             "url": "https://sintbot.com/",
             "applicationCategory": "DeveloperApplication",
@@ -66,12 +89,7 @@
               "https://www.npmjs.com/package/sintbot"
             ],
             "publisher": {
-              "@type": "Organization",
-              "name": "SintLab",
-              "url": "https://sintlab.com/",
-              "sameAs": [
-                "https://github.com/sintlab"
-              ]
+              "@id": "https://sintbot.com/#publisher"
             },
             "inLanguage": "en",
             "description": "SintBot is a free, open-source personal AI agent on your own Mac. Message it in Slack, Feishu or WeCom and it works with Claude Code or Codex, alone or in a team channel."
@@ -87,7 +105,11 @@
           },
           {
             "@type": "FAQPage",
+            "@id": "https://sintbot.com/#faq",
             "url": "https://sintbot.com/#faq",
+            "isPartOf": {
+              "@id": "https://sintbot.com/#website"
+            },
             "inLanguage": "en",
             "mainEntity": [
               {
@@ -173,7 +195,8 @@
       data-domains="sintbot.com"
     ></script>
     <script defer src="/track.js"></script>
-
+    <link rel="describedby" type="text/plain" href="https://sintbot.com/llms.txt" title="SintBot summary for AI readers">
+    <link rel="describedby" type="text/plain" href="https://sintbot.com/llms-full.txt" title="SintBot full documentation">
   </head>
   <body class="taste-site">
     <!-- Icon sprite (Lucide, ISC) — referenced as <svg class="ico" width="20" height="20"><use href="#i-name"/></svg> -->

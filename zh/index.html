@@ -45,7 +45,30 @@
         "@context": "https://schema.org",
         "@graph": [
           {
+            "@type": "Organization",
+            "@id": "https://sintbot.com/#publisher",
+            "name": "SintLab",
+            "url": "https://sintlab.com/",
+            "sameAs": [
+              "https://github.com/sintlab"
+            ]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://sintbot.com/#website",
+            "name": "SintBot",
+            "url": "https://sintbot.com/",
+            "inLanguage": [
+              "en",
+              "zh-CN"
+            ],
+            "publisher": {
+              "@id": "https://sintbot.com/#publisher"
+            }
+          },
+          {
             "@type": "SoftwareApplication",
+            "@id": "https://sintbot.com/#software",
             "name": "SintBot",
             "url": "https://sintbot.com/zh/",
             "applicationCategory": "DeveloperApplication",
@@ -67,12 +90,7 @@
               "https://www.npmjs.com/package/sintbot"
             ],
             "publisher": {
-              "@type": "Organization",
-              "name": "SintLab",
-              "url": "https://sintlab.com/",
-              "sameAs": [
-                "https://github.com/sintlab"
-              ]
+              "@id": "https://sintbot.com/#publisher"
             },
             "inLanguage": "zh-CN",
             "description": "SintBot 是跑在你自己 Mac 上的免费开源个人 AI 助理：在飞书、企业微信或 Slack 里交代一句，本机的 Claude Code / Codex 就开工。一个人用或进项目群都行，模型可选 GPT、Claude、GLM、DeepSeek、MiniMax、Kimi，项目文件与共享记忆留在本机。"
@@ -88,7 +106,11 @@
           },
           {
             "@type": "FAQPage",
+            "@id": "https://sintbot.com/zh/#faq",
             "url": "https://sintbot.com/zh/#faq",
+            "isPartOf": {
+              "@id": "https://sintbot.com/#website"
+            },
             "inLanguage": "zh-CN",
             "mainEntity": [
               {
@@ -174,7 +196,8 @@
       data-domains="sintbot.com"
     ></script>
     <script defer src="/track.js"></script>
-
+    <link rel="describedby" type="text/plain" href="https://sintbot.com/llms.txt" title="SintBot summary for AI readers">
+    <link rel="describedby" type="text/plain" href="https://sintbot.com/llms-full.txt" title="SintBot full documentation">
   </head>
   <body class="taste-site">
     <!-- Icon sprite (Lucide, ISC) — referenced as <svg class="ico" width="20" height="20"><use href="#i-name"/></svg> -->

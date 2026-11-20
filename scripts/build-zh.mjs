@@ -99,9 +99,23 @@ function setOnce(html, re, value, label) {
 function jsonLd(lang) {
   const page = lang === "zh" ? `${SITE}/zh/` : `${SITE}/`;
   const authorId = `${SITE}/#author`;
+  const publisherId = `${SITE}/#publisher`;
+  const websiteId = `${SITE}/#website`;
   const graph = [
     {
+      "@type": "Organization", "@id": publisherId,
+      name: "SintLab", url: "https://sintlab.com/",
+      sameAs: ["https://github.com/sintlab"],
+    },
+    {
+      "@type": "WebSite", "@id": websiteId,
+      name: "SintBot", url: `${SITE}/`,
+      inLanguage: ["en", "zh-CN"],
+      publisher: { "@id": publisherId },
+    },
+    {
       "@type": "SoftwareApplication",
+      "@id": `${SITE}/#software`,
       name: "SintBot",
       url: page,
       applicationCategory: "DeveloperApplication",
@@ -119,7 +133,7 @@ function jsonLd(lang) {
       // Same entity elsewhere: only public pages that are SintBot itself (cc-bot is a separate project).
       sameAs: ["https://github.com/sintlab/sintbot", "https://www.npmjs.com/package/sintbot"],
       // Publishing/project identity only. Authorship belongs solely to WaterTian.
-      publisher: { "@type": "Organization", name: "SintLab", url: "https://sintlab.com/", sameAs: ["https://github.com/sintlab"] },
+      publisher: { "@id": publisherId },
       inLanguage: lang === "zh" ? "zh-CN" : "en",
       description: t["meta.description"][lang],
     },
@@ -132,7 +146,9 @@ function jsonLd(lang) {
     },
     {
       "@type": "FAQPage",
+      "@id": `${page}#faq`,
       url: `${page}#faq`,
+      isPartOf: { "@id": websiteId },
       inLanguage: lang === "zh" ? "zh-CN" : "en",
       mainEntity: faqIds.map((i) => ({
         "@type": "Question",
@@ -168,6 +184,8 @@ function head(html, lang) {
   html = setOnce(html, meta("name", "twitter:image:alt"), attr(pick("meta.ogAlt")), "twitter:image:alt");
   const ld = html.match(/<script type="application\/ld\+json">[\s\S]*?<\/script>/g);
   if (!ld || ld.length !== 1) fail(`expected exactly one JSON-LD block in index.html, found ${ld ? ld.length : 0}`);
+  html = html.replace(/\s*<link rel="describedby"[^>]*>/g, "");
+  html = html.replace(/\s*<\/head>/, `\n    <link rel="describedby" type="text/plain" href="${SITE}/llms.txt" title="SintBot summary for AI readers">\n    <link rel="describedby" type="text/plain" href="${SITE}/llms-full.txt" title="SintBot full documentation">\n  </head>`);
   return html.replace(ld[0], jsonLd(lang));
 }
 
