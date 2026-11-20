@@ -13,7 +13,7 @@ Generated from https://sintbot.com/ and its guide pages by scripts/build-zh.mjs,
 - Models: Claude through Claude Code, GPT through Codex; GLM, MiniMax, DeepSeek, Kimi and other services through compatible endpoints and your own API keys.
 - Install (recommended, desktop app 0.1.5): download https://github.com/sintlab/sintbot-desktop/releases/latest/download/SintBot_0.1.5_aarch64.dmg, move SintBot to Applications and open it. The app includes the SintBot service and Node.js.
 - Install (terminal, needs Node.js 22+): `curl -fsSL https://sintbot.com/install.sh | bash`, then follow https://sintbot.com/guide/install/#terminal
-- Current versions: service 1.4.29 (npm package `sintbot`), desktop app 0.1.5.
+- Current versions: service 1.4.30 (npm package `sintbot`), desktop app 0.1.5.
 - Updates: from the console, Settings → Software updates.
 - Data: projects, notes and settings are ordinary files on your Mac; chat platforms and model services need a network connection.
 - Author WaterTian; publisher SintLab.
@@ -719,9 +719,29 @@ CHANGELOG
 
 ## What changed in each release
 
-Every SintBot release from 1.4.1 to 1.4.29, newest first, with the notes published for that version.
+Every SintBot release from 1.4.1 to 1.4.30, newest first, with the notes published for that version.
 
-[Latest release: 1.4.29](https://sintbot.com/changelog/#v1.4.29)
+[Latest release: 1.4.30](https://sintbot.com/changelog/#v1.4.30)
+
+2026-11-20
+
+### 1.4.30 · Fewer held groups, models chosen per group, a tidier console
+
+- **A start that fails at once no longer holds the group**: When Claude Code, or Codex in a group with Add follow-up messages to the current task turned off, reports an error before it starts on a message (for example the usage limit is reached, the sign-in has expired, the previous session cannot be resumed, the chosen model is not available, or the model service cannot be reached), the message is closed as not handled: the conversation is told why and asked to send it again later, and the group keeps handling new messages. Before, this held the whole group, and later messages only got a notice that the last task's result was unknown, without the reason. When the session cannot be resumed, the next message starts a new one; when Codex fails before it starts, the service log says what it printed (with secrets masked). Exceptions: within 90 seconds after an upgrade switches over (while it can still roll back to the previous release), or when the turn combined several messages, the group is still held as before. Codex groups with Add follow-up messages to the current task turned on (the default) keep the previous behaviour in this release.
+
+- **A message cut off by a crash is reported, not redone, and the group is not held**: When the service exits on an error nothing caught, the message it was working on gets a note in its conversation after the restart saying it was not finished (with who sent it and how it began); it is not redone and the group is not held. The session is kept, and its next turn tells the model not to continue that request unless you ask again. The group is still held when the turn combined several messages, more messages were waiting in that conversation, the executor had not yet confirmed it started, or the final reply had begun, and for a turn cut off by stopping the service yourself or by an upgrade restart.
+
+- **Sealing a held group is no longer blocked by its own task**: When you seal a held group from Needs attention in the console, that group's own stuck turn no longer counts as another group's task, so the seal goes ahead; it still waits while other groups are running or have messages queued. Before, a group stuck after its usage limit was reached could be refused because other groups still had tasks, and had to be sealed from the command line with the service stopped.
+
+- **A tidier console**: On the settings page, the Feishu, WeCom and Slack cards fold to one row by default (icon, name, status dot and a short summary); open one for the details, and its dot turns red when the connection fails. The interface language moves from the sidebar to a new Interface card at the top of the settings page. Version history is no longer kept in the console: Release notes → at the bottom of the Software updates card, the version badge next to the brand and the upgrade announcement in groups all link to that version's section of the release notes on the website. Chinese text left on the English interface is now in English.
+
+- **Models chosen per group; adding a model starts with the key**: Model cards that use an API key now work like subscription cards: each group picks its model on its card under Groups · Projects or with /model, and once the card has a key, the list shows the models the provider offers right now; a group that has not chosen runs the model stored on the card. Add model asks for the API key right after the preset, and Verify key runs a short trial on the spot and says why it failed (for example the key was refused, or the endpoint does not speak the Anthropic format); the endpoint, small model, default thinking depth and the rest move under Advanced. A custom endpoint still takes its endpoint and model on the card, shared by its groups.
+
+- **Model presets**: The preset list changes: the GLM preset moves to glm-5.3, Kimi is added and Volcano Ark is removed; the default models of the DeepSeek and MiniMax presets follow the providers' current docs as well. The MiniMax preset uses MiniMax's current endpoint, api.minimax.cn. Model cards and presets show the provider's small logo, the two subscription presets (Claude subscription and GPT via Codex) come first, and the terminal wizard's providers change to match. Existing model cards, including Volcano Ark cards and cards on the old MiniMax endpoint, are not affected and can still be used and edited.
+
+- **Check and upgrade Claude Code**: The Claude subscription model card shows the version of the Claude Code program on this Mac and, when a newer one exists, upgrades it after you confirm: a copy installed with npm is reinstalled with npm, one from the native installer uses its own updater, and any other install is left for a manual upgrade. It will not upgrade while a group is running or queuing a Claude Code task, and every attempt is recorded in the audit log; groups that use Claude Code run the new version from their next turn.
+
+- **The installer points to Slack first**: After the one-line install, the closing message links to connecting your project in Slack first, then notes that Feishu and WeCom are supported too, with their links.
 
 2026-11-19
 
@@ -1049,7 +1069,7 @@ Every SintBot release from 1.4.1 to 1.4.29, newest first, with the notes publish
 
 - **Incident seal command**: Restart first; for a group that is still paused, stop the service and run sintbot incident seal --group <group ID>. The old records are kept unchanged, the group reopens with new records, and messages left unfinished before the seal are not processed again.
 
-To update, open Settings → Software updates in the console. This page is generated from [CHANGELOG.en.json](https://github.com/sintlab/sintbot/blob/v1.4.29/CHANGELOG.en.json) at the v1.4.29 tag of the public repository.
+To update, open Settings → Software updates in the console. This page is generated from [CHANGELOG.en.json](https://github.com/sintlab/sintbot/blob/v1.4.30/CHANGELOG.en.json) at the v1.4.30 tag of the public repository.
 
 
 # 中文
@@ -1065,7 +1085,7 @@ To update, open Settings → Software updates in the console. This page is gener
 - 模型：通过 Claude Code 用 Claude，通过 Codex 用 GPT；GLM、MiniMax、DeepSeek、Kimi 等通过兼容端点和自己的 API Key 接入。
 - 安装（推荐，桌面版 0.1.5）：下载 https://github.com/sintlab/sintbot-desktop/releases/latest/download/SintBot_0.1.5_aarch64.dmg ，把 SintBot 拖进「应用程序」后打开。App 自带 SintBot 服务和 Node.js。
 - 安装（终端，需要 Node.js 22 及以上）：`curl -fsSL https://sintbot.com/install.sh | bash`，后续步骤见 https://sintbot.com/zh/guide/install/#terminal
-- 当前版本：服务 1.4.29（npm 包 `sintbot`），桌面版 0.1.5。
+- 当前版本：服务 1.4.30（npm 包 `sintbot`），桌面版 0.1.5。
 - 更新：在控制台「设置 → 软件更新」里完成。
 - 数据：项目、笔记和设置是你 Mac 上的普通文件；聊天平台和模型服务需要联网。
 - 作者 WaterTian，发布方 SintLab。
@@ -2351,9 +2371,29 @@ Source: https://sintbot.com/zh/changelog/
 
 ## 每个版本改了什么
 
-SintBot 从 1.4.1 到 1.4.29 的每个版本，新版在前，内容与该版发布的更新说明一致。
+SintBot 从 1.4.1 到 1.4.30 的每个版本，新版在前，内容与该版发布的更新说明一致。
 
-[最新版本 1.4.29](https://sintbot.com/zh/changelog/#v1.4.29)
+[最新版本 1.4.30](https://sintbot.com/zh/changelog/#v1.4.30)
+
+2026-11-20
+
+### 1.4.30 · 少挂群、型号按群选、控制台整理
+
+- **执行器没开工就报错，不再挂群**: Claude Code，或关掉了「后续消息加入当前处理」的 Codex 群，还没开始处理就明确报错时（如额度用完、登录失效、上次的会话接不上、所选型号用不了、暂时连不上模型服务），这条消息按「没有处理」收尾：群里说明原因、请你之后重发，群照常处理后续消息。此前这种情况会挂起整个群，之后的消息只回「上一个任务结果不明」，看不出原因。会话接不上时，下一条从新会话开始；Codex 开工前失败时，服务日志会写明它输出了什么（已打码）。例外：升级切换后 90 秒内（这时还可能回退到旧版），或这一轮合并了多条消息时，仍按旧规则挂群。开着「后续消息加入当前处理」的 Codex 群（默认开着）这一版仍按旧规则处理。
+
+- **服务崩溃打断的消息：告知，不重做，不挂群**: 服务因没接住的错误退出后，重启时被打断的那条消息会在原会话收到一条「刚才这条没做完」的说明（带提问人和原文开头），不会自动重做，群也不再挂起。会话保留，下一轮会提醒模型不要自行接着做那条，除非你再次要求。仍挂群的情形：这一轮合并了多条消息、会话里还有排队的消息、执行器还没确认开工或最终回复已开始发送，以及手动停止服务、升级重启时打断的那一轮。
+
+- **封存挂起的群，不再被它自己拦住**: 在控制台「需要你处理」里封存一个挂起的群时，这个群自己卡住的那一轮不再算作「其他群还有任务」，可以直接封存；其他群正在处理或有排队时仍要等它们结束。此前额度用完卡住的群可能因此被拒，只能停服务后用命令行封存。
+
+- **控制台整理**: 设置页的飞书、企业微信、Slack 三张平台卡默认收起成一行（图标、名字、状态点和摘要），点开看详情，连接出错时状态点变红。界面语言从侧栏移到设置页顶部新的「界面」卡。控制台不再内置版本历史：软件更新卡底部的「更新记录 →」、品牌旁的版本号和群里的升级公告，都链到官网更新记录里对应版本那一节。英文界面里残留的中文改成了英文。
+
+- **型号按群选，添加模型先填 Key**: 用 API Key 接入的模型卡也和订阅卡一样，在「群 · 项目」的群卡上或用 /model 按群选型号；卡填了 Key 后，下拉里列出这家当前可用的型号，没选过的群用卡上存的型号。「添加模型」改为选好预设后先填 API Key，可点「验证 Key」当场试跑一轮，没通过会说明原因（如 Key 被拒、端点不是 Anthropic 格式）；端点、小模型、默认思考深度等收进「高级」。自定义端点仍在卡上填端点和型号，各群共用。
+
+- **模型预设调整**: 预设列表调整：GLM 预设升到 glm-5.3，新增 Kimi，去掉火山方舟；DeepSeek、MiniMax 预设的默认型号也按官方文档更新。MiniMax 预设改用官方当前端点 api.minimax.cn。模型卡和预设显示服务商的小标识，Claude 订阅与 GPT via Codex 两张订阅预设排在最前，终端向导里的可选厂商同步调整。已有的模型卡（包括火山方舟卡和旧 MiniMax 端点的卡）不受影响，照常使用和编辑。
+
+- **Claude Code 版本检测与升级**: 控制台的 Claude 订阅模型卡显示本机 Claude Code 程序的版本，有新版时确认后可一键升级：用 npm 装的用 npm 重装，用官方安装器装的走它自带的更新，其他方式装的提示到机器上手动升级。有群正在用 Claude Code 处理任务或排队时不会升级，每次尝试都记入审计日志；用 Claude Code 的群从下一轮起用新版。
+
+- **安装完成提示改为 Slack 优先**: 一行安装命令装完后，提示先给出在 Slack 里接入项目的指南链接，再说明飞书和企业微信同样支持，并附各自的链接。
 
 2026-11-19
 
@@ -2681,4 +2721,4 @@ SintBot 从 1.4.1 到 1.4.29 的每个版本，新版在前，内容与该版发
 
 - **新增封存命令**: 先重启服务；仍然暂停的群，在服务停止后运行 sintbot incident seal --group 群 ID。原记录原样封存，这个群换一份新记录重新开放，封存前未完成的消息不会再处理。
 
-在控制台「设置 → 软件更新」里升级。本页由公开仓 v1.4.29 标签里的 [CHANGELOG.json](https://github.com/sintlab/sintbot/blob/v1.4.29/CHANGELOG.json) 生成。
+在控制台「设置 → 软件更新」里升级。本页由公开仓 v1.4.30 标签里的 [CHANGELOG.json](https://github.com/sintlab/sintbot/blob/v1.4.30/CHANGELOG.json) 生成。
