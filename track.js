@@ -70,6 +70,7 @@
     : /\/guide\/slack\//.test(path) ? "guide-slack"
     : /\/guide\/feishu\//.test(path) ? "guide-feishu"
     : /\/guide\/wecom\//.test(path) ? "guide-wecom"
+    : /\/changelog\//.test(path) ? "changelog"
     : /\/terms(\.html)?$/.test(path) ? "terms"
     : /\/privacy(\.html)?$/.test(path) ? "privacy"
     : "other";

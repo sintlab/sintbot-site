@@ -1,15 +1,15 @@
 #!/usr/bin/env node
 // Derive share metadata and structured data from the directly maintained guide pages.
-import { readFileSync, writeFileSync } from 'node:fs';
+// The changelog pages are generated (scripts/changelog.mjs) and pass through the same guideSeo().
+import { readFileSync, writeFileSync, realpathSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import path from 'node:path';
 const root = new URL('../', import.meta.url);
-const check = process.argv.includes('--check');
-const files = ['guide/install/index.html', 'guide/usage/index.html', 'zh/guide/install/index.html', 'zh/guide/usage/index.html', ...['slack', 'feishu', 'wecom'].flatMap(p => [`guide/${p}/index.html`, `zh/guide/${p}/index.html`])];
+const files = ['guide/install/index.html', 'guide/usage/index.html', 'zh/guide/install/index.html', 'zh/guide/usage/index.html', ...['slack', 'feishu', 'wecom'].flatMap(p => [`guide/${p}/index.html`, `zh/guide/${p}/index.html`]), 'changelog/index.html', 'zh/changelog/index.html'];
 const escape = s => s.replaceAll('&', '&amp;').replaceAll('"', '&quot;').replaceAll('<', '&lt;');
 const decode = s => s.replaceAll('&amp;', '&').replaceAll('&quot;', '"').replaceAll('&lt;', '<');
-let stale = false;
-for (const file of files) {
-  const path = new URL(file, root);
-  const original = readFileSync(path, 'utf8');
+
+export function guideSeo(original, file) {
   const title = decode(original.match(/<title>([^<]+)<\/title>/)?.[1] || '');
   const description = decode(original.match(/<meta name="description" content="([^"]+)"/)?.[1] || '');
   const url = original.match(/<link rel="canonical" href="([^"]+)"/)?.[1];
@@ -32,11 +32,21 @@ for (const file of files) {
   // These tags were absent or pointed at a favicon before the shared image existed.
   html = html.replace(/<meta (?:property="og:image(?::[^\"]*)?"|name="twitter:[^\"]*") content="[^"]*"\s*\/?>(?:\n)?/g, '');
   const tags = `\n<!-- Guide SEO: generated -->\n<meta property="og:image" content="${image}">\n<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">\n<meta property="og:image:alt" content="${escape(title)}">\n<meta name="twitter:card" content="summary_large_image">\n<meta name="twitter:title" content="${escape(title)}">\n<meta name="twitter:description" content="${escape(description)}">\n<meta name="twitter:image" content="${image}">\n<script type="application/ld+json">${JSON.stringify(graph).replaceAll('<', '\\u003c')}</script>\n<!-- End guide SEO -->\n`;
-  html = html.replace('</head>', tags + '</head>');
-  if (html !== original) {
-    stale = true;
-    if (!check) writeFileSync(path, html);
-  }
+  return html.replace('</head>', tags + '</head>');
 }
-if (check && stale) { console.error('Guide SEO is stale: run node scripts/build-guide-seo.mjs'); process.exitCode = 1; }
-else console.log(check ? 'Guide SEO: up to date' : `Guide SEO: generated ${files.length} pages`);
+
+if (process.argv[1] && realpathSync(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  const check = process.argv.includes('--check');
+  let stale = false;
+  for (const file of files) {
+    const target = new URL(file, root);
+    const original = readFileSync(target, 'utf8');
+    const html = guideSeo(original, file);
+    if (html !== original) {
+      stale = true;
+      if (!check) writeFileSync(target, html);
+    }
+  }
+  if (check && stale) { console.error('Guide SEO is stale: run node scripts/build-guide-seo.mjs'); process.exitCode = 1; }
+  else console.log(check ? 'Guide SEO: up to date' : `Guide SEO: generated ${files.length} pages`);
+}

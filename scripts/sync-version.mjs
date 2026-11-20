@@ -1,15 +1,17 @@
 // 官网写的版本号(app.js 的 VERSION:插件卡片 + JSON-LD softwareVersion)跟 npm 上 sintbot 的最新版走。
 //   node scripts/sync-version.mjs                  只核对:不一致退出 1
-//   node scripts/sync-version.mjs --write          不一致就改:VERSION → 公开仓该版标签的 install.sh → build-zh
-//                                                  → 文字变了的页面 sitemap lastmod 改成当天(北京)
+//   node scripts/sync-version.mjs --write          不一致就改:VERSION → 公开仓该版标签的 install.sh
+//                                                  → 用该版标签的 CHANGELOG*.json 重新生成 /changelog/ 两页(scripts/changelog.mjs)
+//                                                  → build-zh → 文字变了的页面 sitemap lastmod 改成当天(北京)
 //   node scripts/sync-version.mjs --write --target 1.2.3   不查 npm,按给定版本改写(本地验改写结果用,别推)
 // 每小时由 .github/workflows/version-sync.yml 跑 --write;有改动它负责提交、请求 Pages 构建、等线上生效。
 // 在 GitHub Actions 里会把 changed=0|1、version=V 写进 $GITHUB_OUTPUT。
-import { readFileSync, writeFileSync, appendFileSync, existsSync } from 'node:fs'
+import { readFileSync, writeFileSync, appendFileSync, existsSync, mkdirSync } from 'node:fs'
 import { execFileSync } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
 import { visible } from './visible.mjs'
+import { get, loadChangelogs, changelogPages } from './changelog.mjs'
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..')
 const SITE = 'https://sintbot.com'
@@ -20,12 +22,6 @@ if (args.includes('--target') && !/^\d+\.\d+\.\d+$/.test(target || '')) throw ne
 
 const file = (f) => path.join(ROOT, f)
 const read = (f) => readFileSync(file(f), 'utf8')
-// 取网页用 curl:它认 https_proxy 等代理变量,Node 自带的 fetch 不认(墙内本机直连 raw.githubusercontent.com 会超时)
-function get(url) {
-  const out = execFileSync('curl', ['-sSL', '--max-time', '30', '-w', '\n%{http_code}', url], { encoding: 'utf8' })
-  const i = out.lastIndexOf('\n')
-  return { status: Number(out.slice(i + 1)), text: out.slice(0, i) }
-}
 const output = (k, v) => { if (process.env.GITHUB_OUTPUT) appendFileSync(process.env.GITHUB_OUTPUT, `${k}=${v}\n`) }
 
 const appJs = read('app.js')
@@ -77,16 +73,33 @@ for (const guide of ['guide/install/index.html', 'zh/guide/install/index.html',
 
 // 一键安装脚本是公开仓根目录 install.sh 的副本,跟该版标签对齐
 const raw = get(`https://raw.githubusercontent.com/sintlab/sintbot/v${latest}/install.sh`)
+let installer = null
 if (raw.status === 200) {
-  const upstream = raw.text
-  if (upstream !== read('install.sh')) { writeFileSync(file('install.sh'), upstream); changed.push(`install.sh 换成 v${latest} 标签的版本`) }
+  installer = raw.text
 } else if (target) {
   console.log(`(标签 v${latest} 取不到 install.sh:HTTP ${raw.status},--target 下跳过)`)
 } else {
   throw new Error(`取 v${latest} 标签的 install.sh 失败:HTTP ${raw.status}`)
 }
+// 更新记录两页按同一标签的 CHANGELOG.en.json / CHANGELOG.json 生成;取不到或缺这一版的条目就不推进版本
+let notes = null
+try {
+  notes = changelogPages(latest, loadChangelogs(latest))
+} catch (e) {
+  if (!(target && e.status)) throw e
+  console.log(`(${e.message},--target 下跳过更新记录)`)
+}
 
-// Do not advance VERSION before a required installer fetch succeeds: otherwise
+// Fetch everything first, then write: a failed fetch leaves every file as it was.
+if (installer !== null && installer !== read('install.sh')) { writeFileSync(file('install.sh'), installer); changed.push(`install.sh 换成 v${latest} 标签的版本`) }
+for (const [f, html] of notes || []) {
+  if (existsSync(file(f)) && read(f) === html) continue
+  mkdirSync(path.dirname(file(f)), { recursive: true })
+  writeFileSync(file(f), html)
+  changed.push(`${f} 按 v${latest} 标签的更新记录重新生成`)
+}
+
+// Do not advance VERSION before the required fetches succeed: otherwise
 // the next same-version run would skip the interrupted upgrade permanently.
 writeFileSync(file('app.js'), appJs.replace(oldVersion, latest))
 changed.push(`VERSION ${site} → ${latest}`)

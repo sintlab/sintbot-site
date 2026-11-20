@@ -19,6 +19,7 @@
   const translations = {
   "nav.install": {en:"Install",zh:"安装指南"},
   "nav.usage": {en:"Usage",zh:"使用说明"},
+  "nav.changelog": {en:"Changelog",zh:"更新记录"},
   "install.usage": {en:"Read the usage guide",zh:"阅读使用说明"},
   "nav.features": {"en": "Features", "zh": "功能"},
   "features.kicker": {"en": "MORE THAN A CHAT REPLY", "zh": "从对话到完整的工作流程"},
@@ -567,6 +568,7 @@
     document.querySelectorAll('meta[name="description"], meta[property="og:description"], meta[name="twitter:description"]').forEach((meta) => meta.content = description);
     document.querySelectorAll('meta[property="og:title"], meta[name="twitter:title"]').forEach((meta) => meta.content = translations["meta.title"][lang]);
     document.querySelectorAll("[data-guide]").forEach(link => {link.href = `${lang === "zh" ? "/zh" : ""}/guide/${link.dataset.guide}/`;});
+    document.querySelectorAll("[data-local-page]").forEach(link => {link.href = `${lang === "zh" ? "/zh" : ""}/${link.dataset.localPage}/`;});
     document.querySelectorAll(".install-guide").forEach((link) => { link.href = `${lang === "zh" ? "/zh" : ""}/guide/install/`; });
 
     document.querySelectorAll("[data-i18n]").forEach((el) => {

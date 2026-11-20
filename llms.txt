@@ -25,9 +25,11 @@ Generated from https://sintbot.com/ by scripts/build-zh.mjs — the same facts a
 - [Installation guide](https://sintbot.com/guide/install/): desktop app download, connecting Slack, Feishu or WeCom, the terminal alternative and the first task
 - [Usage guide](https://sintbot.com/guide/usage/): task briefs, model selection, project notes and daily workflows
 - Platform walkthroughs: [Slack](https://sintbot.com/guide/slack/), [Feishu](https://sintbot.com/guide/feishu/), [WeCom](https://sintbot.com/guide/wecom/)
+- [Changelog](https://sintbot.com/changelog/): what changed in each release, generated from the release notes at the version's tag
 - [安装指南](https://sintbot.com/zh/guide/install/): 桌面版下载，连接 Slack、飞书、企业微信，终端安装与第一条任务
 - [使用说明](https://sintbot.com/zh/guide/usage/): 派活、模型、记忆与协作
 - 平台专题：[Slack](https://sintbot.com/zh/guide/slack/)、[飞书](https://sintbot.com/zh/guide/feishu/)、[企业微信](https://sintbot.com/zh/guide/wecom/)
+- [更新记录](https://sintbot.com/zh/changelog/): 每个版本改了什么，由该版标签里的更新说明生成
 - [Full documentation](https://sintbot.com/llms-full.txt): these facts, the FAQ and all guide pages as Markdown, in English and Chinese
 - [SintBot on GitHub](https://github.com/sintlab/sintbot): code and documentation for SintBot
 - [SintBot for macOS on GitHub](https://github.com/sintlab/sintbot-desktop): the desktop app; releases carry the signed and notarized disk image

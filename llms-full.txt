@@ -711,6 +711,345 @@ The installation guide takes you from the local package to a verified group repl
 Platform walkthroughs: [Slack](https://sintbot.com/guide/slack/) · [Feishu](https://sintbot.com/guide/feishu/) · [WeCom](https://sintbot.com/guide/wecom/)
 
 
+Source: https://sintbot.com/changelog/
+
+CHANGELOG
+
+## What changed in each release
+
+Every SintBot release from 1.4.1 to 1.4.29, newest first, with the notes published for that version.
+
+[Latest release: 1.4.29](https://sintbot.com/changelog/#v1.4.29)
+
+2026-11-19
+
+### 1.4.29 · Scheduled tasks, and a clean exit on crashes
+
+- **Scheduled tasks**: Create, edit, pause and delete them on a conversation's console card under More settings → Scheduled tasks. There are three kinds: Model (at the time, a line marked [Scheduled] is posted and then handled like an ordinary message), Message (posts the text only) and Script (runs a command in the project folder without the model, and posts one line if it fails or times out). The time can be a cron expression, an alias such as @daily, a shorthand such as 每天 09:00, or one date and time; each task can have its own time zone. Each due time fires at most once; runs missed while the service was down, or reached more than two minutes late, are not made up; failed runs and runs with an unknown result are not retried. In this release tasks are created and changed only in the console, and WeCom conversations do not have them yet.
+
+- **A clean exit on crashes**: When the service hits an error nothing caught, it logs the time and stack trace, stops scheduled tasks and running executors, releases its lock and removes temporary files, then exits with code 1 so the system starts it again; the cleanup waits at most 20 seconds. Before, it exited on the spot and Codex or Claude Code child processes could keep running in the background. The interrupted turn is still treated as having an unknown result after the restart.
+
+- **Stricter proxy addresses**: In Slack setup and settings, the proxy host must be an IP address or a host name in plain ASCII: names in other scripts, labels starting with xn--, and full-width dots and digits are refused; IPv6 addresses in brackets are checked by the standard rules. Before, some of these could be saved and only failed with a different error when connecting.
+
+- **Slack and console fixes**: In Slack, ⚠️ on a held conversation is no longer skipped when checking sealed records fails, and the failure is written to the service log; the log line for another machine connected to the same Slack app is worded more precisely. The busy follow-up switch in the console has English text: Add follow-up messages to the current task.
+
+2026-11-19
+
+### 1.4.28 · Slack speaks English, stopping inside a thread, a full queue no longer holds the group
+
+- **A full queue asks you to resend instead of holding the group**: When two messages are already waiting, a new one is not handled: the bot asks you to send it again after the current task, and the running task is not affected. Before, in Feishu, WeCom and direct messages this interrupted the current task and held the whole group. A message that arrives while the current task is wrapping up is also answered with a request to resend.
+
+- **Slack speaks English by default**: In Slack, the bot's notices, command replies, status and errors are in English, and the model is asked to answer in English (it still follows a member who writes in another language). Slack conversations that are already connected switch to English after the upgrade; for Chinese, change it on the conversation's console card under More settings → Notice language. Feishu, WeCom and local conversations are unchanged.
+
+- **Threads in a Slack channel are handled separately**: A new @mention in the channel while a task is running no longer joins that task: it waits its turn, runs on its own and is answered in its own thread. Only a reply in the running task's thread is added to it. Replying !stop in a thread stops only that thread's task and the queue carries on; a new @bot !stop in the channel, or /sint stop, still stops the current task and clears the queue.
+
+- **Unfinished Slack messages are marked**: After the service is killed or a conversation is sealed, messages that did not finish get ⚠️ and a single note asking you to send them again if you still need them. Deleting a queued message that has replies now cancels it as well, and several problems when the connection is renewed are fixed.
+
+- **Slack setup: proxy, Agent option and hints**: The Slack step of the setup page fills in a terminal proxy it detects (http only); it is saved as the network proxy of the whole service, so other platforms and the local model tools use it too. Declaring the app as a Slack Agent is optional and off by default. When the bot is not in a channel, it says to /invite it first; when another machine is connected to the same Slack app, the console warns about it.
+
+- **Wording for direct messages and one-to-one chats**: Help, status and notices name the kind of conversation: "this direct message" or "this channel" in Slack. In WeCom a one-to-one chat is no longer called a group, and its project note no longer tells you to mention the bot in a group.
+
+- **Console fixes**: After a failed Codex upgrade the button comes back and the reason stays (local paths are masked); when a model card points to a Codex program other than the one on the PATH, the console asks for a manual upgrade instead. The number of tasks that run at once is checked against 1–32, and changing it while the service runs explains that the configuration file must be edited and the service restarted.
+
+2026-11-18
+
+### 1.4.27 · Confirmations in the desktop app
+
+- **Confirmations work in the desktop app**: In the desktop app, console actions that need confirmation (full access, plain text, sealing, interrupting a task for a new session, removing a model, upgrading Codex and others) did not ask first. The console now shows its own confirmation dialog, the same in the app and in a browser: Cancel, Esc or a click outside does nothing.
+
+2026-11-18
+
+### 1.4.26 · Codex upgrades in the console, configuration history and stability
+
+- **Upgrade Codex and refresh models from the console**: After a model card confirms the sign-in, the model list is read again and the card says which models were added or removed; /model in a group waits for the new list (up to 8 seconds). The Codex model card shows the version of the Codex program on this Mac and, when a newer one exists and it was installed globally with npm, upgrades it in one click. It will not upgrade while a group is running a Codex task.
+
+- **Configuration history and restore**: The service stores a copy of the configuration when it starts and after every change in the console, keeping the latest 50. sintbot config history lists which settings each copy changed, never their values; sintbot config restore <version> puts one back while the service is stopped.
+
+- **Steadier**: A malformed request address no longer stops the service; a Feishu request that gets no answer for 30 seconds is abandoned instead of holding the group; previews check where a file really is before serving it; a queued message reads the group's current settings when it starts; the console accepts only sensible concurrency and turn-time values; password-free access is given only to local requests that do not come through a reverse proxy.
+
+- **Follow-ups that cite the last reply after an idle compaction (experimental)**: When Claude Code compacts its context while idle, the next turn carries the reply that was already sent, so a group message such as "1 and 3" still lands on the right items. It is kept in memory only and is gone after a restart.
+
+2026-11-18
+
+### 1.4.25 · A cleaner console
+
+- **Group cards show only what works**: Cards now show only the settings this version supports: model, thinking depth, execution mode, busy follow-up, data output and plugins (view only for now). Preview, scheduled tasks, repository, design style, icons, canvas and unbind, which are not available yet, no longer appear. The Claude allowlist folds into one line and opens for editing.
+
+- **A note when the public address is down**: If a public address is set, the console checks that it reaches this Mac. When it does not, Overview and Settings say so: Feishu sign-in from outside is unavailable for now, while the LAN console and all groups keep working.
+
+- **Overview starts with no project selected**: Opening Overview no longer preselects a project. Click a project to see its task activity, and click it again to close it.
+
+2026-11-16
+
+### 1.4.24 · Slack
+
+- **Use SintBot in Slack**: Message the bot directly, or @mention it in a channel. Answers arrive in the direct message, or in a thread under your message. It connects over Socket Mode, needs no public address and works in free workspaces.
+
+- **Three steps, no terminal**: Choose Slack on the setup page or in console Settings: create your own app from a link that is already filled in, paste two tokens, then send the bot one message to bind the project. A token pasted in the wrong field is named at once.
+
+- **See that it is working**: While a task runs your message shows ⏳ and a channel thread shows a Stop button; ⏳ becomes ✅ when the answer arrives. A follow-up sent during the task gets ⏳ too once it is read.
+
+- **Commands start with !**: Slack keeps / for its own commands, so use !status, !stop, !skip, !new and !model; outside threads /sint stop works too. Images and files sent with a task are saved on your Mac for the task.
+
+- **Create a Feishu group from the console**: Groups · Projects → Set up a group project can now create a new Feishu group and select it for binding, without creating it in Feishu first.
+
+2026-11-14
+
+### 1.4.23 · Smoother WeCom settings
+
+- **WeCom card in Settings**: The WeCom card now sits below Feishu and matches its layout: connection status, bot name and bound projects up front, with the Bot ID, connection refresh and manual entry under Advanced.
+
+- **Choose the project folder**: When adding WeCom you can browse, pick or create the project folder. A missing folder or credential is flagged at once, and the form is locked while a scan runs.
+
+- **Consistent setup wording**: With WeCom selected, the setup steps, finished message and local-chat note describe scanning to create the bot and sending one message to bind the project.
+
+2026-11-14
+
+### 1.4.22 · Connect WeCom by scanning
+
+- **Scan to create the WeCom bot**: Choose WeCom during setup, or add it from console Settings, and scan with WeCom on your phone. The bot is created and its credentials are saved on this Mac. You can still enter an existing Bot ID and Secret.
+
+- **Start from any message**: Message the bot directly, or @mention it in a group, to bind the project. A personal organization with only you in it works through direct chat. Existing Feishu projects are kept.
+
+- **Tasks and files in WeCom**: Use Codex or Claude Code, stop tasks, and have the assistant send project files and images back. The reply arrives when a task finishes; unknown send results are not retried automatically.
+
+2026-11-13
+
+### 1.4.21 · Fast for GPT groups; held groups handled in the console
+
+- **Fast per GPT group**: Codex models gain a Speed option: Standard or Fast. Turn it on from the console group card, with /model fast in the group (/model standard to go back) or on the /model card. Changing only the speed keeps the session, works while a task is running and applies from the next message. Off by default; remembered per group and per model card; scheduled tasks always run at standard speed. It cannot be enabled for a model without a Fast tier, and switching to such a model returns to Standard with a note. The receipt states the cost: about 1.5–2x speed, quota charged at 2.5x.
+
+- **Standard speed is now stated explicitly**: Every turn explicitly requests Standard unless the group enables Fast. When App Server reports a fallback, the card footer omits Fast. Older executors and the exec route do not report the effective tier, so their requested tier is not proof of acceleration.
+
+- **Seal a held group from the console**: When the service is killed during a task (power loss, forced restart) and every group is held, the service still starts and the console stays available. The overview's Needs attention card and the local conversation page offer Seal and continue: the record is archived unchanged, that message is not processed again, and the service restarts by itself with a new record. Offered only when running as a managed background service; foreground runs keep the terminal steps in the guide.
+
+- **No upgrade while the background service is disabled**: If the launchd job is disabled in the system (for example under Login Items), a console upgrade is refused with a message instead of leaving the service stopped.
+
+- **DeepSeek preset**: Configure an API Key for DeepSeek Flash and select model and effort per project.
+
+- **Missing-key preflight**: Missing API Keys are rejected before executor startup; keyless cards remain selectable in project settings.
+
+2026-11-13
+
+### 1.4.20 · Local conversations and a refined desktop interface
+
+- **Chat directly on your Mac**: Choose a project and executor without connecting a chat platform first. Conversations stay on your Mac, and Feishu can be attached later.
+
+- **A compact, consistent interface**: Setup and console share light and dark themes and follow the system by default. Collapsible project cards, settings navigation and responsive layouts fit narrower windows.
+
+- **Project memory accompanies each task**: Each turn points to project convention files and available executor memory, preserving the project context.
+
+- **Safer history and connection setup**: Recover cleanly after interrupted transcript writes. Attaching Feishu preserves local routes and history, and the package includes the complete local conversation module.
+
+- **Compact reply cards**: Elapsed time, usage and model share one footer that wraps naturally on phones.
+
+2026-11-12
+
+### 1.4.18 · Browser setup and Claude idle compaction
+
+- **Connect Feishu in the browser**: The first start opens a local setup page for project selection, phone confirmation, progress and resumable failures. Once configuration and journals are initialized, the page enters the console automatically. English and Chinese are supported.
+
+- **Save explicit model and thinking-depth choices for new groups**: Before scanning, setup reads the selected executor's live recommended model and thinking depth and saves them for the new group. An unavailable live catalog stops setup before app creation; existing choices are preserved.
+
+- **Safer cancellation and retries**: Cancellation stops at step boundaries. Retries reuse confirmed apps and groups, while configuration writes recheck current state to avoid overwriting another instance's setup.
+
+- **Idle compaction for Claude groups (experimental)**: Claude Code versions advertising compact can compact an idle session after a task when context reaches half the configured compaction window. New work stops compaction first. Successful compaction and cache behavior still await real-model validation.
+
+- **Immediate Claude quota updates from events**: Quota events from each run refresh the display promptly and reduce extra quota requests. Existing API and cache paths remain when events are unavailable.
+
+- **Compaction exit protection and clearer setup guidance**: Unconfirmed process exit retains capacity and blocks further dispatch for that group. Configuration-file notices, language-specific guide links and startup instructions are also corrected.
+
+2026-11-12
+
+### 1.4.17 · Feishu scan-to-connect and third-party quotas
+
+- **Connect Feishu with one scan**: New command sintbot connect: scan a QR code in the Feishu app to create the bot app; SintBot self-checks, opens the contact and availability scope and publishes, creates ~/Projects/<name>, creates a group with you in it, writes the configuration and initializes journals. On failure it stops at that step and tells you how to resume (--app-id, --chat); non-admins in a company organization can use --basic. The manual path remains.
+
+- **Simpler Feishu settings**: Connection status and project groups come first. New users get a three-step scan setup guide; manual setup and app details are folded away. Console administrator sign-in is separate.
+
+- **Third-party quota and balance**: GLM shows the 5-hour and weekly windows and falls back to the balance without a plan; MiniMax shows the 5-hour and weekly windows; DeepSeek shows the balance. Invalid credentials are shown as such; transient failures keep the last value for 10 minutes.
+
+- **Claude subscription quota fallback**: When the Claude Code login token has expired, the CLI refreshes it itself and SintBot reads its cached quota instead of showing "unverified"; read-only, never refreshing on its own, never blocking group commands or the console.
+
+- **Environment conflict check**: Preflight and the console model cards list environment variables and ~/.claude/settings.json or ~/.codex/config.toml settings that would reroute Claude Code or Codex; key names only, warnings only.
+
+- **Built-in core ABI 36**: Connect decisions and wording, QR encoding, quota parsing and environment checks live in the built-in core; the core build pins its toolchain and no longer depends on the crate mirror used by the builder.
+
+2026-11-11
+
+### 1.4.16 · Per-group model and thinking depth
+
+- **Choose model and depth per group**: Pick the backend, model and thinking depth on each group card in the console. Model lists come live from the local Codex and Claude Code. Subscription model cards no longer carry a model or depth; a third-party endpoint keeps its model on the model card.
+
+- **Group command /model**: Send /model for a tap-to-pick card and confirm to apply, or send /model high, /model <model>, or /model <backend> <model> <depth>. A model or depth change on the same backend continues the conversation; a backend change starts a new one. Changes wait until the group is idle; receipts and the audit log record who made them.
+
+- **Existing settings migrate automatically**: After the upgrade connects, each model card's model and depth move into its groups with the same effective values and no session reset, after a configuration backup. Custom Codex context windows are checked against each group's chosen model.
+
+2026-11-11
+
+### 1.4.15 · Simpler model settings
+
+- **Configure the Codex context window**: Choose the executor default or a custom window on each model card. Validate known limits and distinguish requested settings from runtime reports.
+
+- **Keep compaction settings per model**: Remove global inheritance. Choose the executor default or a custom value. Existing explicit global values become independent settings on existing models; new models use the executor default.
+
+- **Streamline model configuration**: Group model and reasoning, context and compaction, and connection settings. Show numeric inputs only when needed and collapse capacity details. Model trials now use the model compaction setting.
+
+2026-11-11
+
+### 1.4.14 · Model context and per-model compaction
+
+- **Read model context limits clearly**: Model cards distinguish known official model limits from the active executor window and usable capacity. Reported Claude windows do not replace known model limits.
+
+- **Set compaction per model**: Configure a Codex compaction threshold or a Claude Code compaction window for each model. Models without an override retain the legacy setting; zero uses the executor’s settings. A requested value is not a confirmed trigger point.
+
+- **Keep model details consistent**: Remove unverified compaction-point estimates and fix model-dialog refresh and English window descriptions. Installation guides explain the settings and remove a duplicated paragraph.
+
+2026-11-10
+
+### 1.4.13 · Reliability and task follow-up improvements
+
+- **Restore Claude Code health information**: Visible Claude Code models show executor version and probe results. Hidden models do not trigger extra probes.
+
+- **Retry failed upgrades safely**: Keep failed installations for inspection. Retry in a separate directory and verify before switching, without overwriting existing installations.
+
+- **Align runtime version, model and capability information**: Each turn receives the running service version and its exact tool entry. Distinguish service, global installation and available updates; consistently resolve group model overrides and defaults.
+
+- **Read locally retained group replies**: Look up this group’s recorded replies by source message or turn, with explicit provenance, status, truncation and retention limits. Unreadable Feishu cards are never reconstructed by guesswork.
+
+- **Apply concurrency and maintenance checks to trials**: Allow one console trial within shared model capacity. Refuse starts during maintenance, abort and skip saving after writer loss, and retain capacity when process closure is unknown.
+
+- **Handle early timeout callbacks**: If a timer callback arrives before the deadline, wait for the remaining interval. Abort only with elapsed-time evidence so a normal timeout is not misclassified as a fault.
+
+- **Send console messages while a task is running**: Project messages use the same followup or queue path as group messages. The console distinguishes acceptance, waiting for the model to read, and confirmed joining; repeated submissions are deduplicated.
+
+- **Continue output after moving a reply card**: Busy follow-ups preserve already displayed text on the relocated card, then stream subsequent output without replaying the old text. Updates arriving during the move and the final answer remain ordered.
+
+2026-11-10
+
+### 1.4.12 · Projects and live activity
+
+- **Projects, concurrency and context in one panel**: Show project paths, runtime, configured reasoning and context together; restore row icon actions and display task tools, reply and compact metrics after selecting a group. Remove the top available-controls notice.
+
+- **Actual task details and reported context**: Shows requests, follow-ups, progress, replies and the latest reported context. Reuses existing events without extra model calls; details load on demand and restored samples are labeled historical.
+
+2026-11-10
+
+### 1.4.11 · Unified busy follow-ups
+
+- **Busy follow-ups default on for Codex and Claude Code**: One per-group switch preserves explicit disabling. Claude follow-ups join after confirmed reading, and continuation answers form one final reply. Recalling handed-over input cancels the whole task; uncertain delivery is never replayed.
+
+2026-11-10
+
+### 1.4.10 · Interrupted task completion
+
+- **Fix: a group could stop accepting work after an executor exited mid-task**: When an accepted executor exits without a final result, the existing card shows an interruption notice. The group continues after delivery is confirmed. Partial output is not treated as an answer and the task is not automatically rerun. Check any operations already performed; uncertain closure or delivery remains held.
+
+2026-11-10
+
+### 1.4.9 · Failure completion and reply card improvements
+
+- **Fix: a reply card could remain in progress after a failed task**: After a confirmed executor error and exit, the existing card shows a failure and the group can handle the next message. Without an open card, one failure notice is sent. Uncertain delivery remains held without automatic retries.
+
+- **Improve: reply cards show the actual model and reasoning effort**: The final card shows the selected model and effort. If an unsupported effort falls back to the model default, it no longer shows that rejected effort. Long durations use minutes or hours, and absent usage no longer appears as zero tokens.
+
+- **Fix: answers stayed at the old card position after a busy-turn follow-up**: After Codex confirms a follow-up landed, the reply card moves beneath that message. An open card is copied to the new position before the old one is recalled.
+
+2026-11-10
+
+### 1.4.8 · Console interjections, upgrade notices, group messaging skills
+
+- **Fix: a message sent while the previous reply was still being delivered was refused with "wrapping up, please resend"**: A message arriving at the moment a reply, card or the stop confirmation was still on its way to Feishu used to be refused. It now waits for that delivery and is handled in arrival order; a message sent right after /stop is answered normally.
+
+- **New: the console can post a line into an idle group**: A line written in the console is posted to the group as the administrator and handled as an ordinary group message, with the reply in the group. A busy, held or upgrading group is refused with the reason; resubmitting the same line is not processed twice.
+
+- **New: a version notice card in each group after an upgrade**: On the first start after an upgrade, each serving group receives one card listing what changed. Not sent on a first install or a downgrade; can be turned off in the console.
+
+- **New: the agent in a group can send messages, notice cards and files, read history, reply, edit and recall**: The agent gains group skills: send messages, notice cards, files and images, read the group history, reply to, edit and recall its own messages, download group files and add reactions.
+
+2026-11-09
+
+### 1.4.7 · /stop no longer pauses the group
+
+- **Fix: /stop during a task could pause the whole group**: /stop removes the task's reply card, and Feishu then reports that removal as a recall. When it arrived while "stopped" was still being sent, it was treated as a fault: the group was paused until an administrator released it, and later /model and /new were refused. The recall now waits for that reply to finish and the group keeps serving.
+
+- **Fix: recalling a queued message could pause the group**: Recalling a message while its "queued" notice was still being sent also paused the whole group; the message is now cancelled once the notice has been sent.
+
+2026-11-09
+
+### 1.4.6 · A rejected Codex resume no longer holds the group
+
+- **Fix: a group held when Codex rejected a resume**: When Codex refused to continue the previous conversation before doing any work (for example a damaged Codex session history on the machine, or a conversation whose record is gone), the whole group was paused until an administrator released it. Now the group gets one "the last turn did not finish, please send it again" notice, keeps serving, and starts a new conversation, so resending works.
+
+- **Fix: a queued message stalled the group after a start failure**: When the model could not start (program missing or resume rejected), messages queued behind it each get a resend notice; before, the next new message was treated as a busy group and the whole group was paused.
+
+2026-11-09
+
+### 1.4.5 · Group commands, console settings and Codex sign-in
+
+- **New /skip in groups**: Drops only the current task; queued messages run next and the conversation is kept. /stop still cancels the current task and everything queued.
+
+- **/help is written for each group**: It opens with the group's project and model, lists commands by urgency, describes /skip, /stop and /new in the same terms (what happens to the queue and to the conversation), and explains that recalling your own message cancels it.
+
+- **New session from the console**: An idle group with every record settled starts a new conversation right away; a busy group is told to stop or wait first instead of being reported as reset.
+
+- **Models can be added and configured from the model cards**: No service restart. Changing a model id, backend or endpoint waits for the groups using it to be idle and starts a new conversation for them; the default model and models in use cannot be hidden.
+
+- **Fix: tool quality and thinking depth settings could not be saved**: They were wrongly reported as needing a service restart.
+
+- **Codex sign-in is checked with the server**: The console's Codex model card no longer trusts the local sign-in file alone. It asks the server once with the token and shows one of three states: verified, sign-in expired (run codex login again on this machine), or unverified (the server could not be reached; not treated as signed out). A revoked token no longer keeps showing as signed in.
+
+- **Fix: stopping a task before it started could swallow the next answer**: If the model process failed to start after a console stop or /skip, a stale cancelled flag could silently drop the next task's answer.
+
+2026-11-09
+
+### 1.4.4 · Upgrade progress in the console
+
+- **Confirm the upgrade in the page**: Upgrade now asks for confirmation in the page, stating the versions and that new messages wait about a minute during the switch.
+
+- **The upgrade window shows each step**: Waiting for idle groups, download and install, stopping the current service, checking records and backing up, preflight, switching and starting, and waiting for every group to connect are ticked off one by one with the elapsed time; while waiting it names the groups still working.
+
+- **Reconnects while the service restarts**: During the switch the page says the service is restarting and reconnects by itself; once the new version connects every group it reloads into the new console and shows the result once. A failed step and the restored version are marked.
+
+- **Can run in the background**: Continue in background keeps a spinner on the top-bar icon, which reopens the progress; a notice appears when the upgrade ends.
+
+- **Takes effect from 1.4.4**: The upgrade window comes from the running version: upgrading from 1.4.3 to 1.4.4 still shows the previous screen, and later upgrades show the window.
+
+2026-11-09
+
+### 1.4.3 · Progress on the reply card
+
+- **A card appears even before any output**: If nothing has been produced after 25 seconds, a "Received, working on it" card appears and the answer later replaces it in place. A turn that ends without a reply recalls that card.
+
+- **The card shows how far the task has got**: While running, one line updates every 15 seconds: how long it has run and what it is doing (reading, editing or writing which file, running a command, searching the web; file names only). After 10 minutes it updates once a minute, and notes when nothing has happened for more than 2 minutes. Delivered steps such as writing files, committing or pushing, and sending files to the group are listed with ▶ at the top of the card and fold into a "Process" section when the turn ends.
+
+- **/status shows progress**: While running it shows how many steps have run, how long ago the last activity was, and what it is doing.
+
+- **Fix: a streamed reply could fail the whole turn**: Text that arrived while the previous update was still being sent used to fail the turn; it now queues behind it and keeps updating the card.
+
+2026-11-09
+
+### 1.4.2 · Check and install new versions from the console
+
+- **Version checks in the console**: Software updates in Settings checks for stable releases at startup and daily and shows release notes when a new version is available.
+
+- **One-click upgrade for background runs**: When a launchd agent runs SintBot, Upgrade now waits until every group is idle and settled, installs the new version into its own folder and switches to it; if it does not connect every group within 90 seconds, the previous version is restored. New messages wait about a minute during the switch and are asked to be resent.
+
+- **Steps for foreground runs**: A foreground run shows how to stop, reinstall and start. Upgrades are not announced in groups.
+
+2026-11-09
+
+### 1.4.1 · A failing group stops only itself
+
+- **One group's fault leaves the others working**: When a group's last task has an outcome that cannot be confirmed (for example a reply whose delivery is unknown, or a runner that exited without a result), only that group is paused; nothing is replayed or retried and the other groups keep working. A paused group answers new messages with a short notice.
+
+- **One group no longer blocks startup**: If a group's records cannot be recovered, the other groups still start and the console marks that group Needs attention. The startup preflight fails and lists such groups.
+
+- **Incident seal command**: Restart first; for a group that is still paused, stop the service and run sintbot incident seal --group <group ID>. The old records are kept unchanged, the group reopens with new records, and messages left unfinished before the seal are not processed again.
+
+To update, open Settings → Software updates in the console. This page is generated from [CHANGELOG.en.json](https://github.com/sintlab/sintbot/blob/v1.4.29/CHANGELOG.en.json) at the v1.4.29 tag of the public repository.
+
+
 # 中文
 
 > SintBot 是跑在你自己 Mac 上的免费开源个人 AI 助理：在飞书、企业微信或 Slack 里交代一句，本机的 Claude Code / Codex 就开工。一个人用或进项目群都行，模型可选 GPT、Claude、GLM、DeepSeek、MiniMax、Kimi，项目文件与共享记忆留在本机。
@@ -2002,3 +2341,342 @@ Mac 上已有可用的 Codex 或 Claude Code；手机已安装企业微信，并
 [Slack](https://sintbot.com/zh/guide/slack/) · [飞书](https://sintbot.com/zh/guide/feishu/)
 
 [完整安装指南 →](https://sintbot.com/zh/guide/install/)
+
+
+Source: https://sintbot.com/zh/changelog/
+
+更新记录
+
+## 每个版本改了什么
+
+SintBot 从 1.4.1 到 1.4.29 的每个版本，新版在前，内容与该版发布的更新说明一致。
+
+[最新版本 1.4.29](https://sintbot.com/zh/changelog/#v1.4.29)
+
+2026-11-19
+
+### 1.4.29 · 定时任务、崩溃时先收尾再退出
+
+- **定时任务**: 在控制台群卡「更多设置 → 定时任务」里新建、编辑、暂停和删除。任务有三种：交给模型（到点先在会话里发一行「【定时】」消息，随后按一条普通消息处理）、只发一句话、在项目目录里运行一条命令（不经模型，失败或超时时发一行提示）。时间可写 cron、@daily 这类别名、「每天 09:00」或一次性的日期时间，可按任务指定时区。每次到点至多触发一次；服务没在运行或晚了两分钟以上的不补；失败和结果不明的都不重试。这一版任务只能在控制台建和改，企业微信会话暂不支持。
+
+- **崩溃时先收尾再退出**: 服务遇到没接住的错误时，先在日志里记下时间和调用栈，停掉定时任务和正在运行的执行器、释放锁、清理临时文件，再以退出码 1 退出，由系统重新拉起；收尾最多等 20 秒。此前会当场退出，Codex 或 Claude Code 子进程可能留在后台继续运行。被打断的那一轮在重启后仍按结果不明处理。
+
+- **代理地址校验更严**: Slack 接入和设置里的代理地址，主机必须写 IP 地址或英文（纯 ASCII）主机名：中文域名、xn-- 开头的域名标签、全角的点和数字都不再接受；方括号里的 IPv6 地址按标准规则检查。之前这些写法有的能保存，到连接时才报别的错。
+
+- **Slack 与控制台小修**: Slack 里封存记录核对失败时，挂起会话的 ⚠️ 不再跟着漏挂，失败会写进服务日志；同一个 Slack 应用被另一台机器连着时，日志说法更准确。控制台英文界面里「后续消息加入当前处理」开关有了英文。
+
+2026-11-19
+
+### 1.4.28 · Slack 说英文、线程里停止，排满不再挂群
+
+- **排满时提示重发，不再挂起群**: 排队已满（已有 2 条在等）时，再来的消息不处理，机器人提示等当前任务结束后重发，正在运行的任务不受影响。此前在飞书、企业微信和私聊里，这种情况会中断当前任务并挂起整个群。当前任务正在收尾时到达的消息，也改为提示稍后重发。
+
+- **Slack 里默认说英文**: 机器人在 Slack 里的提示、命令回复、状态和报错改为英文，并请模型用英文回答（成员用别的语言提问时仍跟随提问的人）。已接入的 Slack 会话升级后同样变为英文；要中文，在控制台 Slack 群卡「更多设置 → 群内提示语言」里改。飞书、企业微信和本机对话不变。
+
+- **Slack 频道里各线程分开处理**: 任务进行中在频道里另起的 @ 不再并进当前任务，而是单独排队、单独处理，答案回到各自的线程；只有同一线程里的补充才会并进正在运行的任务。在线程里回复 !stop 只停这个线程的任务，排队的照常处理；在频道里另起一条 @机器人 !stop 或用 /sint stop，仍停止当前任务并清空排队。
+
+- **Slack 里没完成的消息会标出来**: 服务被强行停止或会话被封存后，没完成的消息打上 ⚠️，并提示需要的话重新发送，这句提示只发一次。删除带回复的排队消息现在也能取消；更换连接时的几处问题已修复。
+
+- **Slack 接入：代理、Agent 选项与提示**: 接入页的 Slack 步骤会预填检测到的终端代理（只支持 http），它作为整个服务的网络代理保存，其他平台和本机的模型工具也会走它。「声明为 Slack Agent」改为可选，默认不勾。机器人不在频道里时提示先用 /invite 请它进来；同一个 Slack 应用被另一台机器连着时，控制台会提示。
+
+- **私聊、单聊的说法**: Slack 私聊里称「这个私聊」、频道里称「本频道」，企业微信单聊里称「这个单聊」，帮助、状态和提示都按会话类型说；企业微信单聊的项目说明不再写「在群里 @ 机器人」。
+
+- **控制台小修**: 升级 Codex 失败后按钮会恢复，并保留失败原因（本机路径打码）；模型卡另外指定了 Codex 程序、与系统里的不是同一个时，改为提示手动升级。同时运行的任务数按 1–32 校验，服务运行中修改会说明要改配置文件并重启。
+
+2026-11-18
+
+### 1.4.27 · 桌面 App 里的确认框
+
+- **桌面 App 里的确认框恢复正常**: 在桌面 App 里用控制台时，开启完全访问、设为明文、封存、中断任务并开新会话、移除模型、升级 Codex 等需要确认的操作不会先弹出确认。现在控制台改用页面内自己的确认框，App 和浏览器里一样：点取消、按 Esc 或点空白处都不执行。
+
+2026-11-18
+
+### 1.4.26 · 控制台升级 Codex、配置历史与稳定性
+
+- **控制台里升级 Codex、刷新型号**: 模型卡验证登录成功后重新读取可选型号，写明新增和不再提供的型号；群里 /model 先等新清单（最多 8 秒）。Codex 模型卡显示本机 Codex 程序的版本，有新版且是 npm 全局安装时可一键升级；有群正在用 Codex 处理任务时不会升级。
+
+- **配置历史与还原**: 服务启动和每次在控制台改设置后自动存一份配置（保留最近 50 份）。sintbot config history 列出每份改了哪些设置，不显示值；sintbot config restore <版本> 在服务停止时把配置还原成那一份。
+
+- **更稳**: 格式异常的请求地址不再让服务退出；飞书接口请求 30 秒没有响应就放弃，不再占住群；预览按文件的实际位置判断能否访问；排队的消息开始时读取群的最新设置；控制台只接受合理范围内的并发数和单轮时长；免密访问只给不经反向代理的本机请求。
+
+- **空闲整理后接得上上一条回复（实验性）**: Claude Code 空闲时整理完上下文，下一轮会带上上一轮已经发出的回复原文，群里按编号说「1 和 3」也能接上。只在内存里保留，服务重启后不带。
+
+2026-11-18
+
+### 1.4.25 · 控制台更清爽
+
+- **群项目卡片只留能用的**: 卡片只显示这一版可用的设置：模型、思考深度、执行模式、忙时跟进、数据输出和插件（插件这一版只能查看）。暂未接入的预览、定时任务、仓库、设计风格、图标、画布和解除绑定不再出现；Claude 的白名单收成一行，点开再编辑。
+
+- **公网入口打不开时提示一句**: 设置了公网地址时，控制台定时检查它能否回到这台 Mac；打不开就在概览和设置里提示：外网飞书登录暂不可用，局域网控制台和各群照常。
+
+- **概览默认不选群**: 打开概览时不再预先选中群项目，点了哪个群才显示它的任务活动，再点一次收起。
+
+2026-11-16
+
+### 1.4.24 · 接入 Slack
+
+- **在 Slack 里用 SintBot**: 私聊机器人直接发任务，频道里 @它；答案回在私聊里或你那条消息的线程里。通过 Socket Mode 连接，不需要公网地址，免费工作区也能用。
+
+- **三步接入，不用开终端**: 接入页和控制台设置里选 Slack：用已经填好的链接创建你自己的应用，粘贴两枚令牌，再给机器人发一句话就绑定项目。贴错令牌会直接指出贴的是哪一种。
+
+- **看得见在不在跑**: 任务进行中，你的消息上有 ⏳，频道线程里有 Stop 按钮；答案送达后 ⏳ 变成 ✅。任务进行中补发的消息被读到后也会挂上 ⏳。
+
+- **命令以 ! 开头**: Slack 把 / 留给它自己的命令，所以用 !status、!stop、!skip、!new、!model；线程之外也可以用 /sint stop。随任务发来的图片和文件会保存到本机交给任务。
+
+- **控制台直接建飞书群**: 「群 · 项目 → 配置群项目」里可以创建新的飞书群并选中绑定，不用先去飞书里建群。
+
+2026-11-14
+
+### 1.4.23 · 企业微信设置更顺手
+
+- **设置页企业微信卡片**: 企业微信卡片移到飞书下方，样式与飞书一致：显示连接状态、机器人名称和已绑定项目数；Bot ID、刷新连接和手动填写收进「高级」。
+
+- **直接选择项目目录**: 添加企业微信时可以浏览、选择或新建项目文件夹；没选目录或没填凭据会当场提示，扫码进行中不能误改。
+
+- **接入页说法统一**: 选企业微信时，步骤说明、完成提示和本机对话提示都改为扫码创建机器人、发一句话绑定项目。
+
+2026-11-14
+
+### 1.4.22 · 扫码接入企业微信
+
+- **扫码创建企业微信机器人**: 首次接入页选择企业微信，或在控制台设置里添加，用手机企业微信扫码即可创建机器人，凭据自动保存在这台 Mac；已有机器人也可以手动填写 Bot ID 和 Secret。
+
+- **发一句话完成接入**: 给机器人单聊发消息，或在群里 @它，即可绑定项目；只有自己一个人的个人组织也能直接单聊使用。保留已有飞书项目。
+
+- **在企业微信里处理任务和文件**: 支持 Codex 与 Claude Code、停止任务，助手可以把项目文件和图片发回会话。任务完成时回复结果；发送结果不明时不会自动重发。
+
+2026-11-13
+
+### 1.4.21 · GPT 群可以开 Fast，暂停的群在控制台处理
+
+- **GPT 群可以单独开 Fast**: Codex 模型多了「速度」选项：标准或 Fast。控制台群卡、群里发 /model fast（回到标准发 /model 标准）、/model 弹出的模型卡上都能开；只改速度不重置会话，任务进行中也能改，下一条消息生效。默认不开；按群、按模型卡分开记；定时任务始终按标准速度。所选型号没有 Fast 档时不让开，换成没有 Fast 档的型号会自动回到标准并说一句。开 Fast 的回执写明代价：约 1.5–2 倍速，额度按 2.5 倍扣。
+
+- **没开 Fast 时明确按标准速度跑**: 每轮明确请求标准速度，只有群中主动开启 Fast 时才请求加速，避免继承执行器的默认加速配置。App Server 明确回报回退时，卡片页脚不再显示 Fast；旧执行器和 exec 路线未回报实际档位时不能证明加速已生效。
+
+- **暂停的群在控制台里封存并继续**: 任务进行中服务被强杀（断电、强制重启）后，所有群都暂停时服务照常启动，控制台可用；概览页「需要处理」卡和本机对话页提供「封存并继续」：原记录原样存档，那条消息不再处理，服务自动重启后用新的记录继续。只在后台托管运行时提供；前台运行仍按使用指南在终端处理。
+
+- **后台服务被停用时不再升级**: 后台任务在系统里被停用（例如登录项里关掉）时，控制台升级会先拒绝并提示，避免升级后服务起不来。
+
+- **DeepSeek 预设**: 预设 DeepSeek Flash，API Key 自行填写；型号与思考深度按群配置。
+
+- **缺密钥提前提示**: 第三方模型缺少 API Key 时不启动执行器；未填密钥的模型卡仍可在群项目中选择。
+
+2026-11-13
+
+### 1.4.20 · 本机对话与全新桌面界面
+
+- **直接在 Mac 上对话**: 无需先接聊天平台，即可选择项目和执行器开始本机对话；对话历史保存在本机，可随后补接飞书。
+
+- **统一且紧凑的界面**: 控制台与接入页共用亮暗主题，默认跟随系统；群卡可折叠，设置支持分区导航，优化手机与窄窗口排版。
+
+- **项目记忆随任务接续**: 每轮提供项目约定文件和执行器可用记忆的入口，沿用项目自身的上下文。
+
+- **更稳妥的历史保存与接入**: 修复中断写入后对话记录丢失的问题；补接飞书保留原本机路由和历史，安装包包含完整本机对话模块。
+
+- **精简回复卡片**: 耗时、用量和模型合并为紧凑页脚，在手机上自然换行。
+
+2026-11-12
+
+### 1.4.18 · 浏览器接入与 Claude 空闲整理
+
+- **在浏览器完成飞书接入**: 首次启动会打开本机接入页；填写项目、扫码确认、查看进度与失败续做均在页面完成。配置和日志初始化完成后自动进入控制台，支持中英文。
+
+- **为新群明确保存型号与思考深度**: 扫码前读取所选执行器的实时推荐型号和思考深度，并保存为新群设置；取不到实时清单时先停止接入，已有选择不会被覆盖。
+
+- **接入取消与重试更可靠**: 取消会在步骤边界停止；重试复用已确认的应用和群，写配置前再次检查已有状态，避免覆盖其他实例的配置。
+
+- **Claude 群空闲整理（实验性）**: 支持 compact 的 Claude Code 可在任务结束后、上下文达到自定义压缩窗口一半时整理当前会话；有新任务时先停止整理。成功压缩和缓存效果的真实模型验收仍待补充。
+
+- **Claude 额度事件即时更新**: 优先读取每轮自带的额度事件，及时更新用量显示并减少额外额度查询；没有事件时保留既有接口与缓存路径。
+
+- **整理退出保护与接入说明修正**: 未确认整理进程退出时保留并发名额并阻止该群继续派发；同步修正配置文件提示、指南语言链接及启动说明。
+
+2026-11-12
+
+### 1.4.17 · 飞书扫码接入与第三方额度
+
+- **扫码一键接入飞书**: 新命令 sintbot connect：手机飞书扫码即创建机器人应用，自动自检、放开通讯录与可用范围并发版，新建项目目录 ~/Projects/<项目名>，建群并拉你进群，写入配置并初始化日志。失败时按步骤停下并给出续做方式（--app-id、--chat）；公司组织里的非管理员可用 --basic。手动接入流程保留。
+
+- **飞书设置按使用流程整理**: 优先查看连接状态和管理项目群；新用户按扫码、自动建群、群里发任务三步开始。手动接入与应用信息收进高级说明，管理员和控制台登录单独设置。
+
+- **第三方额度与余额**: GLM 显示 5 小时 / 周配额窗口，没有套餐时退回查余额；MiniMax 显示 5 小时与周窗口；DeepSeek 余额。凭据失效会明确显示，瞬时故障保留上次结果 10 分钟。
+
+- **Claude 登录额度兜底**: Claude Code 登录令牌过期时，由 CLI 自行刷新并读取其缓存的额度，不再显示「未验证」；只读不代刷，不阻塞群命令和控制台。
+
+- **环境冲突检查**: 预检与控制台模型卡列出会改道 Claude Code / Codex 的环境变量和 ~/.claude/settings.json、~/.codex/config.toml 设置，只列键名，只提示不修改。
+
+- **内置核心 ABI 36**: 扫码接入的决策与文案、二维码编码、额度解析和环境冲突判定都在内置核心中实现；核心构建锁定工具链，产物不再依赖构建机使用的 crate 镜像。
+
+2026-11-11
+
+### 1.4.16 · 按群选型号与思考深度
+
+- **型号与深度按群选**: 控制台「群 · 项目」卡上选后端、具体型号和思考深度，型号清单取自本机 Codex / Claude Code 的实时数据；订阅登录的模型卡不再设型号和深度，第三方端点的型号仍在模型卡上。
+
+- **群命令 /model**: 发 /model 打开点选卡，选好点「确认更新」生效；也可直接发 /model high、/model 型号、/model 后端 型号 深度。同一后端换型号或调深度接着当前对话，换后端开新对话；都要等群空闲，回执和审计记下是谁改的。
+
+- **原有设置自动迁移**: 升级连上后，模型卡上原有的型号和深度写进各群，生效值不变、会话不重置；改前自动备份配置。Codex 自定义上下文窗口按各群所选型号的上限校验。
+
+2026-11-11
+
+### 1.4.15 · 模型设置简化
+
+- **独立设置 Codex 上下文窗口**: 在模型卡片选择执行器默认或自定义窗口，保存时校验已知上限；窗口设置与实际运行回报分开展示。
+
+- **统一逐模型压缩设置**: 取消全局继承，只保留执行器默认与自定义；旧显式全局值转为原有模型的独立设置，新模型使用执行器默认。
+
+- **精简模型配置交互**: 型号推理、上下文压缩、连接登录分组；数值按需显示，容量说明可展开。测试入口同步采用模型的压缩设置。
+
+2026-11-11
+
+### 1.4.14 · 模型窗口与逐模型压缩设置
+
+- **分清模型上限与当前窗口**: 模型卡区分已知的官方模型上限、执行器当前窗口和可用容量；Claude 较小的运行上报不再覆盖已知官方上限。
+
+- **逐模型设置自动压缩**: 每个模型分别设置 Codex 压缩阈值或 Claude Code 压缩窗口；未单独设置时保留旧全局值，0 交给执行器已有设置或默认策略。设置值不代表实际触发点。
+
+- **修正窗口说明与文档**: 移除未经实测的压缩点估算，修复配置弹窗刷新及英文窗口说明；双语安装指南补充设置含义，并修正重复段落。
+
+2026-11-10
+
+### 1.4.13 · 可靠性与任务跟进体验
+
+- **恢复 Claude Code 健康信息**: 可见的 Claude Code 模型显示执行器版本与探测结果；主动隐藏的模型不额外探测。
+
+- **升级失败可重新尝试**: 失败安装保留供排查；重试使用独立目录，校验后才能切换，不覆盖已有安装。
+
+- **统一运行版本、模型与能力说明**: 每轮注入当前服务版本和准确工具入口，区分服务、全局安装与可用更新；群模型覆盖和执行器默认值统一展示。
+
+- **读取本群已保存答复**: 可按消息或轮次读取本机保存的答复，明确来源、状态、截断与保留范围，不补造不可读的飞书卡片。
+
+- **试运行纳入并发与维护准入**: 最多一项控制台试运行，共享模型并发名额；维护时拒绝启动，失去写入权限后中止且不保存结果，进程关闭未知时保留名额。
+
+- **修正硬超时提前触发**: 计时回调早于截止时间时继续等待；获得超时证明后才中止任务，避免正常超时被误判为异常收尾。
+
+- **任务进行中可从控制台插话**: 群项目列表不再因任务忙碌禁用插话；沿用群内跟进或排队流程，区分已受理、等待模型读取与已加入，重复提交不重复处理。
+
+- **卡片移位后接续输出**: 收到忙时补充后，新卡直接保留已显示内容，后续输出继续追加，避免旧内容从头打字；移位期间的新内容和最终结果保持顺序。
+
+2026-11-10
+
+### 1.4.12 · 群项目与实时活动
+
+- **群项目、并发与上下文集中展示**: 群项目、运行耗时、项目路径、模型思考深度与上下文集中展示；恢复群行图标操作，选择群后查看任务，详情采用工具标签、回复正文和紧凑统计。 移除顶部当前可用操作说明卡片。
+
+- **真实任务详情与可信上下文**: 展示请求、补话、进度、回复及最近上报的上下文。使用既有事件，不额外请求模型；详情按需加载，重启后历史采样明确标注。
+
+2026-11-10
+
+### 1.4.11 · 统一忙时跟进
+
+- **Codex 与 Claude Code 默认开启忙时跟进**: 统一按群开关并持久保存关闭；Claude 确认读取后加入任务，续轮答案合并为一条最终回复。撤回已交给执行器的补话取消整轮，未知送达不重放。
+
+2026-11-10
+
+### 1.4.10 · 执行中断收尾
+
+- **修复：模型进程中途退出后群无法继续处理消息**: 执行器确认退出但未返回最终结果时，原卡片显示中断提示，确认送达后继续处理下一条消息。不会将草稿当答案或自动重跑；已执行的操作需先核对。关闭或发送结果不明时仍保留现场。
+
+2026-11-10
+
+### 1.4.9 · 故障收尾与回复卡片优化
+
+- **修复：执行失败后回复卡仍停在处理中**: 执行器明确报错并确认退出后，原卡片显示失败，群可继续处理下一条消息；没有卡片时只发一条失败提示。发送结果不明时仍保留现场，不自动重试。
+
+- **优化：回复卡片显示实际模型和推理强度**: 完成时在卡片底部显示本轮选用的型号与强度；如果强度被拒后回退默认，不再显示被拒的强度。长任务耗时改用分和小时，未报告用量时不显示零 token。
+
+- **修复：忙时补话后答案还留在旧卡片位置**: Codex 确认收到补话后，回复卡会跟到那条消息下方；卡片已出现时先将内容追平到新卡，再撤回旧卡。
+
+2026-11-10
+
+### 1.4.8 · 控制台插话、升级公告、群消息技能
+
+- **修复：上一条回复还在发送时发新消息，会被回「正在收尾，请稍后重发」**: 回复、卡片或「已停止」还在发往飞书的那一瞬间到达的新消息，此前会被拒收。现在会等那次发送完成，再按到达顺序处理；/stop 后紧接着发的消息也照常回答。
+
+- **新增：控制台可以给空闲的群插话**: 在控制台写一句话，会以管理员的名义发进群里，按一条普通群消息处理，回复也在群里。群正忙、待人工处理或升级中时不发，并说明原因；重复提交同一句不会处理两次。
+
+- **新增：升级后在各群发一张版本公告卡**: 版本升级后首次启动，向每个在服务的群发一张卡片，列出这一版的更新。首次安装和降级不发；可以在控制台关闭。
+
+- **新增：群里的 Agent 可以发消息、发通知卡、发文件、读历史、回复、编辑和撤回**: Agent 在群里能用的技能多了：发消息、通知卡、文件和图片，读群历史，回复、编辑、撤回自己发的消息，下载群文件，加表情回应。
+
+2026-11-09
+
+### 1.4.7 · /stop 后群不再被暂停
+
+- **修复：任务进行中发 /stop，群可能被整个暂停**: /stop 会删掉这条任务的回复卡片，飞书随后把这次删除当作一次撤回通知回来；若它恰好在「已停止」还在发送时到达，此前会被当成故障，群被暂停、要管理员人工解封，后面的 /model、/new 也都不响应。现在会等那条回复发完再处理，群照常服务。
+
+- **修复：撤回排队中的消息时群可能被暂停**: 在「已排队」提示还在发送时撤回那条消息，此前也会让整群暂停；现在等提示发完再取消那条消息。
+
+2026-11-09
+
+### 1.4.6 · Codex 续接被拒不再挂群
+
+- **修复：Codex 续接被拒时整群挂起**: Codex 还没开始干活就拒绝接着之前的对话（比如本机 Codex 的会话历史损坏，或那段对话的记录已不存在）时，此前整个群会被暂停，要管理员人工解封。现在只回一条「上一轮没有完成，请重新发送」，群照常服务，并自动开始新的一段对话，重发即可。
+
+- **修复：任务没能启动时，排在后面的消息让群卡住**: 模型没能启动（找不到程序或续接被拒）时，排在后面的消息也各收到一条重发提醒；此前之后的新消息会被当成「群里有任务」而整群暂停。
+
+2026-11-09
+
+### 1.4.5 · 群命令、控制台设置与 Codex 登录态
+
+- **群里新增 /skip**: 只放弃手头这件，排队的消息接着处理，之前聊的还记得；/stop 仍是手头和排队的全取消。
+
+- **/help 按本群生成**: 开头写明本群绑的项目和用的模型；命令按着急程度排；/skip、/stop、/new 用同一组说法讲清排队的和之前聊的会怎样；并说明撤回自己发的消息可以取消那件事。
+
+- **控制台可以开新会话**: 群空闲且记录全部结账时立即开始新的一段对话；群里有任务时会提示先停止或等它结束，不会假装已重置。
+
+- **模型卡片可在线添加和设置模型**: 不用重启服务。改型号、后端或端点时，用它的群须空闲，并自动开始新的一段对话；默认模型和正在使用的模型不能隐藏。
+
+- **修复：模型的工具质量、思考深度设置保存失败**: 此前被误报「需要重启服务」而无法保存。
+
+- **Codex 登录态改由服务端判定**: 控制台的 Codex 模型卡片不再只看本机登录文件：会带着令牌问一次服务端，按三种情况显示 —— 已验证、登录态已失效（要在这台机器上重新跑 codex login）、未验证（暂时探不到，不当成未登录）。令牌被吊销后不会再一直显示已登录。
+
+- **修复：任务还没启动就被停止时，下一条任务的回答可能被丢掉**: 控制台停止或 /skip 发出后，若模型进程实际没有启动成功，此前会留下「已取消」标记，让下一条任务的回答静默消失。
+
+2026-11-09
+
+### 1.4.4 · 控制台升级显示进度
+
+- **升级前在页面里确认**: 点「现在升级」后在页面里确认，写明从哪个版本升到哪个版本，以及切换期间约一分钟不处理新消息。
+
+- **升级窗口显示每一步**: 等待所有群空闲、下载安装、停止旧服务、核对记录并备份、新版本预检、切换并启动、等全部群连上，逐步打勾并显示已用时间；等群空闲时列出还在运行的群。
+
+- **服务重启时自动重连**: 切换那几秒页面显示「服务正在重启」并自动重连；新版本连上全部群后自动刷新到新版控制台，再显示一次结果。失败时标出出错的那一步和已换回的版本。
+
+- **可以放到后台**: 点「在后台继续」后顶栏图标转圈，点它可以再打开进度；升级结束时给一条提示。
+
+- **从 1.4.4 起生效**: 升级窗口由正在运行的版本提供：从 1.4.3 升到 1.4.4 时仍是原来的界面，之后的升级才会显示。
+
+2026-11-09
+
+### 1.4.3 · 回复卡片显示进度
+
+- **一时没有输出也先回一张卡**: 25 秒还没有任何输出时，先出一张「已收到，正在处理」卡片；回答出来后在同一张卡里替换。这一轮最后决定不回复时，撤回这张卡。
+
+- **卡片显示做到哪了**: 运行中每 15 秒更新一行：已跑多久、最近在做什么（看、改、写哪个文件，跑命令，查网页等，只给文件名）；跑满 10 分钟后改为每分钟一次，超过 2 分钟没有新动静会注明。写改文件、提交推送、发文件到群这类交付动作以 ▶ 列在卡片上方，结束后收进「过程」折叠区。
+
+- **/status 显示进度**: 运行中会显示已执行几步、最近一次动静在多久前，以及最近在做什么。
+
+- **修复：流式回复偶发整轮失败**: 上一段内容还在发送时又来一段文字，原来会让这一轮失败；现在排在后面继续更新卡片。
+
+2026-11-09
+
+### 1.4.2 · 在控制台查看和安装新版本
+
+- **控制台检查新版本**: 设置页的软件更新启动时和每天各检查一次正式版，有新版本时提示并附发布说明。
+
+- **后台运行时一键升级**: 由 launchd 后台任务运行时，点「现在升级」会等所有群空闲、记录结清后，把新版本装到单独的目录再切换；新版本 90 秒内没连上全部群会自动换回旧版。切换期间约一分钟不处理新消息，会提示稍后重发。
+
+- **前台运行给出升级步骤**: 前台运行时卡片说明如何停止、重新安装并启动。升级不在群里播报。
+
+2026-11-09
+
+### 1.4.1 · 一个群出问题，只停这个群
+
+- **一个群出问题，其他群照常**: 某个群上一个任务的结果无法确认时（例如回复是否送达不明，或执行器退出时没有结果），只暂停这个群，不重放、不重试，其他群继续处理。暂停的群收到新消息会回一句说明。
+
+- **启动时不再被一个群拖住**: 某个群的记录恢复不了时，其他群照常启动，控制台把这个群标为「需要处理」。启动预检遇到这样的群会直接失败并列出原因。
+
+- **新增封存命令**: 先重启服务；仍然暂停的群，在服务停止后运行 sintbot incident seal --group 群 ID。原记录原样封存，这个群换一份新记录重新开放，封存前未完成的消息不会再处理。
+
+在控制台「设置 → 软件更新」里升级。本页由公开仓 v1.4.29 标签里的 [CHANGELOG.json](https://github.com/sintlab/sintbot/blob/v1.4.29/CHANGELOG.json) 生成。
