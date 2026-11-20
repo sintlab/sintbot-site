@@ -64,7 +64,7 @@ An Apple silicon Mac running macOS 12 or later and an installed, signed-in Claud
 
 ### Which models can SintBot use?
 
-Use Claude through Claude Code, GPT through Codex, or configure compatible endpoints and your own API keys in Claude Code for GLM, MiniMax and DeepSeek. Kimi and other compatible services can use custom endpoints.
+Use Claude through Claude Code, GPT through Codex, or add DeepSeek, GLM, Kimi or MiniMax to Claude Code with your own API key: pick the preset, paste the key, then choose the model for each group. Other compatible services can use custom endpoints.
 
 ### What stays when I switch models?
 
@@ -116,7 +116,7 @@ SintBot 可接入飞书群、企业微信的群和单聊、Slack 的频道和私
 
 ### SintBot 可以使用哪些模型？
 
-通过 Claude Code 使用 Claude，通过 Codex 使用 GPT；也可在 Claude Code 中配置兼容端点和自己的 API Key，接入 GLM、MiniMax、DeepSeek。Kimi 等兼容服务可使用自定义端点。
+通过 Claude Code 使用 Claude，通过 Codex 使用 GPT；也可在 Claude Code 中用自己的 API Key 接入 DeepSeek、GLM、Kimi、MiniMax：选好预设、填入 Key，再按群选型号。其他兼容服务可使用自定义端点。
 
 ### 换模型之后，什么会保留？
 

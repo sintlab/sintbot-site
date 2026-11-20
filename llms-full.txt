@@ -42,7 +42,7 @@ An Apple silicon Mac running macOS 12 or later and an installed, signed-in Claud
 
 ### Which models can SintBot use?
 
-Use Claude through Claude Code, GPT through Codex, or configure compatible endpoints and your own API keys in Claude Code for GLM, MiniMax and DeepSeek. Kimi and other compatible services can use custom endpoints.
+Use Claude through Claude Code, GPT through Codex, or add DeepSeek, GLM, Kimi or MiniMax to Claude Code with your own API key: pick the preset, paste the key, then choose the model for each group. Other compatible services can use custom endpoints.
 
 ### What stays when I switch models?
 
@@ -149,9 +149,9 @@ Check the reply against the first line of the file on your Mac. While the task r
 
 ##### Already using Feishu, WeCom or local chat? Add Slack
 
-Open Settings → Slack in the console, choose the project folder and executor, then follow the same three steps and send the bot one message. Your existing connections, local chat and projects are kept.
+Open Settings in the console and expand the Slack card (platform cards start collapsed), choose the project folder and executor, then follow the same three steps and send the bot one message. Your existing connections, local chat and projects are kept.
 
-Once connected, the card shows the workspace, the connection status and the number of bound projects. Expand Advanced to refresh the connection status or open the app’s settings in Slack.
+Once connected, the card shows a status dot, the workspace and the number of bound conversations even when collapsed. Expand it, then Advanced, to refresh the connection status or open the app’s settings in Slack.
 
 ##### Bind another channel
 
@@ -267,9 +267,9 @@ Check the reply against the first line of the file on your Mac. The bot replies 
 
 ##### Already using Feishu or local chat? Add WeCom
 
-Open Settings → WeCom in the console, choose the project folder and executor, select “Scan to create bot”, then send the bot one message as above. Your Feishu connection, local chat and projects are kept.
+Open Settings in the console and expand the WeCom card (platform cards start collapsed), choose the project folder and executor, select “Scan to create bot”, then send the bot one message as above. Your Feishu connection, local chat and projects are kept.
 
-Once connected, the card shows the connection status and the number of bound projects. Expand Advanced for the Bot ID and to refresh the connection status.
+Once connected, the card shows a status dot, the bot’s name and the number of bound conversations even when collapsed. Expand it, then Advanced, for the Bot ID and to refresh the connection status.
 
 ##### Already have a bot? Enter Bot ID and Secret manually
 
@@ -290,7 +290,7 @@ Check the connection status under Settings → WeCom. If it shows Disconnected, 
 
 ### Prepare your project Mac
 
-The terminal steps below are for **SintBot 1.4.29** on macOS with Node.js 22 or later and Codex or Claude Code. Start with local conversations, or connect 1–32 project conversations: Slack direct messages or channels, with Feishu China groups and WeCom chats or groups also supported. The desktop App includes Node.js.
+The terminal steps below are for **SintBot 1.4.30** on macOS with Node.js 22 or later and Codex or Claude Code. Start with local conversations, or connect 1–32 project conversations: Slack direct messages or channels, with Feishu China groups and WeCom chats or groups also supported. The desktop App includes Node.js.
 
 - You can start with the automatically created project folder or choose an existing project on this Mac.
 - Node.js is version 22 or later.
@@ -325,7 +325,7 @@ curl -fsSL https://sintbot.com/install.sh | bash
 
 **Installation complete**
 
-When you see `Installed and verified SintBot 1.4.29`, installation is complete. Continue with the project and chat platform setup.
+When you see `Installed and verified SintBot 1.4.30`, installation is complete. Continue with the project and chat platform setup.
 
 ##### Optional: preview the installation plan
 
@@ -379,7 +379,7 @@ Keep the terminal open. Settings shows the Slack, Feishu and WeCom connection st
 
 ##### The console shows “Needs attention”?
 
-After a power loss or forced restart during a task, the service holds the groups whose result is unknown and lists them on the overview’s “Needs attention” card; the service still starts when every group is held, so the console stays available. When the background service supports automatic restart and the other groups are idle and settled, click “Seal and continue”: the record is archived unchanged, that message is not processed again, and the service restarts by itself with a new record; resend the message if needed. In a foreground run, seal from a terminal as described in the [full install guide](https://github.com/sintlab/sintbot/blob/main/docs/install.md).
+After a power loss or forced restart during a task, the service holds the groups whose result is unknown and lists them on the overview’s “Needs attention” card; the service still starts when every group is held, so the console stays available. Two cases usually no longer hold a group: an executor that reports an error before it starts (the group is told why), and a service crash that interrupts a running task (the group is told, and the task is not redone). While an upgrade is still confirming the new version, up to 90 seconds after the switch, an error before starting still holds the group so that a rollback stays safe. When the background service supports automatic restart and the other groups are idle and settled, click “Seal and continue”: the record is archived unchanged, that message is not processed again, and the service restarts by itself with a new record; resend the message if needed. In a foreground run, seal from a terminal as described in the [full install guide](https://github.com/sintlab/sintbot/blob/main/docs/install.md).
 
 **Restart an existing installation directly**
 
@@ -419,9 +419,9 @@ In Slack, commands start with `!` instead of `/`, because Slack keeps `/` for it
 
 With `--ui`, open `http://127.0.0.1:4600` on this Mac to see every group, stop tasks, start a new conversation for an idle group, bind new groups, switch the model or project of an idle group, and add or configure models. Set a console password in its settings before enabling LAN access. To add a group without the console, add it to the configuration and restart; it is registered automatically.
 
-Model and thinking depth are chosen per group: on the group card, the Model row picks the backend and model and the next row picks the depth, from lists read live from the local Codex and Claude Code. Choose the model and thinking depth for Codex, Claude and DeepSeek on each group card. DeepSeek connection settings and API key stay in the model library; other third-party endpoints keep their connection model there. After the upgrade, each model card’s existing model and depth move into its groups with the same effective values and no session reset.
+Model and thinking depth are chosen per group: on the group card, the Model row picks the backend and model and the next row picks the depth. Codex and Claude lists are read live from the local executors; DeepSeek, GLM, Kimi and MiniMax lists come live from the provider once the model card has an API key. Those cards keep only the connection and key and have no model field (a custom endpoint still asks for its model name); a group that has not chosen runs the card’s default.
 
-Model settings are grouped into model and reasoning, context and compaction, and connection. For Codex, choose the executor default or a custom context window; known limits are checked on save. Compaction also offers default or custom, with numeric inputs shown only when needed. Codex uses a threshold and Claude Code a compaction window; either may compact earlier. Existing explicit global values become independent settings on existing models. Changes apply to the next turn and preserve the session. Capacity details distinguish requested settings from runtime reports.
+Model settings are grouped into model and reasoning, context and compaction, and connection; on a DeepSeek, GLM, Kimi or MiniMax card, everything except the API key and name sits under Advanced. For Codex, choose the executor default or a custom context window; known limits are checked on save. Compaction also offers default or custom, with numeric inputs shown only when needed. Codex uses a threshold and Claude Code a compaction window; either may compact earlier. Existing explicit global values become independent settings on existing models. Changes apply to the next turn and preserve the session. Capacity details distinguish requested settings from runtime reports.
 
 For Claude Code groups, SintBot can compact the current session between turns when the CLI reports compaction support and the context reaches half of a custom compaction window. It uses a spare concurrency slot and stays silent in the group. A new message interrupts compaction before starting its turn; a window of 0 disables only idle compaction; compaction during a turn follows the executor’s defaults. `/hud` shows the compaction line and last completion time. Claude subscription quota prefers rate-limit events reported by the executor.
 
@@ -473,7 +473,7 @@ APP
 
 ### Your desktop workspace
 
-Open Chat to give a local task. Groups · Projects selects the folder, model and thinking depth. Models · Library manages accounts and API keys. Settings contains the Slack, Feishu and WeCom connections and software updates. Start with a read-only task, then adjust execution permissions as needed.
+Open Chat to give a local task. Groups · Projects selects the folder, model and thinking depth. Models · Library manages accounts and API keys. Settings holds the interface language, the Slack, Feishu and WeCom connections and software updates. Start with a read-only task, then adjust execution permissions as needed.
 
 Local conversations need no Slack, Feishu or WeCom account. To work in Slack, connect it first; Feishu and WeCom connect by scanning with your phone. Every route uses the same project and model settings.
 
@@ -589,7 +589,7 @@ Make the active navigation item easier to see, using the existing accent color.
 Send an updated screenshot after checking the same two widths.
 ```
 
-**While a task is running in 1.4.29**
+**While a task is running in 1.4.30**
 
 Send additional instructions directly in the project group. Busy follow-ups are on by default for Claude Code and Codex; they queue when disabled or unavailable. “Joined” means the model has read the message, and long-running tools can delay that step.
 
@@ -604,8 +604,8 @@ The coding agent executes the work. Its configured model service handles the mod
 | Coding agent | Model or service | Configuration |
 | --- | --- | --- |
 | Claude Code | Claude | Your Claude Code account and configuration |
-| Claude Code | GLM, MiniMax, DeepSeek | A compatible endpoint and your provider credentials |
-| Claude Code | Kimi or another compatible service | A custom compatible endpoint |
+| Claude Code | DeepSeek, GLM, Kimi, MiniMax | A preset in the model library and your own API key |
+| Claude Code | Another compatible service | A custom compatible endpoint |
 | Codex | GPT | Your Codex account and model configuration |
 
 Use the project’s model configuration to choose the route and model. Keep provider keys in local configuration; do not post them in the group. Available choices follow the agent and accounts configured on the machine.
@@ -620,9 +620,9 @@ Model and thinking depth are chosen per group: change them on the console’s gr
 
 **Codex speed (Fast).** Codex models have a Speed option: Standard or Fast, Standard by default. Three ways to turn it on: send `/model fast` in the group (`/model standard` to go back); the `/model` card gains a Speed row, pick then confirm as usual; the console group card gains a Speed dropdown. Changing only the speed never resets the session, works while a task is running and applies from the next message. It is remembered per group and per model card: Fast on GPT in one group does not affect that group’s other models. Only models with a Fast tier can turn it on; otherwise the request is refused and nothing changes, and switching to a model without it returns to Standard with a note. The receipt states the cost: the model is unchanged, requests are queued at a higher priority, about 1.5–2x faster depending on the model, and included subscription usage is charged at 2.5x (purchased credits at 2x). When Fast is off, every turn explicitly asks for standard speed. When App Server explicitly reports a fallback, the card footer omits Fast. Older executors and the exec route may not report the effective tier; a Fast label alone is not proof that acceleration took effect.
 
-**DeepSeek.** The model library includes a DeepSeek card, selectable even before a key is entered. Enter your own API key in Models · Library before running it. Select its model and thinking depth per group in Groups · Projects; the preset model is `deepseek-flash[1m]`. Without a key, the turn is refused before it starts with “this model card has no API key yet”; no other credentials are borrowed.
+**API-key models.** In Models · Library choose Add model, pick DeepSeek, GLM, Kimi or MiniMax, paste your own API key (Verify key runs a short test) and name the card; the endpoint and other details are under Advanced. The card has no model field: once the key is in, pick the model and thinking depth per group in Groups · Projects from the provider’s live list. The model library includes a DeepSeek card, selectable even before a key is entered; its preset model is `deepseek-flash[1m]`. Without a key, the turn is refused before it starts with “this model card has no API key yet”; no other credentials are borrowed.
 
-Model settings are grouped into model and reasoning, context and compaction, and connection. For Codex, choose the executor default or a custom context window; known limits are checked on save. Compaction also offers default or custom, with numeric inputs shown only when needed. Codex uses a threshold and Claude Code a compaction window; either may compact earlier. Existing explicit global values become independent settings on existing models. Changes apply to the next turn and preserve the session. Capacity details distinguish requested settings from runtime reports.
+Model settings are grouped into model and reasoning, context and compaction, and connection; on a DeepSeek, GLM, Kimi or MiniMax card, everything except the API key and name sits under Advanced. For Codex, choose the executor default or a custom context window; known limits are checked on save. Compaction also offers default or custom, with numeric inputs shown only when needed. Codex uses a threshold and Claude Code a compaction window; either may compact earlier. Existing explicit global values become independent settings on existing models. Changes apply to the next turn and preserve the session. Capacity details distinguish requested settings from runtime reports.
 
 For Claude Code groups, SintBot can compact the current session between turns when the CLI reports compaction support and the context reaches half of a custom compaction window. It uses a spare concurrency slot and stays silent in the group. A new message interrupts compaction before starting its turn; a window of 0 disables only idle compaction; compaction during a turn follows the executor’s defaults. `/hud` shows the compaction line and last completion time. Claude subscription quota prefers rate-limit events reported by the executor.
 
@@ -674,7 +674,7 @@ If a browser task needs your sign-in or verification, open the takeover entry se
 
 **Desktop start, stop and updates**
 
-Open SintBot from Applications or the menu bar. Closing the window or quitting the App keeps the service running. Choose “Stop SintBot and Quit” to stop it. Upgrade the service in Settings → Software updates. From 0.1.4 the App checks for its own updates, asks before installing, then reopens while the service keeps running; choose Check for Updates… in the menu to check now. Versions up to 0.1.3 have to be replaced once with a new DMG.
+Open SintBot from Applications or the menu bar. Closing the window or quitting the App keeps the service running. Choose “Stop SintBot and Quit” to stop it. Upgrade the service in Settings → Software updates; its Release notes link opens this site’s [changelog](https://sintbot.com/changelog/). The Claude subscription card’s settings in Models · Library show the installed Claude Code version and offer an upgrade while no Claude Code group is running or queued. From 0.1.4 the App checks for its own updates, asks before installing, then reopens while the service keeps running; choose Check for Updates… in the menu to check now. Versions up to 0.1.3 have to be replaced once with a new DMG.
 
 Keep a clear boundary between the project, the people giving it work and the permissions available to the agent.
 
@@ -694,7 +694,7 @@ On a group card in the console, open More settings → Scheduled tasks. At the s
 
 Project files stay on the machine; chat messages and model requests use the configured external services. Account terms and usage limits apply.
 
-##### Starting and stopping the 1.4.29 foreground installation
+##### Starting and stopping the 1.4.30 foreground installation
 
 Keep the terminal running while you use the connected group. Press Ctrl-C and wait for shutdown to finish. For a normal restart, use the same start command from the installation guide; do not rerun initialization.
 
@@ -1094,7 +1094,7 @@ SintBot 可接入飞书群、企业微信的群和单聊、Slack 的频道和私
 
 ### SintBot 可以使用哪些模型？
 
-通过 Claude Code 使用 Claude，通过 Codex 使用 GPT；也可在 Claude Code 中配置兼容端点和自己的 API Key，接入 GLM、MiniMax、DeepSeek。Kimi 等兼容服务可使用自定义端点。
+通过 Claude Code 使用 Claude，通过 Codex 使用 GPT；也可在 Claude Code 中用自己的 API Key 接入 DeepSeek、GLM、Kimi、MiniMax：选好预设、填入 Key，再按群选型号。其他兼容服务可使用自定义端点。
 
 ### 换模型之后，什么会保留？
 
@@ -1254,9 +1254,9 @@ Mac 上已有可用的 Codex 或 Claude Code；手机已安装企业微信，并
 
 ##### 已经在用飞书或本机对话，怎么加上企业微信？
 
-打开控制台「设置 → 企业微信」，选择项目目录和执行器，点击「扫码创建机器人」，之后同样给机器人发一句话。现有飞书、本机对话和项目都保留。
+在控制台「设置」里展开企业微信卡片（平台卡片默认收起），选择项目目录和执行器，点击「扫码创建机器人」，之后同样给机器人发一句话。现有飞书、本机对话和项目都保留。
 
-接入后，这张卡片显示连接状态和已绑定项目数；展开「高级」可以查看 Bot ID、刷新连接状态。
+接入后，卡片收起时也显示状态点、机器人名称和已绑定的会话数；展开卡片再展开「高级」，可以查看 Bot ID、刷新连接状态。
 
 ##### 已有机器人？手动填写 Bot ID 和 Secret
 
@@ -1318,9 +1318,9 @@ SintBot 把这个会话绑定到项目，机器人回复「已连接项目 …�
 
 ##### 已经在用飞书、企业微信或本机对话？添加 Slack
 
-打开控制台「设置 → Slack」，选项目目录和执行器，按同样的三步操作，再给机器人发一句话。现有连接、本机对话和项目都保留。
+在控制台「设置」里展开 Slack 卡片（平台卡片默认收起），选项目目录和执行器，按同样的三步操作，再给机器人发一句话。现有连接、本机对话和项目都保留。
 
-接入后，卡片显示工作区、连接状态和已绑定的项目数。展开「高级」可以刷新连接状态，或打开 Slack 里的应用设置。
+接入后，卡片收起时也显示状态点、工作区和已绑定的会话数。展开卡片再展开「高级」，可以刷新连接状态，或打开 Slack 里的应用设置。
 
 ##### 再绑一个频道
 
@@ -1338,7 +1338,7 @@ SintBot 把这个会话绑定到项目，机器人回复「已连接项目 …�
 
 ### 准备项目所在的 Mac
 
-以下终端步骤对应 **SintBot 1.4.29**，需要 macOS、Node.js 22 及以上，以及 Codex 或 Claude Code。可以先使用本机对话，也可连接 1–32 个中国区飞书项目群；桌面 App 已自带 Node.js。
+以下终端步骤对应 **SintBot 1.4.30**，需要 macOS、Node.js 22 及以上，以及 Codex 或 Claude Code。可以先使用本机对话，也可连接 1–32 个中国区飞书项目群；桌面 App 已自带 Node.js。
 
 - 可以先用自动创建的项目目录，也可以选择这台 Mac 上已有的项目。
 - Node.js 版本为 22 或以上。
@@ -1373,7 +1373,7 @@ curl -fsSL https://sintbot.com/install.sh | bash
 
 **安装完成**
 
-看到 `Installed and verified SintBot 1.4.29` 即表示安装完成。接下来配置飞书和项目。
+看到 `Installed and verified SintBot 1.4.30` 即表示安装完成。接下来配置飞书和项目。
 
 ##### 可选：先预览安装计划
 
@@ -1427,7 +1427,7 @@ Terminal
 
 ##### 控制台出现「需要处理」？
 
-任务进行中断电或强制重启后，服务会把结果不明的群暂停，并在概览页「需要处理」卡里列出；所有群都暂停时服务照常启动，控制台仍可打开。由支持自动重启的后台服务托管、且其他群空闲结清时，可点「封存并继续」：原记录原样存档，那条消息不再处理，服务自动重启后用新的记录继续，需要的话把那句话重发一次。前台运行时按[完整安装指南](https://github.com/sintlab/sintbot/blob/main/docs/zh-CN/install.md)的终端步骤封存。
+任务进行中断电或强制重启后，服务会把结果不明的群暂停，并在概览页「需要处理」卡里列出；所有群都暂停时服务照常启动，控制台仍可打开。两种情况通常不再暂停群：执行器开工前就明确报错时，群里会说明原因；服务自身崩溃打断正在运行的任务时，群里会告知，任务不会重做。升级切换后、新版本确认前（最多 90 秒），开工前报错仍按原规则暂停，保证可以回退。由支持自动重启的后台服务托管、且其他群空闲结清时，可点「封存并继续」：原记录原样存档，那条消息不再处理，服务自动重启后用新的记录继续，需要的话把那句话重发一次。前台运行时按[完整安装指南](https://github.com/sintlab/sintbot/blob/main/docs/zh-CN/install.md)的终端步骤封存。
 
 **已有安装直接启动**
 
@@ -1465,9 +1465,9 @@ Terminal
 
 带 `--ui` 启动后，在本机打开 `http://127.0.0.1:4600`，可以查看各群、停止任务、给空闲的群开新会话、绑定新群、给空闲的群切换模型或项目目录，以及添加和设置模型。开启局域网访问前，先在控制台设置里设访问密码。不用控制台也能加群：在配置里加上新群后重启，会自动登记。
 
-型号与思考深度按群选：在「群 · 项目」卡的「模型」行选后端和型号，下一行选深度，清单取自本机 Codex / Claude Code 的实时数据；Codex、Claude 和 DeepSeek 的型号与深度都在群卡中设置；DeepSeek 的连接设置与 API Key 留在模型库，其他第三方端点的连接型号仍在模型卡上设置。升级后，模型卡上原有的型号和深度会自动写进各群，生效值不变、会话不重置。
+型号与思考深度按群选：在「群 · 项目」卡的「模型」行选后端和型号，下一行选深度。Codex、Claude 的清单取自本机执行器的实时数据；DeepSeek、GLM、Kimi、MiniMax 的模型卡填好 API Key 后，清单实时取自该家服务。这些模型卡只管连接和 Key，没有型号栏（自定义端点仍要手填型号）；群里没选时用卡上的默认型号。
 
-模型设置分为型号与推理、上下文与压缩、连接与登录。Codex 窗口可选执行器默认或自定义，保存时校验已知上限；压缩也只保留默认与自定义，按需显示数值。Codex 使用阈值，Claude Code 使用压缩窗口，实际都可能提前触发。旧显式全局值转为原有模型的独立设置，新模型使用执行器默认。设置从下轮生效并保留会话；容量详情区分设置值与实际回报。
+模型设置分为型号与推理、上下文与压缩、连接与登录；DeepSeek、GLM、Kimi、MiniMax 的卡除 API Key 和名称外，其余都收在「高级」里。Codex 窗口可选执行器默认或自定义，保存时校验已知上限；压缩也只保留默认与自定义，按需显示数值。Codex 使用阈值，Claude Code 使用压缩窗口，实际都可能提前触发。旧显式全局值转为原有模型的独立设置，新模型使用执行器默认。设置从下轮生效并保留会话；容量详情区分设置值与实际回报。
 
 Claude Code 群在执行器自报支持压缩时，可在两轮之间整理当前会话：上下文达到自定义压缩窗口的一半、且有空余并发名额时运行，群里不发消息。新消息到来会先中断整理，再开始任务；窗口设为 0 时仅关闭空闲整理，轮内压缩交给执行器默认行为。`/hud` 可查看整理线与上次完成时间，Claude 订阅额度优先读取执行器回报的额度事件。
 
@@ -1519,7 +1519,7 @@ APP
 
 ### 桌面 App 的日常入口
 
-打开 SintBot 后，在「对话」里直接发任务；「群 · 项目」选择工作目录、型号和思考深度；「模型 · 库」管理账号与 API Key；「设置」查看飞书连接和软件更新。先用只读任务核对项目，再按需要调整执行权限。
+打开 SintBot 后，在「对话」里直接发任务；「群 · 项目」选择工作目录、型号和思考深度；「模型 · 库」管理账号与 API Key；「设置」切换界面语言、查看飞书连接和软件更新。先用只读任务核对项目，再按需要调整执行权限。
 
 本机对话无需飞书。使用飞书群时，先完成扫码接入；群消息和本机对话使用相同的模型与项目设置方式。
 
@@ -1635,7 +1635,7 @@ APP
 检查同样的两种宽度后，发更新截图。
 ```
 
-**1.4.29 任务进行中如何补充要求**
+**1.4.30 任务进行中如何补充要求**
 
 直接在项目群发送补充。Claude Code 与 Codex 默认开启忙时跟进，关闭或暂不支持时排队。“已加入”表示模型已读取，执行较长的工具步骤时可能需要等待。
 
@@ -1650,8 +1650,8 @@ APP
 | 编码助手 | 模型或服务 | 配置位置 |
 | --- | --- | --- |
 | Claude Code | Claude | Claude Code 账号与配置 |
-| Claude Code | GLM、MiniMax、DeepSeek | 兼容服务地址与自己的服务凭据 |
-| Claude Code | Kimi 或其他兼容服务 | 自定义兼容服务地址 |
+| Claude Code | DeepSeek、GLM、Kimi、MiniMax | 模型库里的预设与自己的 API Key |
+| Claude Code | 其他兼容服务 | 自定义兼容服务地址 |
 | Codex | GPT | Codex 账号与模型配置 |
 
 在项目的模型配置中选择执行器和模型。服务密钥保存在本地配置，不要发进群里。实际可选项取决于这台机器已经配置的编码助手和账号。
@@ -1666,9 +1666,9 @@ APP
 
 **Codex 速度（Fast）。**Codex 模型多一个「速度」选项：标准或 Fast，默认标准。三种开法：群里发 `/model fast`（回到标准发 `/model 标准`）；`/model` 弹出的模型卡上多一行「速度」，照旧先选、再确认；控制台群卡上多一个「速度」下拉。只改速度不会重置会话，任务进行中也能改，下一条消息生效。按群、按模型卡分开记：这个群在 GPT 上开了 Fast，不影响它在别的模型上的设置。只有支持 Fast 的型号才能开，否则直接拒绝、什么都不改；换到不支持的型号时自动回到标准并说一句。开的回执会写明代价：模型能力不变，只是请求排进更高优先级，约快 1.5–2 倍（因型号而异），订阅包含的额度按标准的 2.5 倍扣，另购 credits 按 2 倍扣。没开 Fast 时，每一轮都明确要求标准速度。App Server 明确回报回退时，卡片页脚不再显示 Fast；旧执行器或 exec 路线可能不回报实际档位，不能仅凭 Fast 标记证明加速已生效。
 
-**DeepSeek。**模型库默认带一张 DeepSeek 卡，未填 Key 时也可在群卡中选择；执行前需在「模型 · 库」填入自己的 API Key。型号与思考深度在「群 · 项目」逐群配置，预设型号为 `deepseek-flash[1m]`。没填 Key 时启动前会拒绝并提示「这张模型卡还没填 API Key」，不会借用其他凭据。
+**API Key 模型。**在「模型 · 库」点「添加模型」，选 DeepSeek、GLM、Kimi 或 MiniMax，粘贴自己的 API Key（可点「验证 Key」先试跑一次）并起个名字；端点等其余设置收在「高级」里。卡上没有型号栏：填好 Key 后，到「群 · 项目」从该家的实时清单里逐群选型号与思考深度。模型库默认带一张 DeepSeek 卡，未填 Key 时也可在群卡中选择，预设型号为 `deepseek-flash[1m]`。没填 Key 时启动前会拒绝并提示「这张模型卡还没填 API Key」，不会借用其他凭据。
 
-模型设置分为型号与推理、上下文与压缩、连接与登录。Codex 窗口可选执行器默认或自定义，保存时校验已知上限；压缩也只保留默认与自定义，按需显示数值。Codex 使用阈值，Claude Code 使用压缩窗口，实际都可能提前触发。旧显式全局值转为原有模型的独立设置，新模型使用执行器默认。设置从下轮生效并保留会话；容量详情区分设置值与实际回报。
+模型设置分为型号与推理、上下文与压缩、连接与登录；DeepSeek、GLM、Kimi、MiniMax 的卡除 API Key 和名称外，其余都收在「高级」里。Codex 窗口可选执行器默认或自定义，保存时校验已知上限；压缩也只保留默认与自定义，按需显示数值。Codex 使用阈值，Claude Code 使用压缩窗口，实际都可能提前触发。旧显式全局值转为原有模型的独立设置，新模型使用执行器默认。设置从下轮生效并保留会话；容量详情区分设置值与实际回报。
 
 Claude Code 群在执行器自报支持压缩时，可在两轮之间整理当前会话：上下文达到自定义压缩窗口的一半、且有空余并发名额时运行，群里不发消息。新消息到来会先中断整理，再开始任务；窗口设为 0 时仅关闭空闲整理，轮内压缩交给执行器默认行为。`/hud` 可查看整理线与上次完成时间，Claude 订阅额度优先读取执行器回报的额度事件。
 
@@ -1720,7 +1720,7 @@ Claude Code 群在执行器自报支持压缩时，可在两轮之间整理当�
 
 **桌面版启动、停止与更新**
 
-日常从应用程序或菜单栏打开 SintBot。关窗口后仍可处理任务；退出 App 也不会停止后台服务。需要停止时选择「停止机器人并退出」。服务版本在「设置 → 软件更新」升级。App 从 0.1.4 起会自己检查新版本，问过你再安装并重新打开，后台服务不受影响；想马上检查，点菜单里的「检查更新…」。0.1.3 及更早的版本需要下载新 DMG 替换一次。
+日常从应用程序或菜单栏打开 SintBot。关窗口后仍可处理任务；退出 App 也不会停止后台服务。需要停止时选择「停止机器人并退出」。服务版本在「设置 → 软件更新」升级，卡底「更新记录 →」打开本站的[更新记录](https://sintbot.com/zh/changelog/)。「模型 · 库」里 Claude 订阅卡的设置会显示本机 Claude Code 版本，没有 Claude Code 群在运行或排队时可以直接升级。App 从 0.1.4 起会自己检查新版本，问过你再安装并重新打开，后台服务不受影响；想马上检查，点菜单里的「检查更新…」。0.1.3 及更早的版本需要下载新 DMG 替换一次。
 
 明确项目范围、谁在派活，以及编码助手可以使用的权限。
 
@@ -1740,7 +1740,7 @@ Claude Code 群在执行器自报支持压缩时，可在两轮之间整理当�
 
 项目文件保存在本机；群消息和模型请求会使用配置的外部服务，并遵循对应账号的条款和用量限制。
 
-##### 1.4.29 前台安装的启动与停止
+##### 1.4.30 前台安装的启动与停止
 
 使用已接入的群时，保持启动终端运行。停止时按 Ctrl-C，等待进程退出。日常重启沿用安装指南里的启动命令，不要重复初始化。
 
@@ -1818,9 +1818,9 @@ Check the reply against the first line of the file on your Mac. While the task r
 
 ##### Already using Feishu, WeCom or local chat? Add Slack
 
-Open Settings → Slack in the console, choose the project folder and executor, then follow the same three steps and send the bot one message. Your existing connections, local chat and projects are kept.
+Open Settings in the console and expand the Slack card (platform cards start collapsed), choose the project folder and executor, then follow the same three steps and send the bot one message. Your existing connections, local chat and projects are kept.
 
-Once connected, the card shows the workspace, the connection status and the number of bound projects. Expand Advanced to refresh the connection status or open the app’s settings in Slack.
+Once connected, the card shows a status dot, the workspace and the number of bound conversations even when collapsed. Expand it, then Advanced, to refresh the connection status or open the app’s settings in Slack.
 
 ##### Bind another channel
 
@@ -1916,9 +1916,9 @@ SintBot 把这个会话绑定到项目，机器人回复「已连接项目 …�
 
 ##### 已经在用飞书、企业微信或本机对话？添加 Slack
 
-打开控制台「设置 → Slack」，选项目目录和执行器，按同样的三步操作，再给机器人发一句话。现有连接、本机对话和项目都保留。
+在控制台「设置」里展开 Slack 卡片（平台卡片默认收起），选项目目录和执行器，按同样的三步操作，再给机器人发一句话。现有连接、本机对话和项目都保留。
 
-接入后，卡片显示工作区、连接状态和已绑定的项目数。展开「高级」可以刷新连接状态，或打开 Slack 里的应用设置。
+接入后，卡片收起时也显示状态点、工作区和已绑定的会话数。展开卡片再展开「高级」，可以刷新连接状态，或打开 Slack 里的应用设置。
 
 ##### 再绑一个频道
 
@@ -2202,9 +2202,9 @@ Check the reply against the first line of the file on your Mac. The bot replies 
 
 ##### Already using Feishu or local chat? Add WeCom
 
-Open Settings → WeCom in the console, choose the project folder and executor, select “Scan to create bot”, then send the bot one message as above. Your Feishu connection, local chat and projects are kept.
+Open Settings in the console and expand the WeCom card (platform cards start collapsed), choose the project folder and executor, select “Scan to create bot”, then send the bot one message as above. Your Feishu connection, local chat and projects are kept.
 
-Once connected, the card shows the connection status and the number of bound projects. Expand Advanced for the Bot ID and to refresh the connection status.
+Once connected, the card shows a status dot, the bot’s name and the number of bound conversations even when collapsed. Expand it, then Advanced, for the Bot ID and to refresh the connection status.
 
 ##### Already have a bot? Enter Bot ID and Secret manually
 
@@ -2303,9 +2303,9 @@ Mac 上已有可用的 Codex 或 Claude Code；手机已安装企业微信，并
 
 ##### 已经在用飞书或本机对话，怎么加上企业微信？
 
-打开控制台「设置 → 企业微信」，选择项目目录和执行器，点击「扫码创建机器人」，之后同样给机器人发一句话。现有飞书、本机对话和项目都保留。
+在控制台「设置」里展开企业微信卡片（平台卡片默认收起），选择项目目录和执行器，点击「扫码创建机器人」，之后同样给机器人发一句话。现有飞书、本机对话和项目都保留。
 
-接入后，这张卡片显示连接状态和已绑定项目数；展开「高级」可以查看 Bot ID、刷新连接状态。
+接入后，卡片收起时也显示状态点、机器人名称和已绑定的会话数；展开卡片再展开「高级」，可以查看 Bot ID、刷新连接状态。
 
 ##### 已有机器人？手动填写 Bot ID 和 Secret
 

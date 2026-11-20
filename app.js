@@ -305,8 +305,8 @@
     "zh": "Claude Code · 自备 API Key"
   },
   "models.p.kimi": {
-    "en": "Claude Code · custom endpoint",
-    "zh": "Claude Code · 自定义端点"
+    "en": "Claude Code · your API key",
+    "zh": "Claude Code · 自备 API Key"
   },
   "models.1.title": {
     "en": "Switch models in the group",
@@ -337,8 +337,8 @@
     "zh": "SintBot 可以使用哪些模型？"
   },
   "faq.7.a": {
-    "en": "Use Claude through Claude Code, GPT through Codex, or configure compatible endpoints and your own API keys in Claude Code for GLM, MiniMax and DeepSeek. Kimi and other compatible services can use custom endpoints.",
-    "zh": "通过 Claude Code 使用 Claude，通过 Codex 使用 GPT；也可在 Claude Code 中配置兼容端点和自己的 API Key，接入 GLM、MiniMax、DeepSeek。Kimi 等兼容服务可使用自定义端点。"
+    "en": "Use Claude through Claude Code, GPT through Codex, or add DeepSeek, GLM, Kimi or MiniMax to Claude Code with your own API key: pick the preset, paste the key, then choose the model for each group. Other compatible services can use custom endpoints.",
+    "zh": "通过 Claude Code 使用 Claude，通过 Codex 使用 GPT；也可在 Claude Code 中用自己的 API Key 接入 DeepSeek、GLM、Kimi、MiniMax：选好预设、填入 Key，再按群选型号。其他兼容服务可使用自定义端点。"
   },
   "faq.8.q": {
     "en": "What stays when I switch models?",
