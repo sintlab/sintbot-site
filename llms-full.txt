@@ -379,7 +379,7 @@ Keep the terminal open. Settings shows the Slack, Feishu and WeCom connection st
 
 ##### The console shows “Needs attention”?
 
-After a power loss or forced restart during a task, the service holds the groups whose result is unknown and lists them on the overview’s “Needs attention” card; the service still starts when every group is held, so the console stays available. Two cases usually no longer hold a group: an executor that reports an error before it starts (the group is told why), and a service crash that interrupts a running task (the group is told, and the task is not redone). While an upgrade is still confirming the new version, up to 90 seconds after the switch, an error before starting still holds the group so that a rollback stays safe. When the background service supports automatic restart and the other groups are idle and settled, click “Seal and continue”: the record is archived unchanged, that message is not processed again, and the service restarts by itself with a new record; resend the message if needed. In a foreground run, seal from a terminal as described in the [full install guide](https://github.com/sintlab/sintbot/blob/main/docs/install.md).
+After a power loss or forced restart during a task, the service holds the groups whose result is unknown and lists them on the overview’s “Needs attention” card; the service still starts when every group is held, so the console stays available. Two cases usually no longer hold a group: Claude Code, or Codex with busy follow-ups off, reporting an error before it starts (the group is told why; Codex groups with busy follow-ups on, the default, keep the previous behaviour in this release), and a service crash that interrupts a running task (the group is told, and the task is not redone). While an upgrade is still confirming the new version, up to 90 seconds after the switch, an error before starting still holds the group so that a rollback stays safe. When the background service supports automatic restart and the other groups are idle and settled, click “Seal and continue”: the record is archived unchanged, that message is not processed again, and the service restarts by itself with a new record; resend the message if needed. In a foreground run, seal from a terminal as described in the [full install guide](https://github.com/sintlab/sintbot/blob/main/docs/install.md).
 
 **Restart an existing installation directly**
 
@@ -1427,7 +1427,7 @@ Terminal
 
 ##### 控制台出现「需要处理」？
 
-任务进行中断电或强制重启后，服务会把结果不明的群暂停，并在概览页「需要处理」卡里列出；所有群都暂停时服务照常启动，控制台仍可打开。两种情况通常不再暂停群：执行器开工前就明确报错时，群里会说明原因；服务自身崩溃打断正在运行的任务时，群里会告知，任务不会重做。升级切换后、新版本确认前（最多 90 秒），开工前报错仍按原规则暂停，保证可以回退。由支持自动重启的后台服务托管、且其他群空闲结清时，可点「封存并继续」：原记录原样存档，那条消息不再处理，服务自动重启后用新的记录继续，需要的话把那句话重发一次。前台运行时按[完整安装指南](https://github.com/sintlab/sintbot/blob/main/docs/zh-CN/install.md)的终端步骤封存。
+任务进行中断电或强制重启后，服务会把结果不明的群暂停，并在概览页「需要处理」卡里列出；所有群都暂停时服务照常启动，控制台仍可打开。两种情况通常不再暂停群：Claude Code，或关掉忙时跟进的 Codex 群，开工前就明确报错时，群里会说明原因（Codex 群默认开着忙时跟进，这样的群这一版仍按原规则处理）；服务自身崩溃打断正在运行的任务时，群里会告知，任务不会重做。升级切换后、新版本确认前（最多 90 秒），开工前报错仍按原规则暂停，保证可以回退。由支持自动重启的后台服务托管、且其他群空闲结清时，可点「封存并继续」：原记录原样存档，那条消息不再处理，服务自动重启后用新的记录继续，需要的话把那句话重发一次。前台运行时按[完整安装指南](https://github.com/sintlab/sintbot/blob/main/docs/zh-CN/install.md)的终端步骤封存。
 
 **已有安装直接启动**
 
