@@ -13,7 +13,7 @@ Generated from https://sintbot.com/ and its guide pages by scripts/build-zh.mjs,
 - Models: Claude through Claude Code, GPT through Codex; GLM, MiniMax, DeepSeek, Kimi and other services through compatible endpoints and your own API keys.
 - Install (recommended, desktop app 0.1.4): download https://github.com/sintlab/sintbot-desktop/releases/latest/download/SintBot_0.1.4_aarch64.dmg, move SintBot to Applications and open it. The app includes the SintBot service and Node.js.
 - Install (terminal, needs Node.js 22+): `curl -fsSL https://sintbot.com/install.sh | bash`, then follow https://sintbot.com/guide/install/#terminal
-- Current versions: service 1.4.28 (npm package `sintbot`), desktop app 0.1.4.
+- Current versions: service 1.4.29 (npm package `sintbot`), desktop app 0.1.4.
 - Updates: from the console, Settings → Software updates.
 - Data: projects, notes and settings are ordinary files on your Mac; chat platforms and model services need a network connection.
 - Author WaterTian; publisher SintLab.
@@ -290,7 +290,7 @@ Check the connection status under Settings → WeCom. If it shows Disconnected, 
 
 ### Prepare your project Mac
 
-The terminal steps below are for **SintBot 1.4.28** on macOS with Node.js 22 or later and Codex or Claude Code. Start with local conversations, or connect 1–32 Feishu China project groups. The desktop App includes Node.js.
+The terminal steps below are for **SintBot 1.4.29** on macOS with Node.js 22 or later and Codex or Claude Code. Start with local conversations, or connect 1–32 Feishu China project groups. The desktop App includes Node.js.
 
 - You can start with the automatically created project folder or choose an existing project on this Mac.
 - Node.js is version 22 or later.
@@ -325,7 +325,7 @@ curl -fsSL https://sintbot.com/install.sh | bash
 
 **Installation complete**
 
-When you see `Installed and verified SintBot 1.4.28`, installation is complete. Continue with Feishu and project configuration.
+When you see `Installed and verified SintBot 1.4.29`, installation is complete. Continue with Feishu and project configuration.
 
 ##### Optional: preview the installation plan
 
@@ -587,7 +587,7 @@ Make the active navigation item easier to see, using the existing accent color.
 Send an updated screenshot after checking the same two widths.
 ```
 
-**While a task is running in 1.4.28**
+**While a task is running in 1.4.29**
 
 Send additional instructions directly in the project group. Busy follow-ups are on by default for Claude Code and Codex; they queue when disabled or unavailable. “Joined” means the model has read the message, and long-running tools can delay that step.
 
@@ -684,15 +684,15 @@ Each group is bound to its project. The console overview shows concurrency, grou
 
 Begin with read-only requests. The project administrator chooses the permissions required for editing files and running commands.
 
-#### Routine work
+#### Scheduled tasks
 
-Keep recurring checks in a project checklist. When a check is due, send the task to the project group and review the returned report.
+On a group card in the console, open More settings → Scheduled tasks. At the set time SintBot can hand a task to the agent, post a reminder or run a command in the project folder, once or on a schedule. Each due time runs at most once, and a run missed while the service was off is not made up. WeCom chats do not have scheduled tasks yet.
 
 #### Model services
 
 Project files stay on the machine; chat messages and model requests use the configured external services. Account terms and usage limits apply.
 
-##### Starting and stopping the 1.4.28 foreground installation
+##### Starting and stopping the 1.4.29 foreground installation
 
 Keep the terminal running while you use the connected group. Press Ctrl-C and wait for shutdown to finish. For a normal restart, use the same start command from the installation guide; do not rerun initialization.
 
@@ -724,7 +724,7 @@ Platform walkthroughs: [Slack](https://sintbot.com/guide/slack/) · [Feishu](htt
 - 模型：通过 Claude Code 用 Claude，通过 Codex 用 GPT；GLM、MiniMax、DeepSeek、Kimi 等通过兼容端点和自己的 API Key 接入。
 - 安装（推荐，桌面版 0.1.4）：下载 https://github.com/sintlab/sintbot-desktop/releases/latest/download/SintBot_0.1.4_aarch64.dmg ，把 SintBot 拖进「应用程序」后打开。App 自带 SintBot 服务和 Node.js。
 - 安装（终端，需要 Node.js 22 及以上）：`curl -fsSL https://sintbot.com/install.sh | bash`，后续步骤见 https://sintbot.com/zh/guide/install/#terminal
-- 当前版本：服务 1.4.28（npm 包 `sintbot`），桌面版 0.1.4。
+- 当前版本：服务 1.4.29（npm 包 `sintbot`），桌面版 0.1.4。
 - 更新：在控制台「设置 → 软件更新」里完成。
 - 数据：项目、笔记和设置是你 Mac 上的普通文件；聊天平台和模型服务需要联网。
 - 作者 WaterTian，发布方 SintLab。
@@ -997,7 +997,7 @@ SintBot 把这个会话绑定到项目，机器人回复「已连接项目 …�
 
 ### 准备项目所在的 Mac
 
-以下终端步骤对应 **SintBot 1.4.28**，需要 macOS、Node.js 22 及以上，以及 Codex 或 Claude Code。可以先使用本机对话，也可连接 1–32 个中国区飞书项目群；桌面 App 已自带 Node.js。
+以下终端步骤对应 **SintBot 1.4.29**，需要 macOS、Node.js 22 及以上，以及 Codex 或 Claude Code。可以先使用本机对话，也可连接 1–32 个中国区飞书项目群；桌面 App 已自带 Node.js。
 
 - 可以先用自动创建的项目目录，也可以选择这台 Mac 上已有的项目。
 - Node.js 版本为 22 或以上。
@@ -1032,7 +1032,7 @@ curl -fsSL https://sintbot.com/install.sh | bash
 
 **安装完成**
 
-看到 `Installed and verified SintBot 1.4.28` 即表示安装完成。接下来配置飞书和项目。
+看到 `Installed and verified SintBot 1.4.29` 即表示安装完成。接下来配置飞书和项目。
 
 ##### 可选：先预览安装计划
 
@@ -1294,7 +1294,7 @@ APP
 检查同样的两种宽度后，发更新截图。
 ```
 
-**1.4.28 任务进行中如何补充要求**
+**1.4.29 任务进行中如何补充要求**
 
 直接在项目群发送补充。Claude Code 与 Codex 默认开启忙时跟进，关闭或暂不支持时排队。“已加入”表示模型已读取，执行较长的工具步骤时可能需要等待。
 
@@ -1391,15 +1391,15 @@ Claude Code 群在执行器自报支持压缩时，可在两轮之间整理当�
 
 初次接入从只读请求开始。需要改文件或执行命令时，由项目管理员配置相应权限。
 
-#### 例行工作
+#### 定时任务
 
-把需要定期检查的事项保存在项目清单里；到时间后，在项目群发送任务，再核对返回的报告。
+在控制台群卡「更多设置 → 定时任务」里设置。到点可以把任务交给助手、只发一句提醒，或在项目目录里运行一条命令，一次性或周期执行都行。每次到点至多执行一次，服务没运行时错过的不补。企业微信会话暂不支持定时任务。
 
 #### 模型服务
 
 项目文件保存在本机；群消息和模型请求会使用配置的外部服务，并遵循对应账号的条款和用量限制。
 
-##### 1.4.28 前台安装的启动与停止
+##### 1.4.29 前台安装的启动与停止
 
 使用已接入的群时，保持启动终端运行。停止时按 Ctrl-C，等待进程退出。日常重启沿用安装指南里的启动命令，不要重复初始化。
 
@@ -1457,7 +1457,7 @@ First launch opens setup. Enter a project name, choose the executor and pick “
 
 Both tokens are saved on this Mac only; never post them in a chat. If a token lands in the wrong field, setup says which kind you pasted.
 
-If this Mac reaches Slack only through a proxy (for example on mainland-China networks), enter an `http://` address under “Proxy” in the Slack step; it is filled in for you when the terminal that opened setup has a proxy set. The proxy is saved with the connection, so the background service and the desktop app use it later. It is the network proxy of the whole service, so other chat platforms and the local model tools use it too.
+If this Mac reaches Slack only through a proxy (for example on mainland-China networks), enter an `http://` address under “Proxy” in the Slack step; it is filled in for you when the terminal that opened setup has a proxy set. The proxy is saved with the connection, so the background service and the desktop app use it later. It is the network proxy of the whole service, so other chat platforms and the local model tools use it too. The host must be an IP address or a host name in plain ASCII.
 
 #### 03 Send the bot one message
 
@@ -1555,7 +1555,7 @@ SLACK · 私聊与频道
 
 两枚令牌只保存在这台 Mac，不要发到聊天里。贴错了框，页面会告诉你贴的是哪一种令牌。
 
-这台 Mac 要经代理才能访问 Slack 时（例如中国大陆网络），在 Slack 步骤的「代理」里填 `http://` 开头的地址；打开接入页的终端里设置了代理时，这里会自动填上。代理会随连接一起保存，后台服务和桌面 App 以后启动时也走它。它是整个服务的网络代理，其他聊天平台和本机的模型工具也会走它。
+这台 Mac 要经代理才能访问 Slack 时（例如中国大陆网络），在 Slack 步骤的「代理」里填 `http://` 开头的地址；打开接入页的终端里设置了代理时，这里会自动填上。代理会随连接一起保存，后台服务和桌面 App 以后启动时也走它。它是整个服务的网络代理，其他聊天平台和本机的模型工具也会走它。主机要写 IP 地址或英文域名，中文域名不收。
 
 #### 03 给机器人发一句话
 
