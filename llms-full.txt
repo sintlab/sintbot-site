@@ -290,12 +290,12 @@ Check the connection status under Settings → WeCom. If it shows Disconnected, 
 
 ### Prepare your project Mac
 
-The terminal steps below are for **SintBot 1.4.29** on macOS with Node.js 22 or later and Codex or Claude Code. Start with local conversations, or connect 1–32 Feishu China project groups. The desktop App includes Node.js.
+The terminal steps below are for **SintBot 1.4.29** on macOS with Node.js 22 or later and Codex or Claude Code. Start with local conversations, or connect 1–32 project conversations: Slack direct messages or channels, with Feishu China groups and WeCom chats or groups also supported. The desktop App includes Node.js.
 
 - You can start with the automatically created project folder or choose an existing project on this Mac.
 - Node.js is version 22 or later.
 - Codex or Claude Code (at least one) is installed, signed in and working in your local terminal.
-- You can confirm the connection using Feishu on your phone with a team identity.
+- For Slack, you can install apps in the workspace; a free workspace you create yourself works. Feishu needs a team identity in Feishu on your phone, and WeCom a scan with WeCom.
 
 ##### How do I check my environment?
 
@@ -325,7 +325,7 @@ curl -fsSL https://sintbot.com/install.sh | bash
 
 **Installation complete**
 
-When you see `Installed and verified SintBot 1.4.29`, installation is complete. Continue with Feishu and project configuration.
+When you see `Installed and verified SintBot 1.4.29`, installation is complete. Continue with the project and chat platform setup.
 
 ##### Optional: preview the installation plan
 
@@ -347,11 +347,11 @@ SINTBOT="$HOME/.local/share/sintbot/bin/sintbot"
 "$SINTBOT" help
 ```
 
-SintBot is installed in `~/.local/share/sintbot`. Continue below to connect Feishu and your project.
+SintBot is installed in `~/.local/share/sintbot`. Continue below to connect your project to Slack, Feishu or WeCom.
 
 ### Open local setup
 
-Run this command, then follow the [Feishu walkthrough](https://sintbot.com/guide/install/#feishu) for your project, phone confirmation and group. You can also choose “Use on this Mac first”.
+Run this command. On the English setup page, Slack is listed first and already selected under Chat platform: follow the [Slack walkthrough](https://sintbot.com/guide/install/#slack) to create the app, paste two tokens and send the bot one message. Feishu and WeCom are also supported: pick “飞书 · Feishu” or “企业微信 · WeCom” there and follow the [Feishu](https://sintbot.com/guide/install/#feishu) or [WeCom](https://sintbot.com/guide/install/#wecom) walkthrough. You can also choose “Use on this Mac first”.
 
 ```
 "$HOME/.local/share/sintbot/bin/sintbot" start --ui
@@ -359,11 +359,11 @@ Run this command, then follow the [Feishu walkthrough](https://sintbot.com/guide
 
 ### Choose the project on the setup page
 
-By default setup creates `~/Projects/sintbot` with a README and binds it to the new group. To connect an existing project, enter its absolute path in the existing-project field; the directory must exist. Do not use your entire home directory as a project. Afterwards, manage project folders and models under Groups · Projects in the console.
+By default setup creates `~/Projects/sintbot` with a README and binds it to the conversation you connect. To connect an existing project, enter its absolute path in the existing-project field; the directory must exist. Do not use your entire home directory as a project. Afterwards, manage project folders and models under Groups · Projects in the console.
 
 ##### Prefer the terminal?
 
-The same flow runs as `sintbot connect`; `--name`, `--workdir`, `--provider` and `--basic` map to the options on the page. See the full install guide.
+For Feishu, the same flow runs as `sintbot connect`; `--name`, `--workdir`, `--provider` and `--basic` map to the options on the page. See the full install guide.
 
 ### Everyday start
 
@@ -375,7 +375,7 @@ Terminal
 "$HOME/.local/share/sintbot/bin/sintbot" start --ui
 ```
 
-Keep the terminal open. Settings → Feishu shows the connection status; Groups · Projects manages bindings. Public console access and administrator sign-in are optional.
+Keep the terminal open. Settings shows the Slack, Feishu and WeCom connection status; Groups · Projects manages bindings. Public console access and administrator sign-in are optional.
 
 ##### The console shows “Needs attention”?
 
@@ -383,19 +383,19 @@ After a power loss or forced restart during a task, the service holds the groups
 
 **Restart an existing installation directly**
 
-Do not scan or initialize again for a normal restart. If you used `--config` or `--data-dir`, pass the same flags on every start.
+Do not repeat setup (Slack tokens or a scan) or initialize again for a normal restart. If you used `--config` or `--data-dir`, pass the same flags on every start.
 
 ### Verify with a real message
 
-Send this in the Feishu group you just connected:
+Send this in the conversation you just connected: the Slack direct message (in a channel, @mention the bot), the Feishu group or the WeCom chat:
 
 > Read the first line of this project’s README.md and reply with only that line.
 
-Compare the reply with the file. This checks the group connection, the runner and the project path together.
+Compare the reply with the file. This checks the chat connection, the runner and the project path together.
 
 #### Commands and console
 
-Any text message is a task; the reply card appears once the model starts, or after 25 seconds if it is still working without output. While it runs, the card shows how long it has run, what it is doing and the steps already delivered, which fold into a Process section at the end. These commands are answered at once and never take a task slot:
+In a Feishu group, any text message is a task; the reply card appears once the model starts, or after 25 seconds if it is still working without output. While it runs, the card shows how long it has run, what it is doing and the steps already delivered, which fold into a Process section at the end. These commands are answered at once and never take a task slot:
 
 - **`/status`**: Model, project, busy or idle (steps and current work while busy), and queue.
 
@@ -414,6 +414,8 @@ Any text message is a task; the reply card appears once the model starts, or aft
 - **`/help`**: List commands, with this group's project and model.
 
 Send a command as a message of its own; except for `/issue` and `/model`, add no other text. If the Feishu app subscribes to the message-recall event, recalling your own message cancels it.
+
+In Slack, commands start with `!` instead of `/`, because Slack keeps `/` for itself: `!status`, `!stop`, `!skip`, `!new`, `!model` and `!help`. In a channel, @mention the bot with the command. Your message shows ⏳ while the task runs and ✅ when the answer arrives; the [Slack walkthrough](https://sintbot.com/guide/slack/) covers everyday use. In WeCom, @mention the bot in a group for every task and command.
 
 With `--ui`, open `http://127.0.0.1:4600` on this Mac to see every group, stop tasks, start a new conversation for an idle group, bind new groups, switch the model or project of an idle group, and add or configure models. Set a console password in its settings before enabling LAN access. To add a group without the console, add it to the configuration and restart; it is registered automatically.
 
@@ -438,7 +440,7 @@ Use `start` for normal restarts. Do not run `init` again.
 
 ##### The bot does not reply
 
-Check the terminal error first. Verify that the application is published, the bot has joined the target group, message permissions and event subscriptions are configured, the credentials are valid and the project group is bound. A successful preflight does not prove Feishu authentication or message delivery.
+Check the terminal error first. In Slack, @mention the bot in a channel and check that it has been invited (`/invite @your-bot-name`); the [Slack walkthrough](https://sintbot.com/guide/slack/) lists the other cases. In Feishu, verify that the application is published, the bot has joined the target group, message permissions and event subscriptions are configured, the credentials are valid and the project group is bound. A successful preflight does not prove that the chat platform accepts the credentials or delivers messages.
 
 ##### A group is paused or startup reports unresolved receipts
 
@@ -1959,7 +1961,7 @@ Source: https://sintbot.com/guide/feishu/
 
 Scan with the Feishu mobile app to connect SintBot on your Mac. The setup creates the app and a project group, so tasks and results stay in the group your team uses.
 
-macOS · Claude Code / Codex · Updated November 17, 2026
+macOS · Claude Code / Codex · Updated November 20, 2026
 
 ### Before you start
 
@@ -1982,7 +1984,7 @@ Have Codex or Claude Code working on your Mac. Sign in to Feishu China on your p
 
 #### 01 Choose your project on the Mac
 
-First launch opens setup. Enter a project name and choose the executor. Use the new project folder or expand “Use an existing project folder”. Select “Connect Feishu”.
+First launch opens setup. Enter a project name, choose the executor and pick “飞书 · Feishu” under Chat platform; the English setup page selects Slack until you change it. Use the new project folder or expand “Use an existing project folder”. Select “Connect Feishu”.
 
 If you are not an organization administrator, expand “Organization options” and select “I am not an organization administrator”. An administrator will need to finish app availability and publication.
 
