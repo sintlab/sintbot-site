@@ -104,6 +104,8 @@ Check the App status page. An existing service opens its console directly. If an
 
 The official DMG is signed and Apple notarized. If the download is damaged or cannot be verified, download it again from the official release. Keep system security protections enabled.
 
+Updating the App and updating its service are separate actions. Installing an App update does not replace the service that is already running. Check the service version under Settings → Software updates; clicking the version number in the sidebar opens that section.
+
 ### Connect your project to Slack
 
 Choose a project on your Mac, create your own Slack app from a link that is already filled in, paste two tokens, then send the bot one message. SintBot connects over Socket Mode, so you need no public address, and a free workspace works.
@@ -473,7 +475,7 @@ APP
 
 ### Your desktop workspace
 
-Open Chat to give a local task. Groups · Projects selects the folder, model and thinking depth. Models · Library manages accounts and API keys. Settings holds the interface language, the Slack, Feishu and WeCom connections and software updates. Start with a read-only task, then adjust execution permissions as needed.
+Open Chat to give a local task. Groups · Projects selects the folder, model and thinking depth. Models · Library manages accounts and API keys. Settings → General holds the interface language; Settings also holds the Slack, Feishu and WeCom connections and software updates. Use “Add a group project” in Groups · Projects and “Add model” in Models · Library to add entries. Start with a read-only task, then adjust execution permissions as needed.
 
 Local conversations need no Slack, Feishu or WeCom account. To work in Slack, connect it first; Feishu and WeCom connect by scanning with your phone. Every route uses the same project and model settings.
 
@@ -575,7 +577,7 @@ List the deliverables in order and identify dependencies. State which parts can 
 
 ### Review results in the group
 
-Progress and the final result return to the project conversation. Depending on the task, the result may be an explanation, changed files, an image, a report or a preview.
+The final answer returns to the conversation where you sent the task. Feishu also shows progress in its reply card; Slack and WeCom currently return the answer without live progress text. Deliverables depend on the executor’s tools and the chat platform. Slack currently reports a local project path instead of uploading the result file.
 
 1. **Read the outcome**Check what changed, how it was checked and whether any part still needs a decision.
 2. **Inspect the artifact**Open the delivered file or preview. For code, inspect the changes in the project and run the checks appropriate to the work.
@@ -654,7 +656,7 @@ Attach a reference to the group and describe how it should guide the work: layou
 
 ##### Build or refine an interface
 
-Name the page or component, specify what to preserve and ask for desktop and phone checks. Review the delivered screenshot before opening the interactive preview.
+Name the page or component, specify what to preserve and ask for desktop and phone checks. Review the delivered screenshot. If the task starts a local preview, open its address on the Mac running SintBot; built-in online previews are not available in this release.
 
 ##### Generate or revise an image
 
@@ -666,7 +668,7 @@ Attach an annotated screenshot to the group and keep revisions in the project. R
 
 ##### Continue after browser sign-in
 
-If a browser task needs your sign-in or verification, open the takeover entry sent to the group, complete the step yourself and tell SintBot to continue. Do not send passwords or verification codes in the conversation.
+If a browser task needs your sign-in or verification, complete it yourself in the browser on your Mac, then tell SintBot to continue. A browser takeover link in the group is not available in this release. Do not send passwords or verification codes in the conversation.
 
 07
 
@@ -703,6 +705,8 @@ To upgrade, check Settings → Software updates in the console, then press Ctrl-
 If a group is paused or startup reports unresolved receipts, preserve the state and inspect what happened, then restart or seal that group as the installation guide describes. Do not delete the journal or repeat a task blindly.
 
 [Open the start and verification steps →](https://sintbot.com/guide/install/#start)
+
+Updating the App and updating its service are separate actions. Installing an App update does not replace the service that is already running. Check the service version under Settings → Software updates; clicking the version number in the sidebar opens that section.
 
 ### Ready to connect a project?
 
@@ -1184,6 +1188,8 @@ macOS · 自带 Node.js · Codex / Claude Code · 飞书可选
 
 正式 DMG 已签名并通过 Apple 公证。遇到下载损坏或无法验证时，重新下载官方镜像；不要关闭系统安全保护。
 
+App 与后台服务分别更新。安装 App 更新不会替换已经运行的服务；服务版本以「设置 → 软件更新」为准，也可以点击侧栏版本号直接打开。
+
 ### 把项目接进飞书群
 
 在 Mac 上选项目，用手机确认授权，再到新群发第一条任务。桌面 App 和终端安装都走同一套接入流程。
@@ -1551,9 +1557,9 @@ APP
 
 ### 桌面 App 的日常入口
 
-打开 SintBot 后，在「对话」里直接发任务；「群 · 项目」选择工作目录、型号和思考深度；「模型 · 库」管理账号与 API Key；「设置」切换界面语言、查看飞书连接和软件更新。先用只读任务核对项目，再按需要调整执行权限。
+打开 SintBot 后，在「对话」里直接发任务；「群 · 项目」选择工作目录、型号和思考深度；「模型 · 库」管理账号与 API Key；「设置 → 通用设置」切换界面语言，「设置」也能查看飞书、企业微信、Slack 连接和软件更新。「群 · 项目」点「添加群项目」，「模型 · 库」点「添加模型」即可新增。先用只读任务核对项目，再按需要调整执行权限。
 
-本机对话无需飞书。使用飞书群时，先完成扫码接入；群消息和本机对话使用相同的模型与项目设置方式。
+本机对话无需 Slack、飞书或企业微信账号。Slack 使用应用令牌连接，飞书和企业微信可扫码接入；各平台与本机对话采用相同的模型和项目设置方式。
 
 ### 在飞书群里开始工作
 
@@ -1653,7 +1659,7 @@ APP
 
 ### 在原对话里核对交付
 
-进度和最终结果都会回到项目群。根据任务不同，交付可以是说明、代码改动、图片、报告或可交互预览。
+最终答复回到发起任务的会话。飞书回复卡会显示过程；Slack、企业微信目前不显示实时文字进度。交付形式取决于执行器工具和聊天平台；Slack 暂不回传结果文件，会告知文件在项目中的位置。
 
 1. **先看结果说明**核对改了什么、如何检查，以及哪些地方还需要你作决定。
 2. **再看实际产物**打开文件或预览。代码任务还可以检查项目里的改动，并运行适合这次修改的验证。
@@ -1732,7 +1738,7 @@ Claude Code 群在执行器自报支持压缩时，可在两轮之间整理当�
 
 ##### 制作或优化界面
 
-指明页面和组件，说明要保留的设计，并要求检查桌面与手机效果。先看交付截图，再打开可交互预览核对操作。
+指明页面和组件，说明要保留的设计，并要求检查桌面与手机效果。先看交付截图；任务启动本地预览后，在运行 SintBot 的 Mac 上打开对应地址核对操作。当前版本没有内置在线预览入口。
 
 ##### 生成或修改图片
 
@@ -1744,7 +1750,7 @@ Claude Code 群在执行器自报支持压缩时，可在两轮之间整理当�
 
 ##### 浏览器任务需要本人登录
 
-打开群里的接管入口，自己完成登录或验证，再告诉 SintBot 继续。不要在群聊里发送密码或验证码。
+在运行 SintBot 的 Mac 浏览器里亲自完成登录或验证，再告诉 SintBot 继续。当前版本没有群内浏览器接管入口。不要在群聊里发送密码或验证码。
 
 07
 
@@ -1781,6 +1787,8 @@ Claude Code 群在执行器自报支持压缩时，可在两轮之间整理当�
 如果某个群被暂停或启动提示未结收据，保留状态，先查清之前的任务是否执行，再按安装指南重启或封存这个群。不要删除日志，也不要盲目重复同一个任务。
 
 [查看启动与验证步骤 →](https://sintbot.com/zh/guide/install/#start)
+
+App 与后台服务分别更新。安装 App 更新不会替换已经运行的服务；服务版本以「设置 → 软件更新」为准，也可以点击侧栏版本号直接打开。
 
 ### 准备接入一个项目？
 
