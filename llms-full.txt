@@ -13,7 +13,7 @@ Generated from https://sintbot.com/ and its guide pages by scripts/build-zh.mjs,
 - Models: Claude through Claude Code, GPT through Codex; GLM, MiniMax, DeepSeek, Kimi and other services through compatible endpoints and your own API keys.
 - Install (recommended, desktop app 0.1.5): download https://github.com/sintlab/sintbot-desktop/releases/latest/download/SintBot_0.1.5_aarch64.dmg, move SintBot to Applications and open it. The app includes the SintBot service and Node.js.
 - Install (terminal, needs Node.js 22+): `curl -fsSL https://sintbot.com/install.sh | bash`, then follow https://sintbot.com/guide/install/#terminal
-- Current versions: service 1.4.30 (npm package `sintbot`), desktop app 0.1.5.
+- Current versions: service 1.4.31 (npm package `sintbot`), desktop app 0.1.5.
 - Updates: from the console, Settings → Software updates.
 - Data: projects, notes and settings are ordinary files on your Mac; chat platforms and model services need a network connection.
 - Author WaterTian; publisher SintLab.
@@ -155,7 +155,7 @@ Once connected, the card shows a status dot, the workspace and the number of bou
 
 ##### Bind another channel
 
-Invite the bot to the channel with `/invite @your-bot-name`, then pick that channel under Groups · Projects → Set up a group project in the console and choose its folder and executor. Only channels the bot has joined are listed; if you type in the ID of a channel it has not joined, the console tells you to invite it first. One app can serve several projects but connects to only one SintBot.
+Invite the bot to the channel with `/invite @your-bot-name`, then pick that channel under Groups · Projects → Add a group project in the console and choose its folder and executor. Only channels the bot has joined are listed; if you type in the ID of a channel it has not joined, the console tells you to invite it first. One app can serve several projects but connects to only one SintBot.
 
 ##### The link does not open?
 
@@ -280,7 +280,7 @@ Expand “Already have a bot? Enter Bot ID and Secret” on the setup page, or A
 
 ##### Bind another project
 
-Create a WeCom group, add the bot and @mention it once, then pick that group under Groups · Projects → Set up a group project in the console and choose its folder and executor. One bot can serve several projects but connects to only one SintBot.
+Create a WeCom group, add the bot and @mention it once, then pick that group under Groups · Projects → Add a group project in the console and choose its folder and executor. One bot can serve several projects but connects to only one SintBot.
 
 ##### No reply to your message?
 
@@ -290,7 +290,7 @@ Check the connection status under Settings → WeCom. If it shows Disconnected, 
 
 ### Prepare your project Mac
 
-The terminal steps below are for **SintBot 1.4.30** on macOS with Node.js 22 or later and Codex or Claude Code. Start with local conversations, or connect 1–32 project conversations: Slack direct messages or channels, with Feishu China groups and WeCom chats or groups also supported. The desktop App includes Node.js.
+The terminal steps below are for **SintBot 1.4.31** on macOS with Node.js 22 or later and Codex or Claude Code. Start with local conversations, or connect 1–32 project conversations: Slack direct messages or channels, with Feishu China groups and WeCom chats or groups also supported. The desktop App includes Node.js.
 
 - You can start with the automatically created project folder or choose an existing project on this Mac.
 - Node.js is version 22 or later.
@@ -325,7 +325,7 @@ curl -fsSL https://sintbot.com/install.sh | bash
 
 **Installation complete**
 
-When you see `Installed and verified SintBot 1.4.30`, installation is complete. Continue with the project and chat platform setup.
+When you see `Installed and verified SintBot 1.4.31`, installation is complete. Continue with the project and chat platform setup.
 
 ##### Optional: preview the installation plan
 
@@ -589,7 +589,7 @@ Make the active navigation item easier to see, using the existing accent color.
 Send an updated screenshot after checking the same two widths.
 ```
 
-**While a task is running in 1.4.30**
+**While a task is running in 1.4.31**
 
 Send additional instructions directly in the project group. Busy follow-ups are on by default for Claude Code and Codex; they queue when disabled or unavailable. “Joined” means the model has read the message, and long-running tools can delay that step.
 
@@ -694,7 +694,7 @@ On a group card in the console, open More settings → Scheduled tasks. At the s
 
 Project files stay on the machine; chat messages and model requests use the configured external services. Account terms and usage limits apply.
 
-##### Starting and stopping the 1.4.30 foreground installation
+##### Starting and stopping the 1.4.31 foreground installation
 
 Keep the terminal running while you use the connected group. Press Ctrl-C and wait for shutdown to finish. For a normal restart, use the same start command from the installation guide; do not rerun initialization.
 
@@ -719,9 +719,21 @@ CHANGELOG
 
 ## What changed in each release
 
-Every SintBot release from 1.4.1 to 1.4.30, newest first, with the notes published for that version.
+Every SintBot release from 1.4.1 to 1.4.31, newest first, with the notes published for that version.
 
-[Latest release: 1.4.30](https://sintbot.com/changelog/#v1.4.30)
+[Latest release: 1.4.31](https://sintbot.com/changelog/#v1.4.31)
+
+2026-11-20
+
+### 1.4.31 · A calmer console
+
+- **Add a group project and Add model: quieter buttons**: The buttons at the top right of Groups · Projects and Models now use a thin outline with a plus sign and are named Add a group project and Add model. When you pick a group that is already bound in the dialog, the title changes to Edit a group project.
+
+- **An add tile when a list is empty**: With no group projects or models yet, the list shows a dashed add tile that opens the matching dialog.
+
+- **The version number opens Software updates**: Click the version number at the top left to go straight to the Settings → Software updates card.
+
+- **One General card in Settings**: Interface language, bot and network, run limits and access addresses are now one General card, collapsed by default; when collapsed it shows the language, the concurrency cap, whether a proxy is set and who can reach the console. The separate Interface card is gone.
 
 2026-11-20
 
@@ -1069,7 +1081,7 @@ Every SintBot release from 1.4.1 to 1.4.30, newest first, with the notes publish
 
 - **Incident seal command**: Restart first; for a group that is still paused, stop the service and run sintbot incident seal --group <group ID>. The old records are kept unchanged, the group reopens with new records, and messages left unfinished before the seal are not processed again.
 
-To update, open Settings → Software updates in the console. This page is generated from [CHANGELOG.en.json](https://github.com/sintlab/sintbot/blob/v1.4.30/CHANGELOG.en.json) at the v1.4.30 tag of the public repository.
+To update, open Settings → Software updates in the console. This page is generated from [CHANGELOG.en.json](https://github.com/sintlab/sintbot/blob/v1.4.31/CHANGELOG.en.json) at the v1.4.31 tag of the public repository.
 
 
 # 中文
@@ -1085,7 +1097,7 @@ To update, open Settings → Software updates in the console. This page is gener
 - 模型：通过 Claude Code 用 Claude，通过 Codex 用 GPT；GLM、MiniMax、DeepSeek、Kimi 等通过兼容端点和自己的 API Key 接入。
 - 安装（推荐，桌面版 0.1.5）：下载 https://github.com/sintlab/sintbot-desktop/releases/latest/download/SintBot_0.1.5_aarch64.dmg ，把 SintBot 拖进「应用程序」后打开。App 自带 SintBot 服务和 Node.js。
 - 安装（终端，需要 Node.js 22 及以上）：`curl -fsSL https://sintbot.com/install.sh | bash`，后续步骤见 https://sintbot.com/zh/guide/install/#terminal
-- 当前版本：服务 1.4.30（npm 包 `sintbot`），桌面版 0.1.5。
+- 当前版本：服务 1.4.31（npm 包 `sintbot`），桌面版 0.1.5。
 - 更新：在控制台「设置 → 软件更新」里完成。
 - 数据：项目、笔记和设置是你 Mac 上的普通文件；聊天平台和模型服务需要联网。
 - 作者 WaterTian，发布方 SintLab。
@@ -1287,7 +1299,7 @@ Mac 上已有可用的 Codex 或 Claude Code；手机已安装企业微信，并
 
 ##### 想再绑一个项目？
 
-在企业微信建群，把机器人加进群并 @它一次，再到控制台「群 · 项目 → 配置群项目」选择这个群，指定项目目录和执行器。同一个机器人可以服务多个项目，但只由一台 SintBot 连接。
+在企业微信建群，把机器人加进群并 @它一次，再到控制台「群 · 项目 → 添加群项目」选择这个群，指定项目目录和执行器。同一个机器人可以服务多个项目，但只由一台 SintBot 连接。
 
 ##### 发了消息没有回复？
 
@@ -1344,7 +1356,7 @@ SintBot 把这个会话绑定到项目，机器人回复「已连接项目 …�
 
 ##### 再绑一个频道
 
-先用 `/invite @机器人名` 把机器人请进频道，再到控制台「群 · 项目 → 配置群项目」里选这个频道，并选目录和执行器。这里只列出机器人已加入的频道；手填的频道 ID 若机器人还不在里面，控制台会提示先邀请它。一个应用可以服务多个项目，但只连接一台 SintBot。
+先用 `/invite @机器人名` 把机器人请进频道，再到控制台「群 · 项目 → 添加群项目」里选这个频道，并选目录和执行器。这里只列出机器人已加入的频道；手填的频道 ID 若机器人还不在里面，控制台会提示先邀请它。一个应用可以服务多个项目，但只连接一台 SintBot。
 
 ##### 链接打不开？
 
@@ -1358,7 +1370,7 @@ SintBot 把这个会话绑定到项目，机器人回复「已连接项目 …�
 
 ### 准备项目所在的 Mac
 
-以下终端步骤对应 **SintBot 1.4.30**，需要 macOS、Node.js 22 及以上，以及 Codex 或 Claude Code。可以先使用本机对话，也可连接 1–32 个中国区飞书项目群；桌面 App 已自带 Node.js。
+以下终端步骤对应 **SintBot 1.4.31**，需要 macOS、Node.js 22 及以上，以及 Codex 或 Claude Code。可以先使用本机对话，也可连接 1–32 个中国区飞书项目群；桌面 App 已自带 Node.js。
 
 - 可以先用自动创建的项目目录，也可以选择这台 Mac 上已有的项目。
 - Node.js 版本为 22 或以上。
@@ -1393,7 +1405,7 @@ curl -fsSL https://sintbot.com/install.sh | bash
 
 **安装完成**
 
-看到 `Installed and verified SintBot 1.4.30` 即表示安装完成。接下来配置飞书和项目。
+看到 `Installed and verified SintBot 1.4.31` 即表示安装完成。接下来配置飞书和项目。
 
 ##### 可选：先预览安装计划
 
@@ -1655,7 +1667,7 @@ APP
 检查同样的两种宽度后，发更新截图。
 ```
 
-**1.4.30 任务进行中如何补充要求**
+**1.4.31 任务进行中如何补充要求**
 
 直接在项目群发送补充。Claude Code 与 Codex 默认开启忙时跟进，关闭或暂不支持时排队。“已加入”表示模型已读取，执行较长的工具步骤时可能需要等待。
 
@@ -1760,7 +1772,7 @@ Claude Code 群在执行器自报支持压缩时，可在两轮之间整理当�
 
 项目文件保存在本机；群消息和模型请求会使用配置的外部服务，并遵循对应账号的条款和用量限制。
 
-##### 1.4.30 前台安装的启动与停止
+##### 1.4.31 前台安装的启动与停止
 
 使用已接入的群时，保持启动终端运行。停止时按 Ctrl-C，等待进程退出。日常重启沿用安装指南里的启动命令，不要重复初始化。
 
@@ -1844,7 +1856,7 @@ Once connected, the card shows a status dot, the workspace and the number of bou
 
 ##### Bind another channel
 
-Invite the bot to the channel with `/invite @your-bot-name`, then pick that channel under Groups · Projects → Set up a group project in the console and choose its folder and executor. Only channels the bot has joined are listed; if you type in the ID of a channel it has not joined, the console tells you to invite it first. One app can serve several projects but connects to only one SintBot.
+Invite the bot to the channel with `/invite @your-bot-name`, then pick that channel under Groups · Projects → Add a group project in the console and choose its folder and executor. Only channels the bot has joined are listed; if you type in the ID of a channel it has not joined, the console tells you to invite it first. One app can serve several projects but connects to only one SintBot.
 
 ##### The link does not open?
 
@@ -1942,7 +1954,7 @@ SintBot 把这个会话绑定到项目，机器人回复「已连接项目 …�
 
 ##### 再绑一个频道
 
-先用 `/invite @机器人名` 把机器人请进频道，再到控制台「群 · 项目 → 配置群项目」里选这个频道，并选目录和执行器。这里只列出机器人已加入的频道；手填的频道 ID 若机器人还不在里面，控制台会提示先邀请它。一个应用可以服务多个项目，但只连接一台 SintBot。
+先用 `/invite @机器人名` 把机器人请进频道，再到控制台「群 · 项目 → 添加群项目」里选这个频道，并选目录和执行器。这里只列出机器人已加入的频道；手填的频道 ID 若机器人还不在里面，控制台会提示先邀请它。一个应用可以服务多个项目，但只连接一台 SintBot。
 
 ##### 链接打不开？
 
@@ -2235,7 +2247,7 @@ Expand “Already have a bot? Enter Bot ID and Secret” on the setup page, or A
 
 ##### Bind another project
 
-Create a WeCom group, add the bot and @mention it once, then pick that group under Groups · Projects → Set up a group project in the console and choose its folder and executor. One bot can serve several projects but connects to only one SintBot.
+Create a WeCom group, add the bot and @mention it once, then pick that group under Groups · Projects → Add a group project in the console and choose its folder and executor. One bot can serve several projects but connects to only one SintBot.
 
 ##### No reply to your message?
 
@@ -2336,7 +2348,7 @@ Mac 上已有可用的 Codex 或 Claude Code；手机已安装企业微信，并
 
 ##### 想再绑一个项目？
 
-在企业微信建群，把机器人加进群并 @它一次，再到控制台「群 · 项目 → 配置群项目」选择这个群，指定项目目录和执行器。同一个机器人可以服务多个项目，但只由一台 SintBot 连接。
+在企业微信建群，把机器人加进群并 @它一次，再到控制台「群 · 项目 → 添加群项目」选择这个群，指定项目目录和执行器。同一个机器人可以服务多个项目，但只由一台 SintBot 连接。
 
 ##### 发了消息没有回复？
 
@@ -2371,9 +2383,21 @@ Source: https://sintbot.com/zh/changelog/
 
 ## 每个版本改了什么
 
-SintBot 从 1.4.1 到 1.4.30 的每个版本，新版在前，内容与该版发布的更新说明一致。
+SintBot 从 1.4.1 到 1.4.31 的每个版本，新版在前，内容与该版发布的更新说明一致。
 
-[最新版本 1.4.30](https://sintbot.com/zh/changelog/#v1.4.30)
+[最新版本 1.4.31](https://sintbot.com/zh/changelog/#v1.4.31)
+
+2026-11-20
+
+### 1.4.31 · 控制台更清爽
+
+- **添加群项目、添加模型：按钮更安静**: 群 · 项目页和模型页右上角的按钮改成带加号的细边框样式，名字改为「添加群项目」「添加模型」。在弹窗里选中已绑定的群时，标题会变成「修改群项目」。
+
+- **列表为空时有添加卡**: 还没有群项目或模型时，列表位置显示一张虚线添加卡，点一下就打开对应的弹窗。
+
+- **点版本号打开软件更新**: 点击左上角的版本号，直接跳到「设置 → 软件更新」卡。
+
+- **设置合并为一张「通用设置」卡**: 界面语言、机器人与网络、运行限制和访问地址合进一张「通用设置」卡，默认折叠，折叠时显示语言、并发上限、是否设了代理和访问范围；原来单独的「界面」卡去掉。
 
 2026-11-20
 
@@ -2721,4 +2745,4 @@ SintBot 从 1.4.1 到 1.4.30 的每个版本，新版在前，内容与该版发
 
 - **新增封存命令**: 先重启服务；仍然暂停的群，在服务停止后运行 sintbot incident seal --group 群 ID。原记录原样封存，这个群换一份新记录重新开放，封存前未完成的消息不会再处理。
 
-在控制台「设置 → 软件更新」里升级。本页由公开仓 v1.4.30 标签里的 [CHANGELOG.json](https://github.com/sintlab/sintbot/blob/v1.4.30/CHANGELOG.json) 生成。
+在控制台「设置 → 软件更新」里升级。本页由公开仓 v1.4.31 标签里的 [CHANGELOG.json](https://github.com/sintlab/sintbot/blob/v1.4.31/CHANGELOG.json) 生成。
