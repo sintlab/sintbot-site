@@ -1,10 +1,11 @@
 /* SintBot site analytics. Umami's script.js records page views; this file adds intent events on
    every page. Anonymous and aggregate only, as privacy.html describes: no text people type, no
-   identifiers. A recognized ChatGPT source is kept in this tab for up to 30 minutes; no
+   identifiers. A recognized ChatGPT or DeepSeek source is kept in this tab for up to 30 minutes; no
    visitor ID, full referrer or query string is stored. Every event carries page and language.
 
    Events (name · data beyond page and lang):
      gpt-referral     source, source_via             recognized ChatGPT landing (not unique people)
+     deepseek-referral source, source_via             recognized DeepSeek landing
      download-dmg      version, chip                 desktop disk image link (chip: apple / intel, from the file)
      copy-oneline      block                         copy button on the one-line installer
      copy-other        block                         any other copy button
@@ -34,25 +35,35 @@
 
   // Only known source labels are retained, never arbitrary query/referrer data.
   const gptHost = host => host === "chatgpt.com" || host.endsWith(".chatgpt.com") || host === "chat.openai.com";
+  const deepseekHost = host => host === "deepseek.com" || host.endsWith(".deepseek.com");
   const utm = (query.get("utm_source") || "").trim().toLowerCase();
   const gptUtm = ["chatgpt", "chatgpt.com", "chat.openai.com"].includes(utm);
+  const deepseekUtm = ["deepseek", "deepseek.com", "chat.deepseek.com"].includes(utm);
   let refHost = "";
   try { refHost = new URL(document.referrer).hostname.toLowerCase(); } catch (_) {}
   const external = refHost && refHost !== location.hostname;
-  const via = utm ? (gptUtm ? "utm" : "") : (gptHost(refHost) ? "referrer" : "");
+  let source = "";
+  if (utm) {
+    if (gptUtm) source = "chatgpt";
+    else if (deepseekUtm) source = "deepseek";
+  } else {
+    if (gptHost(refHost)) source = "chatgpt";
+    else if (deepseekHost(refHost)) source = "deepseek";
+  }
+  const via = source ? (utm ? "utm" : "referrer") : "";
   let attribution = null;
   try {
     if (via) {
-      attribution = { source: "chatgpt", source_via: via, at: Date.now() };
+      attribution = { source, source_via: via, at: Date.now() };
       sessionStorage.setItem(sourceKey, JSON.stringify(attribution));
     } else if (utm || external) sessionStorage.removeItem(sourceKey);
     else {
       const saved = JSON.parse(sessionStorage.getItem(sourceKey) || "null");
-      if (saved && saved.source === "chatgpt" && ["utm", "referrer"].includes(saved.source_via)
+      if (saved && ["chatgpt", "deepseek"].includes(saved.source) && ["utm", "referrer"].includes(saved.source_via)
           && Number.isFinite(saved.at) && Date.now() >= saved.at && Date.now() - saved.at < 30 * 60 * 1000) attribution = saved;
       else sessionStorage.removeItem(sourceKey);
     }
-  } catch (_) { if (via) attribution = { source: "chatgpt", source_via: via, at: Date.now() }; }
+  } catch (_) { if (via) attribution = { source, source_via: via, at: Date.now() }; }
   function clearSource() { attribution = null; try { sessionStorage.removeItem(sourceKey); } catch (_) {} }
   if (attribution) setTimeout(clearSource, Math.max(0, 30 * 60 * 1000 - (Date.now() - attribution.at)));
   const sourceData = () => {
@@ -89,7 +100,7 @@
       else if (++tries > 60) { clearInterval(timer); timer = 0; queue.length = 0; }
     }, 250);
   }
-  if (via) track("gpt-referral");
+  if (via) track(source === "chatgpt" ? "gpt-referral" : "deepseek-referral");
 
   const short = (s, n = 80) => String(s || "").replace(/\s+/g, " ").trim().slice(0, n);
 

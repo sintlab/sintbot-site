@@ -22,3 +22,30 @@ test('attribution expires during a page and across navigation',()=>{const a=run(
 test('opt-out records nothing and clears attribution',()=>{for(const opts of [{disabled:true},{url:'https://sintbot.com/?notrack=1&utm_source=chatgpt.com'}]){const a=run({ref:'https://chatgpt.com/'});const b=run({...opts,session:a.session});b.download();assert.equal(b.calls.length,0);assert.equal(b.session.size,0)}});
 test('storage rejection still permits attribution on the landing page',()=>{const a=run({url:'https://sintbot.com/?utm_source=chatgpt.com',blocked:true});a.download();assert.equal(a.calls[1].data.source,'chatgpt')});
 test('ordinary direct visits have no GPT source and retain existing events',()=>{const a=run();a.download();assert.equal(a.calls.length,1);assert.equal(a.calls[0].name,'download-dmg');assert.equal(a.calls[0].data.source,undefined)});
+
+test('DeepSeek referrals persist across guides with no private URL data', () => {
+  for (const ref of ['https://chat.deepseek.com/a/private', 'https://deepseek.com/']) {
+    const landing = run({ref});
+    assert.equal(landing.calls[0].name, 'deepseek-referral');
+    const guide = run({session:landing.session,ref:'https://sintbot.com/',url:'https://sintbot.com/zh/guide/install/'});
+    guide.download();
+    assert.equal(guide.calls[0].data.source, 'deepseek');
+    assert.ok(!JSON.stringify([...landing.session.values()]).includes('private'));
+  }
+});
+test('DeepSeek UTM, expiry, opt-out, source changes and blocked storage', () => {
+  for (const label of ['DeepSeek','deepseek.com','chat.deepseek.com']) {
+    const a=run({url:'https://sintbot.com/?utm_source='+label,blocked:true});
+    assert.equal(a.calls[0].data.source,'deepseek');
+  }
+  const a=run({ref:'https://chat.deepseek.com/'});a.advance(1800000);a.download();
+  assert.equal(a.calls.at(-1).data.source,undefined);
+  const b=run({ref:'https://chat.deepseek.com/'});
+  assert.equal(run({session:b.session,disabled:true}).calls.length,0);
+  assert.equal(b.session.size,0);
+  const c=run({ref:'https://chat.deepseek.com/'});
+  const d=run({session:c.session,ref:'https://chatgpt.com/'});
+  assert.equal(d.calls[0].data.source,'chatgpt');
+  for (const ref of ['https://deepseek.com.evil.test/','https://fakedeepseek.com/']) assert.equal(run({ref}).calls.length,0);
+  assert.equal(run({ref:'https://chat.deepseek.com/',url:'https://sintbot.com/?utm_source=newsletter'}).calls.length,0);
+});
