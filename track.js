@@ -5,7 +5,7 @@
 
    Events (name · data beyond page and lang):
      gpt-referral     source, source_via             recognized ChatGPT landing (not unique people)
-     download-dmg      version                       desktop disk image link
+     download-dmg      version, chip                 desktop disk image link (chip: apple / intel, from the file)
      copy-oneline      block                         copy button on the one-line installer
      copy-other        block                         any other copy button
      copy-manual       block                         text selected and copied from a code block
@@ -139,10 +139,13 @@
 
     const a = el.closest("a[href]");
     if (!a) return;
+    // The chip switch under the download button only changes the button (download.js).
+    if (a.hasAttribute("data-dl-switch") && !(event.metaKey || event.ctrlKey || event.shiftKey || event.button)) return;
     let url;
     try { url = new URL(a.getAttribute("href"), location.href); } catch (e) { return; }
     if (/\/sintbot-desktop\/releases\/.+\.dmg$/.test(url.pathname)) {
-      return track("download-dmg", { version: (url.pathname.match(/_(\d+\.\d+\.\d+)_/) || [])[1] || "" });
+      const file = url.pathname.match(/_(\d+\.\d+\.\d+)_(aarch64|x64)\.dmg$/) || [];
+      return track("download-dmg", { version: file[1] || "", chip: file[2] === "x64" ? "intel" : file[2] ? "apple" : "" });
     }
     if (url.host !== location.host) {
       return url.hostname.endsWith("github.com") ? track("github-click", { target: githubTarget(url) }) : track("outbound", { host: url.hostname });
