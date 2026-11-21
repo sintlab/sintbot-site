@@ -126,7 +126,7 @@ function jsonLd(lang) {
       downloadUrl: DMG,
       installUrl: lang === "zh" ? `${SITE}/zh/guide/install/` : `${SITE}/guide/install/`,
       softwareRequirements: lang === "zh"
-        ? "macOS 12 及以上的 Mac（Apple 芯片或 Intel）；已安装并登录的 Claude Code 或 Codex"
+        ? "macOS 12 及以上的 Mac（M 芯片或 Intel 芯片）；已安装并登录的 Claude Code 或 Codex"
         : "Mac with Apple silicon or Intel, macOS 12 or later; Claude Code or Codex installed and signed in",
       author: { "@id": authorId },
       creator: { "@id": authorId },
@@ -197,7 +197,7 @@ function facts(lang) {
 
 - 费用：免费开源，没有付费版，不用注册 SintBot 账号。费用只来自你自己选的模型套餐或 API Key。
 - 许可：PolyForm Shield 1.0.0（https://polyformproject.org/licenses/shield/1.0.0）。
-- 运行环境：macOS 12 及以上的 Mac（Apple 芯片或 Intel）；需要已安装并登录的 Claude Code 或 Codex。
+- 运行环境：macOS 12 及以上的 Mac（M 芯片或 Intel 芯片）；需要已安装并登录的 Claude Code 或 Codex。
 - 聊天平台：飞书群、企业微信的群和单聊、Slack 的频道和私聊；也可以不接聊天平台，在 App 里本机对话。
 - 模型：通过 Claude Code 用 Claude，通过 Codex 用 GPT；GLM、MiniMax、DeepSeek、Kimi 等通过兼容端点和自己的 API Key 接入。
 - 安装（推荐，桌面版 ${DESKTOP}）：下载 ${DMG} （Intel 芯片：${DMG.replace('_aarch64.dmg', '_x64.dmg')}），把 SintBot 拖进「应用程序」后打开。App 自带 SintBot 服务和 Node.js。

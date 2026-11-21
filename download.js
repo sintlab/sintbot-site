@@ -7,7 +7,7 @@
 (() => {
   const TEXT = {
     en: { arm: "Apple silicon", intel: "Intel", toIntel: "Intel Mac? Get the Intel version", toArm: "Apple silicon Mac? Get that version", other: "For Macs with macOS 12 or later." },
-    zh: { arm: "Apple 芯片", intel: "Intel 芯片", toIntel: "Intel 芯片的 Mac？下载 Intel 版", toArm: "Apple 芯片的 Mac？下载 Apple 芯片版", other: "适用于 macOS 12 及以上的 Mac。" },
+    zh: { arm: "M 芯片", intel: "Intel 芯片", toIntel: "Intel 芯片的 Mac？下载 Intel 版", toArm: "M 芯片的 Mac？下载 M 芯片版", other: "适用于 macOS 12 及以上的 Mac。" },
   };
   const boxes = [...document.querySelectorAll("[data-dl]")];
   if (!boxes.length) return;
