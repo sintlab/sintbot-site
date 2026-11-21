@@ -14,7 +14,7 @@
   // section and the JSON-LD softwareVersion. Mirror of the latest npm release;
   // keep this aligned with the versioned installation guide.
   // Bump this one line only, then run scripts/build-zh.mjs.
-  const VERSION = "1.4.32";
+  const VERSION = "1.4.33";
 
   const translations = {
   "nav.install": {en:"Install",zh:"安装指南"},
@@ -124,16 +124,16 @@
     "zh": "免费开源"
   },
   "plugin.meta.kind": {
-    "en": "npm · sintbot v1.4.32",
-    "zh": "npm · sintbot v1.4.32"
+    "en": "npm · sintbot v1.4.33",
+    "zh": "npm · sintbot v1.4.33"
   },
   "install.h": {
     "en": "Terminal installation (optional)",
     "zh": "终端安装（备选）"
   },
   "install.lede": {
-    "en": "Use the <a class=\"install-guide\" href=\"/guide/install/\">1.4.32 installation guide</a> for the full configuration and exact startup commands.",
-    "zh": "完整配置和准确的启动步骤见 <a class=\"install-guide\" href=\"/zh/guide/install/\">1.4.32 安装指南</a>。"
+    "en": "Use the <a class=\"install-guide\" href=\"/guide/install/\">1.4.33 installation guide</a> for the full configuration and exact startup commands.",
+    "zh": "完整配置和准确的启动步骤见 <a class=\"install-guide\" href=\"/zh/guide/install/\">1.4.33 安装指南</a>。"
   },
   "install.quick": {
     "en": "Install with one command. The installer checks your environment, installs SintBot and verifies the result.",
