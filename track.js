@@ -140,7 +140,7 @@
     const a = el.closest("a[href]");
     if (!a) return;
     // The chip switch under the download button only changes the button (download.js).
-    if (a.hasAttribute("data-dl-switch") && !(event.metaKey || event.ctrlKey || event.shiftKey || event.button)) return;
+    if (a.matches("[data-dl-switch]") && !(event.metaKey || event.ctrlKey || event.shiftKey || event.button)) return;
     let url;
     try { url = new URL(a.getAttribute("href"), location.href); } catch (e) { return; }
     if (/\/sintbot-desktop\/releases\/.+\.dmg$/.test(url.pathname)) {
