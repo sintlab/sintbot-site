@@ -13,7 +13,7 @@ Generated from https://sintbot.com/ and its guide pages by scripts/build-zh.mjs,
 - Models: Claude through Claude Code, GPT through Codex; GLM, MiniMax, DeepSeek, Kimi and other services through compatible endpoints and your own API keys.
 - Install (recommended, desktop app 0.1.6): download https://github.com/sintlab/sintbot-desktop/releases/latest/download/SintBot_0.1.6_aarch64.dmg, move SintBot to Applications and open it. The app includes the SintBot service and Node.js.
 - Install (terminal, needs Node.js 22+): `curl -fsSL https://sintbot.com/install.sh | bash`, then follow https://sintbot.com/guide/install/#terminal
-- Current versions: service 1.4.31 (npm package `sintbot`), desktop app 0.1.6.
+- Current versions: service 1.4.32 (npm package `sintbot`), desktop app 0.1.6.
 - Updates: from the console, Settings → Software updates.
 - Data: projects, notes and settings are ordinary files on your Mac; chat platforms and model services need a network connection.
 - Author WaterTian; publisher SintLab.
@@ -292,7 +292,7 @@ Check the connection status under Settings → WeCom. If it shows Disconnected, 
 
 ### Prepare your project Mac
 
-The terminal steps below are for **SintBot 1.4.31** on macOS with Node.js 22 or later and Codex or Claude Code. Start with local conversations, or connect 1–32 project conversations: Slack direct messages or channels, with Feishu China groups and WeCom chats or groups also supported. The desktop App includes Node.js.
+The terminal steps below are for **SintBot 1.4.32** on macOS with Node.js 22 or later and Codex or Claude Code. Start with local conversations, or connect 1–32 project conversations: Slack direct messages or channels, with Feishu China groups and WeCom chats or groups also supported. The desktop App includes Node.js.
 
 - You can start with the automatically created project folder or choose an existing project on this Mac.
 - Node.js is version 22 or later.
@@ -327,7 +327,7 @@ curl -fsSL https://sintbot.com/install.sh | bash
 
 **Installation complete**
 
-When you see `Installed and verified SintBot 1.4.31`, installation is complete. Continue with the project and chat platform setup.
+When you see `Installed and verified SintBot 1.4.32`, installation is complete. Continue with the project and chat platform setup.
 
 ##### Optional: preview the installation plan
 
@@ -397,7 +397,7 @@ Compare the reply with the file. This checks the chat connection, the runner and
 
 #### Commands and console
 
-In a Feishu group, any text message is a task; the reply card appears once the model starts, or after 25 seconds if it is still working without output. While it runs, the card shows how long it has run, what it is doing and the steps already delivered, which fold into a Process section at the end. These commands are answered at once and never take a task slot:
+In a Feishu group, any text message is a task; the reply card appears once the model starts, or after 3 seconds if it is still working without output. While it runs, the card shows how long it has run, what it is doing and the steps already delivered, which fold into a Process section at the end. These commands are answered at once and never take a task slot:
 
 - **`/status`**: Model, project, busy or idle (steps and current work while busy), and queue.
 
@@ -591,7 +591,7 @@ Make the active navigation item easier to see, using the existing accent color.
 Send an updated screenshot after checking the same two widths.
 ```
 
-**While a task is running in 1.4.31**
+**While a task is running in 1.4.32**
 
 Send additional instructions directly in the project group. Busy follow-ups are on by default for Claude Code and Codex; they queue when disabled or unavailable. “Joined” means the model has read the message, and long-running tools can delay that step.
 
@@ -622,7 +622,7 @@ Model and thinking depth are chosen per group: change them on the console’s gr
 
 **Codex speed (Fast).** Codex models have a Speed option: Standard or Fast, Standard by default. Three ways to turn it on: send `/model fast` in the group (`/model standard` to go back); the `/model` card gains a Speed row, pick then confirm as usual; the console group card gains a Speed dropdown. Changing only the speed never resets the session, works while a task is running and applies from the next message. It is remembered per group and per model card: Fast on GPT in one group does not affect that group’s other models. Only models with a Fast tier can turn it on; otherwise the request is refused and nothing changes, and switching to a model without it returns to Standard with a note. The receipt states the cost: the model is unchanged, requests are queued at a higher priority, about 1.5–2x faster depending on the model, and included subscription usage is charged at 2.5x (purchased credits at 2x). When Fast is off, every turn explicitly asks for standard speed. When App Server explicitly reports a fallback, the card footer omits Fast. Older executors and the exec route may not report the effective tier; a Fast label alone is not proof that acceleration took effect.
 
-**API-key models.** In Models · Library choose Add model, pick DeepSeek, GLM, Kimi or MiniMax, paste your own API key (Verify key runs a short test) and name the card; the endpoint and other details are under Advanced. The card has no model field: once the key is in, pick the model and thinking depth per group in Groups · Projects from the provider’s live list. The model library includes a DeepSeek card, selectable even before a key is entered; its preset model is `deepseek-flash[1m]`. Without a key, the turn is refused before it starts with “this model card has no API key yet”; no other credentials are borrowed.
+**API-key models.** In Models · Library choose Add model, pick DeepSeek, GLM, Kimi or MiniMax, paste your own API key (Verify key runs a short test) and name the card; the endpoint and other details are under Advanced. The card has no model field: once the key is in, pick the model and thinking depth per group in Groups · Projects from the provider’s live list. The DeepSeek preset’s model is `deepseek-flash[1m]`. Without a key, the turn is refused before it starts with “this model card has no API key yet”; no other credentials are borrowed.
 
 Model settings are grouped into model and reasoning, context and compaction, and connection; on a DeepSeek, GLM, Kimi or MiniMax card, everything except the API key and name sits under Advanced. For Codex, choose the executor default or a custom context window; known limits are checked on save. Compaction also offers default or custom, with numeric inputs shown only when needed. Codex uses a threshold and Claude Code a compaction window; either may compact earlier. Existing explicit global values become independent settings on existing models. Changes apply to the next turn and preserve the session. Capacity details distinguish requested settings from runtime reports.
 
@@ -686,7 +686,7 @@ Each group is bound to its project. The console overview shows concurrency, grou
 
 #### Permissions
 
-Begin with read-only requests. The project administrator chooses the permissions required for editing files and running commands.
+A newly connected group starts with full access and plain data output (phone numbers and emails shown as is). Begin with read-only requests to check the connection. To restrict a group, switch it back to read-only or allowlist, and data output back to masked, on its Groups · Projects card.
 
 #### Scheduled tasks
 
@@ -696,7 +696,7 @@ On a group card in the console, open More settings → Scheduled tasks. At the s
 
 Project files stay on the machine; chat messages and model requests use the configured external services. Account terms and usage limits apply.
 
-##### Starting and stopping the 1.4.31 foreground installation
+##### Starting and stopping the 1.4.32 foreground installation
 
 Keep the terminal running while you use the connected group. Press Ctrl-C and wait for shutdown to finish. For a normal restart, use the same start command from the installation guide; do not rerun initialization.
 
@@ -723,9 +723,23 @@ CHANGELOG
 
 ## What changed in each release
 
-Every SintBot release from 1.4.1 to 1.4.31, newest first, with the notes published for that version.
+Every SintBot release from 1.4.1 to 1.4.32, newest first, with the notes published for that version.
 
-[Latest release: 1.4.31](https://sintbot.com/changelog/#v1.4.31)
+[Latest release: 1.4.32](https://sintbot.com/changelog/#v1.4.32)
+
+2026-11-21
+
+### 1.4.32 · Open defaults for new groups, a shorter wait
+
+- **New groups start with full access and plain data output**: A group added in the console or connected through the setup page now starts in Full access, with phone numbers and emails shown as is. Groups already bound keep their settings; to restrict one, switch it back to read-only or allowlist and data output back to masked on its Groups · Projects card.
+
+- **Acknowledgement after 3 seconds**: When nothing has appeared 3 seconds after a message, a “Got it, working on it…” card is posted (was 25 seconds). Change it in General settings; 0 turns it off.
+
+- **Turn limit 60 minutes by default**: The default limit for one turn is now 60 minutes instead of 30. A value already set in the configuration is kept.
+
+- **No preset DeepSeek card in the model library**: The Models page shows only configured model cards. DeepSeek is still among the Add model presets.
+
+- **No model field when adding Claude sign-in**: With the Claude sign-in preset, the model field is hidden along with the endpoint and key; the model is chosen per group under Groups · Projects.
 
 2026-11-20
 
@@ -1085,7 +1099,7 @@ Every SintBot release from 1.4.1 to 1.4.31, newest first, with the notes publish
 
 - **Incident seal command**: Restart first; for a group that is still paused, stop the service and run sintbot incident seal --group <group ID>. The old records are kept unchanged, the group reopens with new records, and messages left unfinished before the seal are not processed again.
 
-To update, open Settings → Software updates in the console. This page is generated from [CHANGELOG.en.json](https://github.com/sintlab/sintbot/blob/v1.4.31/CHANGELOG.en.json) at the v1.4.31 tag of the public repository.
+To update, open Settings → Software updates in the console. This page is generated from [CHANGELOG.en.json](https://github.com/sintlab/sintbot/blob/v1.4.32/CHANGELOG.en.json) at the v1.4.32 tag of the public repository.
 
 
 # 中文
@@ -1101,7 +1115,7 @@ To update, open Settings → Software updates in the console. This page is gener
 - 模型：通过 Claude Code 用 Claude，通过 Codex 用 GPT；GLM、MiniMax、DeepSeek、Kimi 等通过兼容端点和自己的 API Key 接入。
 - 安装（推荐，桌面版 0.1.6）：下载 https://github.com/sintlab/sintbot-desktop/releases/latest/download/SintBot_0.1.6_aarch64.dmg ，把 SintBot 拖进「应用程序」后打开。App 自带 SintBot 服务和 Node.js。
 - 安装（终端，需要 Node.js 22 及以上）：`curl -fsSL https://sintbot.com/install.sh | bash`，后续步骤见 https://sintbot.com/zh/guide/install/#terminal
-- 当前版本：服务 1.4.31（npm 包 `sintbot`），桌面版 0.1.6。
+- 当前版本：服务 1.4.32（npm 包 `sintbot`），桌面版 0.1.6。
 - 更新：在控制台「设置 → 软件更新」里完成。
 - 数据：项目、笔记和设置是你 Mac 上的普通文件；聊天平台和模型服务需要联网。
 - 作者 WaterTian，发布方 SintLab。
@@ -1376,7 +1390,7 @@ SintBot 把这个会话绑定到项目，机器人回复「已连接项目 …�
 
 ### 准备项目所在的 Mac
 
-以下终端步骤对应 **SintBot 1.4.31**，需要 macOS、Node.js 22 及以上，以及 Codex 或 Claude Code。可以先使用本机对话，也可连接 1–32 个中国区飞书项目群；桌面 App 已自带 Node.js。
+以下终端步骤对应 **SintBot 1.4.32**，需要 macOS、Node.js 22 及以上，以及 Codex 或 Claude Code。可以先使用本机对话，也可连接 1–32 个中国区飞书项目群；桌面 App 已自带 Node.js。
 
 - 可以先用自动创建的项目目录，也可以选择这台 Mac 上已有的项目。
 - Node.js 版本为 22 或以上。
@@ -1411,7 +1425,7 @@ curl -fsSL https://sintbot.com/install.sh | bash
 
 **安装完成**
 
-看到 `Installed and verified SintBot 1.4.31` 即表示安装完成。接下来配置飞书和项目。
+看到 `Installed and verified SintBot 1.4.32` 即表示安装完成。接下来配置飞书和项目。
 
 ##### 可选：先预览安装计划
 
@@ -1481,7 +1495,7 @@ Terminal
 
 #### 群里的命令与控制台
 
-直接发文字就是派任务；模型开始输出时回复卡片就会出现，25 秒还没有输出也会先出现。运行中卡片显示已跑多久、正在做什么和已完成的步骤，结束后这些步骤收进「过程」折叠区。下面的命令立即应答，不占用任务：
+直接发文字就是派任务；模型开始输出时回复卡片就会出现，3 秒还没有输出也会先出现。运行中卡片显示已跑多久、正在做什么和已完成的步骤，结束后这些步骤收进「过程」折叠区。下面的命令立即应答，不占用任务：
 
 - **`/status`**: 模型、项目、是否在忙（在忙时含步数和正在做什么）和排队数。
 
@@ -1673,7 +1687,7 @@ APP
 检查同样的两种宽度后，发更新截图。
 ```
 
-**1.4.31 任务进行中如何补充要求**
+**1.4.32 任务进行中如何补充要求**
 
 直接在项目群发送补充。Claude Code 与 Codex 默认开启忙时跟进，关闭或暂不支持时排队。“已加入”表示模型已读取，执行较长的工具步骤时可能需要等待。
 
@@ -1704,7 +1718,7 @@ APP
 
 **Codex 速度（Fast）。**Codex 模型多一个「速度」选项：标准或 Fast，默认标准。三种开法：群里发 `/model fast`（回到标准发 `/model 标准`）；`/model` 弹出的模型卡上多一行「速度」，照旧先选、再确认；控制台群卡上多一个「速度」下拉。只改速度不会重置会话，任务进行中也能改，下一条消息生效。按群、按模型卡分开记：这个群在 GPT 上开了 Fast，不影响它在别的模型上的设置。只有支持 Fast 的型号才能开，否则直接拒绝、什么都不改；换到不支持的型号时自动回到标准并说一句。开的回执会写明代价：模型能力不变，只是请求排进更高优先级，约快 1.5–2 倍（因型号而异），订阅包含的额度按标准的 2.5 倍扣，另购 credits 按 2 倍扣。没开 Fast 时，每一轮都明确要求标准速度。App Server 明确回报回退时，卡片页脚不再显示 Fast；旧执行器或 exec 路线可能不回报实际档位，不能仅凭 Fast 标记证明加速已生效。
 
-**API Key 模型。**在「模型 · 库」点「添加模型」，选 DeepSeek、GLM、Kimi 或 MiniMax，粘贴自己的 API Key（可点「验证 Key」先试跑一次）并起个名字；端点等其余设置收在「高级」里。卡上没有型号栏：填好 Key 后，到「群 · 项目」从该家的实时清单里逐群选型号与思考深度。模型库默认带一张 DeepSeek 卡，未填 Key 时也可在群卡中选择，预设型号为 `deepseek-flash[1m]`。没填 Key 时启动前会拒绝并提示「这张模型卡还没填 API Key」，不会借用其他凭据。
+**API Key 模型。**在「模型 · 库」点「添加模型」，选 DeepSeek、GLM、Kimi 或 MiniMax，粘贴自己的 API Key（可点「验证 Key」先试跑一次）并起个名字；端点等其余设置收在「高级」里。卡上没有型号栏：填好 Key 后，到「群 · 项目」从该家的实时清单里逐群选型号与思考深度。DeepSeek 预设的型号为 `deepseek-flash[1m]`。没填 Key 时启动前会拒绝并提示「这张模型卡还没填 API Key」，不会借用其他凭据。
 
 模型设置分为型号与推理、上下文与压缩、连接与登录；DeepSeek、GLM、Kimi、MiniMax 的卡除 API Key 和名称外，其余都收在「高级」里。Codex 窗口可选执行器默认或自定义，保存时校验已知上限；压缩也只保留默认与自定义，按需显示数值。Codex 使用阈值，Claude Code 使用压缩窗口，实际都可能提前触发。旧显式全局值转为原有模型的独立设置，新模型使用执行器默认。设置从下轮生效并保留会话；容量详情区分设置值与实际回报。
 
@@ -1768,7 +1782,7 @@ Claude Code 群在执行器自报支持压缩时，可在两轮之间整理当�
 
 #### 操作权限
 
-初次接入从只读请求开始。需要改文件或执行命令时，由项目管理员配置相应权限。
+新接入的群默认完全访问、数据明文（手机号和邮箱原样显示）。初次接入先发只读请求核对连接。要收紧权限，在「群 · 项目」卡里改回只读或白名单，数据输出改回遮盖。
 
 #### 定时任务
 
@@ -1778,7 +1792,7 @@ Claude Code 群在执行器自报支持压缩时，可在两轮之间整理当�
 
 项目文件保存在本机；群消息和模型请求会使用配置的外部服务，并遵循对应账号的条款和用量限制。
 
-##### 1.4.31 前台安装的启动与停止
+##### 1.4.32 前台安装的启动与停止
 
 使用已接入的群时，保持启动终端运行。停止时按 Ctrl-C，等待进程退出。日常重启沿用安装指南里的启动命令，不要重复初始化。
 
@@ -2391,9 +2405,23 @@ Source: https://sintbot.com/zh/changelog/
 
 ## 每个版本改了什么
 
-SintBot 从 1.4.1 到 1.4.31 的每个版本，新版在前，内容与该版发布的更新说明一致。
+SintBot 从 1.4.1 到 1.4.32 的每个版本，新版在前，内容与该版发布的更新说明一致。
 
-[最新版本 1.4.31](https://sintbot.com/zh/changelog/#v1.4.31)
+[最新版本 1.4.32](https://sintbot.com/zh/changelog/#v1.4.32)
+
+2026-11-21
+
+### 1.4.32 · 新群默认放开、等待更短
+
+- **新绑定的群默认完全访问、数据明文**: 在控制台添加群项目或通过接入页接入新群时，执行模式默认是「完全访问」，数据输出默认是明文（手机号和邮箱原样显示）。已绑定的群不变；要收紧，在「群 · 项目」卡里改回只读或白名单、数据输出改回遮盖。
+
+- **回执等待默认 3 秒**: 收到消息后 3 秒内还没有任何输出，就先回一张「已收到，正在处理」卡片（原来是 25 秒）。在通用设置里可改，填 0 不发。
+
+- **单轮超时默认 60 分钟**: 一轮任务的默认上限从 30 分钟改为 60 分钟。已在配置里填过的值不变。
+
+- **模型库不再预置 DeepSeek 卡片**: 模型页只显示已配置的模型卡。DeepSeek 仍在「添加模型」的预设里。
+
+- **添加 Claude 订阅登录时不再显示型号输入框**: 选「Claude 订阅登录」预设时，型号输入框和端点、Key 一起隐藏；型号按群在「群 · 项目」里选。
 
 2026-11-20
 
@@ -2753,4 +2781,4 @@ SintBot 从 1.4.1 到 1.4.31 的每个版本，新版在前，内容与该版发
 
 - **新增封存命令**: 先重启服务；仍然暂停的群，在服务停止后运行 sintbot incident seal --group 群 ID。原记录原样封存，这个群换一份新记录重新开放，封存前未完成的消息不会再处理。
 
-在控制台「设置 → 软件更新」里升级。本页由公开仓 v1.4.31 标签里的 [CHANGELOG.json](https://github.com/sintlab/sintbot/blob/v1.4.31/CHANGELOG.json) 生成。
+在控制台「设置 → 软件更新」里升级。本页由公开仓 v1.4.32 标签里的 [CHANGELOG.json](https://github.com/sintlab/sintbot/blob/v1.4.32/CHANGELOG.json) 生成。
