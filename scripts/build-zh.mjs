@@ -317,7 +317,9 @@ ${[...GUIDES.slice(2), CHANGELOGS[1]].map(guide).join("\n\n")}`;
 const MARK = "<!-- GENERATED from /index.html by scripts/build-zh.mjs — edit index.html / app.js, then run the script -->";
 const src = pageSrc;
 const en = renderBody(head(src, "en"), "en");
-const zh = renderBody(head(src, "zh"), "zh").replace("<head>", `<head>\n    ${MARK}`).replace(/href="\/(guide|changelog)\//g, 'href="/zh/$1/');
+const zh = renderBody(head(src, "zh"), "zh").replace("<head>", `<head>\n    ${MARK}`).replace(/href="\/(guide|changelog)\//g, 'href="/zh/$1/')
+  // The download button is filled by download.js; give the Chinese page Chinese text before it runs.
+  .replace(/(data-dl-chip>)Apple silicon</, "$1M 芯片<").replace(/(data-dl-switch>)Intel Mac\? Get the Intel version</, "$1Intel 芯片的 Mac？下载 Intel 版<");
 
 const targets = [["index.html", en], [join("zh", "index.html"), zh], ["llms.txt", llms()], ["llms-full.txt", llmsFull()]];
 if (check) {
