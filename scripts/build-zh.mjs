@@ -126,8 +126,8 @@ function jsonLd(lang) {
       downloadUrl: DMG,
       installUrl: lang === "zh" ? `${SITE}/zh/guide/install/` : `${SITE}/guide/install/`,
       softwareRequirements: lang === "zh"
-        ? "macOS 12 及以上的 Apple 芯片 Mac；已安装并登录的 Claude Code 或 Codex"
-        : "Apple silicon Mac with macOS 12 or later; Claude Code or Codex installed and signed in",
+        ? "macOS 12 及以上的 Mac（Apple 芯片或 Intel）；已安装并登录的 Claude Code 或 Codex"
+        : "Mac with Apple silicon or Intel, macOS 12 or later; Claude Code or Codex installed and signed in",
       author: { "@id": authorId },
       creator: { "@id": authorId },
       // Same entity elsewhere: only public pages that are SintBot itself (cc-bot is a separate project).
@@ -197,10 +197,10 @@ function facts(lang) {
 
 - 费用：免费开源，没有付费版，不用注册 SintBot 账号。费用只来自你自己选的模型套餐或 API Key。
 - 许可：PolyForm Shield 1.0.0（https://polyformproject.org/licenses/shield/1.0.0）。
-- 运行环境：macOS 12 及以上的 Apple 芯片 Mac；需要已安装并登录的 Claude Code 或 Codex。
+- 运行环境：macOS 12 及以上的 Mac（Apple 芯片或 Intel）；需要已安装并登录的 Claude Code 或 Codex。
 - 聊天平台：飞书群、企业微信的群和单聊、Slack 的频道和私聊；也可以不接聊天平台，在 App 里本机对话。
 - 模型：通过 Claude Code 用 Claude，通过 Codex 用 GPT；GLM、MiniMax、DeepSeek、Kimi 等通过兼容端点和自己的 API Key 接入。
-- 安装（推荐，桌面版 ${DESKTOP}）：下载 ${DMG} ，把 SintBot 拖进「应用程序」后打开。App 自带 SintBot 服务和 Node.js。
+- 安装（推荐，桌面版 ${DESKTOP}）：下载 ${DMG} （Intel 芯片：${DMG.replace('_aarch64.dmg', '_x64.dmg')}），把 SintBot 拖进「应用程序」后打开。App 自带 SintBot 服务和 Node.js。
 - 安装（终端，需要 Node.js 22 及以上）：\`curl -fsSL ${SITE}/install.sh | bash\`，后续步骤见 ${SITE}/zh/guide/install/#terminal
 - 当前版本：服务 ${VERSION}（npm 包 \`sintbot\`），桌面版 ${DESKTOP}。
 - 更新：在控制台「设置 → 软件更新」里完成。
@@ -210,10 +210,10 @@ function facts(lang) {
 
 - Cost: free and open source, with no paid tier and no SintBot account. The only costs are the model plans or API keys you choose.
 - License: PolyForm Shield 1.0.0 (https://polyformproject.org/licenses/shield/1.0.0).
-- Runs on: Apple silicon Macs with macOS 12 or later; needs an installed, signed-in Claude Code or Codex.
+- Runs on: Macs with Apple silicon or Intel, macOS 12 or later; needs an installed, signed-in Claude Code or Codex.
 - Chat platforms: Slack channels and direct messages, Feishu groups, WeCom groups and direct chats; or a local conversation in the app with no chat account.
 - Models: Claude through Claude Code, GPT through Codex; GLM, MiniMax, DeepSeek, Kimi and other services through compatible endpoints and your own API keys.
-- Install (recommended, desktop app ${DESKTOP}): download ${DMG}, move SintBot to Applications and open it. The app includes the SintBot service and Node.js.
+- Install (recommended, desktop app ${DESKTOP}): download ${DMG} (Intel: ${DMG.replace('_aarch64.dmg', '_x64.dmg')}), move SintBot to Applications and open it. The app includes the SintBot service and Node.js.
 - Install (terminal, needs Node.js 22+): \`curl -fsSL ${SITE}/install.sh | bash\`, then follow ${SITE}/guide/install/#terminal
 - Current versions: service ${VERSION} (npm package \`sintbot\`), desktop app ${DESKTOP}.
 - Updates: from the console, Settings → Software updates.

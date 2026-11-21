@@ -94,8 +94,8 @@
     "zh": "看看它怎么工作"
   },
   "plat.trio": {
-    "en": "Apple silicon · macOS 12+",
-    "zh": "Apple 芯片 · macOS 12 或更高版本"
+    "en": "Apple silicon & Intel · macOS 12+",
+    "zh": "Apple 芯片与 Intel · macOS 12 或更高版本"
   },
   "what.kicker": {
     "en": "FROM THE GROUP TO THE PROJECT",
@@ -114,6 +114,7 @@
     "zh": "开始使用"
   },
   "desktop.download": {"en":"Download for Mac","zh":"下载 Mac 桌面版"},
+  "desktop.intel": {"en":"Intel Mac","zh":"Intel 芯片版"},
   "plugin.h": {
     "en": "Your next project<br><em>in the group chat</em>",
     "zh": "<span class=\"zh-title-line\">把下一个项目</span><span class=\"zh-title-line\"><em>接进群里</em></span>"
@@ -223,7 +224,7 @@
     "en": "What do I need to install it?",
     "zh": "安装需要准备什么？"
   },
-  "faq.5.a": {"en": "An Apple silicon Mac running macOS 12 or later and an installed, signed-in Claude Code or Codex. The desktop app includes Node.js. Local conversations need no chat account. Slack needs a workspace where you can install an app (a free one works); connecting Feishu needs a China team identity and phone confirmation. Terminal installation requires Node.js 22+.", "zh": "桌面版需要 macOS 12 及以上的 Apple 芯片 Mac，以及已安装并登录的 Claude Code 或 Codex。App 自带 Node.js。本机对话无需飞书身份；连接飞书时才需要中国版的企业或团队身份和手机扫码确认。终端安装需要 Node.js 22 及以上。"},
+  "faq.5.a": {"en": "A Mac with Apple silicon or Intel running macOS 12 or later and an installed, signed-in Claude Code or Codex. The desktop app includes Node.js. Local conversations need no chat account. Slack needs a workspace where you can install an app (a free one works); connecting Feishu needs a China team identity and phone confirmation. Terminal installation requires Node.js 22+.", "zh": "桌面版需要 macOS 12 及以上的 Mac（Apple 芯片或 Intel 均可），以及已安装并登录的 Claude Code 或 Codex。App 自带 Node.js。本机对话无需飞书身份；连接飞书时才需要中国版的企业或团队身份和手机扫码确认。终端安装需要 Node.js 22 及以上。"},
   "cta.h": {
     "en": "Bring your project<br><em>into the group chat</em>",
     "zh": "<span class=\"zh-title-line\">让项目回到</span><span class=\"zh-title-line\">团队的对话里</span>"
